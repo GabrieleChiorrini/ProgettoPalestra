@@ -1,0 +1,2 @@
+from .giorniSettimana import GiorniSettimana
+from .tipoAbbonamento import TipoAbbonamento
