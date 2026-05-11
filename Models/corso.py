@@ -14,7 +14,7 @@ class Corso:
         self._giorni = giorni
         self._iscritti = iscritti
 
-    def get_codice(self) -> str:
+    def getId(self) -> str:
         return self._codice
     
     def get_nome(self) -> str:
@@ -74,13 +74,13 @@ class Corso:
             "istruttore": self._istruttore.get_id(), 
             "orario": self._orario,
             "giorni": [giorno.value for giorno in self._giorni], #da rivedere
-            "iscritti": [iscritto.get_codice() for iscritto in self._iscritti]
+            "iscritti": [iscritto.getId() for iscritto in self._iscritti]
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "Corso":
         giorni= [GiorniSettimana(g) for g in d["giorni"]]
-        return cls( d["codice"], d["nome"], d["maxCapienza"], d["istruttore"],
+        return cls( d["id"], d["nome"], d["maxCapienza"], d["istruttore"],
                     d["orario"], giorni, d["iscritti"] )
     
     def __str__(self) -> str:

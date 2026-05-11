@@ -4,15 +4,19 @@ from Models import SalaPesi
 from Models import Corso
 
 class Palestra :
-    def __init__ (self,nome: str, indirizzo: str, orarioapertura: time,  orariochiusura: time, 
-                  giorniApertura: list[GiorniSettimana], corso: list[Corso], salaPesi: list[SalaPesi]):
+    def __init__ (self, id: str, nome: str, indirizzo: str, orarioapertura: time,  orariochiusura: time, 
+                  giorniApertura: list[GiorniSettimana], corsi: list[Corso], salePesi: list[SalaPesi]):
+        self._id = id
         self._nome = nome
         self._indirizzo = indirizzo
         self._orarioapertura = orarioapertura
         self._orariochiusura = orariochiusura
         self._giorniApertura = giorniApertura
-        self._corso = corso
-        self._salaPesi = salaPesi
+        self._corsi = corsi
+        self._salePesi = salePesi
+    
+    def getId(self) -> str:
+        return self._id
 
     def get_nome(self) -> str:
         return self._nome
@@ -29,11 +33,11 @@ class Palestra :
     def get_giorniApertura(self) -> list[GiorniSettimana]:
         return self._giorniApertura
     
-    def get_corso(self) -> list[Corso]:
-        return self._corso
+    def get_corsi(self) -> list[Corso]:
+        return self._corsi
     
-    def get_salaPesi(self) -> list[SalaPesi]:
-        return self._salaPesi
+    def get_salePesi(self) -> list[SalaPesi]:
+        return self._salePesi
     
     def set_orarioapertura(self, orarioapertura: time) -> None:
         if not isinstance(orarioapertura, time):
@@ -72,6 +76,7 @@ class Palestra :
 
     def toDict(self) -> dict:
         return {
+            "id": self._id,
             "nome": self._nome,
             "indirizzo": self._indirizzo,
             "orarioapertura": self._orarioapertura.isoformat(), #converte time in stringa ISO 8601
@@ -83,7 +88,7 @@ class Palestra :
     
     @classmethod
     def fromDict(cls, d: dict) -> "Palestra":
-        return cls( d["nome"], d["indirizzo"], d["orarioapertura"],
+        return cls(d["id"], d["nome"], d["indirizzo"], d["orarioapertura"],
                     d["orariochiusura"], d["giorniApertura"], d["corso"], d["salaPesi"] )
     
     def __str__(self) -> str:

@@ -9,7 +9,7 @@ class Cliente(Utente):
 
         self._codice = codice
 
-    def get_codice(self) -> str:
+    def getId(self) -> str:
         return self._codice
     
     def toDict(self) -> dict:

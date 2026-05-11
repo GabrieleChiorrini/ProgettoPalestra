@@ -1,10 +1,14 @@
 from datetime import time, timedelta
 
 class FasciaOraria:
-    def __init__(self, orarioInizio: time, durata: timedelta):
+    def __init__(self, id:str, orarioInizio: time, durata: timedelta):
+        self._id = id
         self._orarioInizio = orarioInizio
         self._durata = durata
         self._orarioFine = orarioInizio + durata
+    
+    def getId(self) -> str:
+        return self._id
 
     def get_orarioInizio(self) -> time:
         return self._orarioInizio
@@ -27,13 +31,14 @@ class FasciaOraria:
 
     def toDict(self) -> dict:
         return {
+            "id": self._id,
             "orarioInizio": self._orarioInizio.isoformat(), #converte time in stringa ISO 8601
             "durata": int(self._durata.total_seconds() / 60)  #converte timedelta in minuti
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "FasciaOraria":
-        return cls( time.fromisoformat(d["orarioInizio"]), timedelta(minutes=int(d["durata"])) )
+        return cls(d["id"], time.fromisoformat(d["orarioInizio"]), timedelta(minutes=int(d["durata"])) )
     
     def __str__(self) -> str:
         fasciaOraria = (f"Fascia oraria :\n"

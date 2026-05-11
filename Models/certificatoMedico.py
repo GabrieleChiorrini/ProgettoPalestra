@@ -5,12 +5,13 @@ DURATA_CERTIFICATO = timedelta(days=365) #durata di un anno
 
 class CertificatoMedico:
     def __init__ (self, cliente: Cliente, dataEffettuato: date, 
-                  certificato: str, validità: bool): #metto codice?
+                  certificato: str, validità: bool, id:str): #metto codice?
         self._cliente = cliente
         self._dataEffettuato = dataEffettuato
         self._dataScadenza = dataEffettuato + DURATA_CERTIFICATO
         self._certificato = certificato
         self._validità = validità
+        self._id = id
 
     def get_cliente(self) -> Cliente:
         return self._cliente
@@ -27,6 +28,9 @@ class CertificatoMedico:
     def get_validità(self) -> bool:
         return self._validità
     
+    def getId(self) -> str:
+        return self._id
+    
     def set_validità(self, validità: bool) -> None:
         if not isinstance(validità, bool):
             raise TypeError("La validità deve essere un booleano.")
@@ -34,17 +38,16 @@ class CertificatoMedico:
 
     def toDict(self) -> dict:
         return {
-            "cliente": self._cliente.get_codice(),
+            "id": self._id,
+            "cliente": self._cliente.getId(),
             "dataEffettuato": self._dataEffettuato.isoformat(), #converte date in stringa ISO 8601
-            "dataScadenza": self._dataScadenza.isoformat(), #converte date in stringa ISO 8601
             "certificato": self._certificato,
             "validità": int(self._validità)
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "CertificatoMedico":
-        return cls( d["cliente"], date.fromisoformat(d["dataEffettuato"]),
-                    date.fromisoformat(d["dataScadenza"]), d["certificato"], bool(d["validità"]) )
+        return cls( d["cliente"], date.fromisoformat(d["dataEffettuato"]), d["certificato"], bool(d["validità"]) , d["id"])
     
     def __str__(self) -> str:
         certificatoMedico = (f"certificato medico :\n"

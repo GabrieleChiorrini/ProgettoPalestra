@@ -1,10 +1,14 @@
 from Models import Utente
 
 class Credenziali:
-    def __init__(self, utente: Utente, username: str, password: str):
+    def __init__(self, id: str, utente: Utente, username: str, password: str):
+        self._id = id
         self._utente = utente
         self._username = username
         self._password = password
+
+    def getId(self):
+        return self._id
 
     def get_utente(self) -> Utente:
         return self._utente
@@ -17,6 +21,7 @@ class Credenziali:
     
     def toDict(self) -> dict:
         return {
+            "id": self._id,
             "utente": self._utente.get_codiceFiscale(),
             "username": self._username,
             "password": self._password
@@ -24,7 +29,7 @@ class Credenziali:
     
     @classmethod
     def fromDict(cls, d: dict) -> "Credenziali":
-        return cls( d["utente"], d["username"], d["password"] )
+        return cls(d["id"], d["utente"], d["username"], d["password"] )
     
     def __str__(self) -> str:
         credenziali = (f"Credenziali :\n"

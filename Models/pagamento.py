@@ -1,14 +1,14 @@
 from Models import Cliente
 
 class Pagamento:
-    def __init__(self, codice: str, importo: float, data: str, cliente: Cliente): #attributo pagamento?
-        self._codice = codice
+    def __init__(self, id: str, importo: float, data: str, cliente: Cliente): #attributo pagamento?
+        self._id = id
         self._importo = importo
         self._data = data
         self._cliente = cliente
 
-    def get_codice(self) -> str:
-        return self._codice
+    def getId(self) -> str:
+        return self._id
 
     def get_importo(self) -> float:
         return self._importo
@@ -21,19 +21,19 @@ class Pagamento:
 
     def toDict(self) -> dict:
         return {
-            "codice": self._codice,
+            "id": self._id,
             "importo": self._importo,
             "data": self._data,
-            "cliente": self._cliente.get_codice()  # Riferimento al codice del cliente
+            "cliente": self._cliente.getId()  # Riferimento al codice del cliente
         }
     
     @classmethod
-    def fromDict(cls, d: dict, cliente: Cliente) -> "Pagamento":
-        return cls(d["codice"], d["importo"], d["data"], cliente)
+    def fromDict(cls, d: dict) -> "Pagamento":
+        return cls(d["id"], d["importo"], d["data"], d["cliente"])
     
     def __str__(self) -> str:
         pagamento = (f"Pagamento :\n"
-                  f"\tcodice: {self._codice}\n"
+                  f"\tcodice: {self._id}\n"
                   f"\timporto: {self._importo}\n"
                   f"\tdata: {self._data}\n"
                   f"\tcliente: {self._cliente.get_nome()}\n")
