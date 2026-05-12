@@ -28,9 +28,9 @@ class FormCliente(QWidget):
 
         gridLayout = QGridLayout()
 
-        gridLayout.setColumnStretch(0, 2)
+        gridLayout.setColumnStretch(0, 1)
         gridLayout.setColumnStretch(1, 1)
-        gridLayout.setColumnStretch(2, 2)
+        gridLayout.setColumnStretch(2, 1)
         gridLayout.setRowStretch(0, 1)
         gridLayout.setRowStretch(2, 1)
 
