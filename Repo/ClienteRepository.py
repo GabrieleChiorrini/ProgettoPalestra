@@ -6,7 +6,7 @@ class ClienteRepository: # Repository
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._clienti: dict = {} # dizionario che contiene i clienti
         # N.B. il dizionario avrà come chiave un identificativo del cliente
-        self.carica() # la repo carica immediatamente i clienti  dalla memoria
+        self.carica() # la repo carica immediatamente i clienti dalla memoria
 
     def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
         try:
@@ -36,9 +36,19 @@ class ClienteRepository: # Repository
                 return a
         else:
             return None
+    
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._clienti)[-1] if self._clienti else "AB000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, cliente: Cliente) -> None:
-        self._clienti[cliente.getId()] = cliente # come chiave si usa l'id dell'oggetto Cliente, come valore l'oggetto Cliente stesso
+        self._clienti[cliente.get_id()] = cliente # come chiave si usa l'id dell'oggetto Cliente, come valore l'oggetto Cliente stesso
         self.salva() # salva in json self._clienti
 
     def tutti(self) -> list: # converte self._clienti (dict di oggetti Cliente) in una lista di oggetti cliente

@@ -35,13 +35,23 @@ class CertificatoMedicoRepository: # Repository
     def trovaPerCliente(self, cliente: Cliente):
         # Cerca il cliente con id uguale a quello fornito e lo restituisce, altrimenti ritorna None
         for a in self._certificatiMedici.values():
-            if a["cliente"] == cliente.getId():
+            if a["cliente"] == cliente.get_id():
                 return a
         else:
             return None
+        
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._certificatiMedici)[-1] if self._certificatiMedici else "CM000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, certficatoMedico: CertificatoMedico) -> None:
-        self._certificatiMedici[certficatoMedico.getId()] = certficatoMedico # come chiave si usa l'id dell'oggetto CertificatoMedico, come valore l'oggetto CertificatoMedico stesso
+        self._certificatiMedici[certficatoMedico.get_id()] = certficatoMedico # come chiave si usa l'id dell'oggetto CertificatoMedico, come valore l'oggetto CertificatoMedico stesso
         self.salva() # salva in json self._certificatiMedici
 
     def tutti(self) -> list: # converte self._certificatiMedici (dict di oggetti CertificatoMedico) in una lista di oggetti CertificatoMedico

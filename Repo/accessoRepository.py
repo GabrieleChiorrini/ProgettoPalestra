@@ -35,13 +35,23 @@ class AccessoRepository: # Repository
     def trovaPerCliente(self, cliente: Cliente):
         # Cerca il cliente con id uguale a quello fornito e lo restituisce, altrimenti ritorna None
         for a in self._accessi.values():
-            if a["cliente"] == cliente.getId():
+            if a["cliente"] == cliente.get_id():
                 return a
         else:
             return None
+        
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._accessi)[-1] if self._accessi else "AC000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, accesso: Accesso) -> None:
-        self._accessi[accesso.getId()] = accesso # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
+        self._accessi[accesso.get_id()] = accesso # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
         self.salva() # salva in json self._clienti
 
     def tutti(self) -> list: # converte self._accessi (dict di oggetti Accesso) in una lista di oggetti Accesso

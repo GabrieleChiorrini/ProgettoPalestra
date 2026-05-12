@@ -5,8 +5,7 @@ class StatisticaRepository: # Repository
     def __init__(self, path: str = "statistiche.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._statistiche: dict = {} # dizionario che contiene le statistiche
-        # N.B. il dizionario avrà come chiave un identificativo dell'amministratore
-        self.carica() # la repo carica immediatamente gli amministratori dalla memoria
+        self.carica() # la repo carica immediatamente le statistiche dalla memoria
 
     def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
         try:
@@ -28,6 +27,16 @@ class StatisticaRepository: # Repository
     def trovaPerId(self, codice: str):
         return self._statistiche.get(codice) # _statistiche è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
+
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._statistiche)[-1] if self._statistiche else "ST000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, statistica: Statistica) -> None:
         self._statistiche[statistica.get_id()] = statistica # come chiave si usa l'id dell'oggetto Statistica, come valore l'oggetto Statistica stesso

@@ -34,8 +34,18 @@ class CorsoRepository: # Repository
         return self._corsi.get(id) # _corsi è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._corsi)[-1] if self._corsi else "AB000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+
     def aggiungi(self, corso: Corso) -> None:
-        self._corsi[corso.getId()] = corso # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
+        self._corsi[corso.get_id()] = corso # come chiave si usa l'isbn dell'oggetto Corso, come valore l'oggetto Corso stesso
         self.salva() # salva in json self._clienti
 
     def tutti(self) -> list: # converte self._corsi (dict di oggetti Corso) in una lista di oggetti Corso

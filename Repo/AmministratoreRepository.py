@@ -29,6 +29,16 @@ class AmministratoreRepository: # Repository
         return self._amministratori.get(codice) # _amministratori è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._amministratori)[-1] if self._amministratori else "AD000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+
     def aggiungi(self, amministratore: Amministratore) -> None:
         self._amministratori[amministratore.get_id()] = amministratore # come chiave si usa l'id dell'oggetto Amministratore, come valore l'oggetto Amministratore stesso
         self.salva() # salva in json self._amministratori
