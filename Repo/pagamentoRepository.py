@@ -35,13 +35,23 @@ class PagamentoRepository: # Repository
     def trovaPerCliente(self, cliente: Cliente):
         #Ricerca il pagamento associato al cliente fornito, altrimenti ritorna None
         for a in self._pagamenti.values():
-            if a["cliente"] == cliente.getId():
+            if a["cliente"] == cliente.get_id():
                 return a
         else:
             return None
+    
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._pagamenti)[-1] if self._pagamenti else "AB000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, pagamento: Pagamento) -> None:
-        self._pagamenti[pagamento.getId()] = pagamento # come chiave si usa l'id dell'oggetto Abbonamento, come valore l'oggetto Abbonamento stesso
+        self._pagamenti[pagamento.get_id()] = pagamento # come chiave si usa l'id dell'oggetto Pagamento, come valore l'oggetto Pagamento stesso
         self.salva() # salva in json self._pagamenti
 
     def tutti(self) -> list: # converte self._pagamenti (dict di oggetti Pagamento) in una lista di oggetti Pagamento

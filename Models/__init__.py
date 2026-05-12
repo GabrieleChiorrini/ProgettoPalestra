@@ -1,4 +1,3 @@
-
 from Models.utente import Utente
 from Models.cliente import Cliente
 from Models.amministratore import Amministratore

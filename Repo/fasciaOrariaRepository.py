@@ -29,8 +29,18 @@ class FasciaOrariaRepository: # Repository
         return self._fasceOrarie.get(codice) # _fasceOrarie è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._fasceOrarie)[-1] if self._fasceOrarie else "AB000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+
     def aggiungi(self, fasciaOraria: FasciaOraria) -> None:
-        self._fasceOrarie[fasciaOraria.getId()] = fasciaOraria # come chiave si usa l'id dell'oggetto FasciaOraria, come valore l'oggetto FasciaOraria stesso
+        self._fasceOrarie[fasciaOraria.get_id()] = fasciaOraria # come chiave si usa l'id dell'oggetto FasciaOraria, come valore l'oggetto FasciaOraria stesso
         self.salva() # salva in json self._fasceOrarie
 
     def tutti(self) -> list: # converte self._fasceOrarie (dict di oggetti FasciaOraria) in una lista di oggetti FasciaOraria

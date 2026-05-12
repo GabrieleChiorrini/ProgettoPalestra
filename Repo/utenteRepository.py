@@ -4,9 +4,9 @@ from Models import Utente
 class UtenteRepository: # Repository
     def __init__(self, path: str = "utenti.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
-        self._utenti: dict = {} # dizionario che contiene gli amministratori
-        # N.B. il dizionario avrà come chiave un identificativo dell'amministratore
-        self.carica() # la repo carica immediatamente gli amministratori dalla memoria
+        self._utenti: dict = {} # dizionario che contiene gli utenti
+        # N.B. il dizionario avrà come chiave un identificativo dell'utente
+        self.carica() # la repo carica immediatamente gli utenti dalla memoria
 
     def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
         try:
@@ -28,6 +28,16 @@ class UtenteRepository: # Repository
     def trovaPerId(self, codice: str):
         return self._utenti.get(codice) # _utenti è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
+
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._utenti)[-1] if self._utenti else "AB000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, utente: Utente) -> None:
         self._utenti[utente.get_id()] = utente # come chiave si usa l'id dell'oggetto Utente, come valore l'oggetto Utente stesso
