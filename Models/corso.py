@@ -1,11 +1,11 @@
-from . import Amministratore, Cliente
-from Enumerazione import GiorniSettimana
+from . import Cliente, Amministratore
+from Enumerazione.giorniSettimana import GiorniSettimana
 from datetime import time
 
 class Corso:
-    def __init__(self, codice: str, nome: str, maxCapienza:int, istruttore: Amministratore,
+    def __init__(self, id: str, nome: str, maxCapienza:int, istruttore: Amministratore,
                  orario: time, giorni: list[GiorniSettimana], iscritti: list[Cliente]):
-        self._codice = codice
+        self._id = id
         self._nome = nome
         self._maxCapienza = maxCapienza
         self._istruttore = istruttore
@@ -14,7 +14,7 @@ class Corso:
         self._iscritti = iscritti
 
     def getId(self) -> str:
-        return self._codice
+        return self._id
     
     def get_nome(self) -> str:
         return self._nome
@@ -73,7 +73,7 @@ class Corso:
             "istruttore": self._istruttore.get_id(), 
             "orario": self._orario,
             "giorni": [giorno.value for giorno in self._giorni], #da rivedere
-            "iscritti": [iscritto.getId() for iscritto in self._iscritti]
+            "iscritti": [iscritto.get_id() for iscritto in self._iscritti]
         }
     
     @classmethod
@@ -84,11 +84,12 @@ class Corso:
     
     def __str__(self) -> str:
         corso = (f"Corso :\n"
-                  f"\tcodice: {self._codice}\n"
+                  f"\tcodice: {self._id}\n"
                   f"\tnome: {self._nome}\n"
                   f"\tcapienza massima: {self._maxCapienza}\n"
-                  f"\tistruttore: {self._istruttore}\n"
+                  f"\tistruttore: {self._istruttore.get_nome()+ self._istruttore.get_cognome()}\n"
                   f"\torario: {self._orario}\n"
-                  f"\tgiorni: {self._giorni}\n"
-                  f"\tiscritti: {self._iscritti}\n")
+                  f"\tgiorni: {[giorno.name for giorno in self._giorni]}\n"
+                  f"\tiscritti: {[iscritto.get_id() for iscritto in self._iscritti]}\n")
         return corso
+    

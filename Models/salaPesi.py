@@ -1,27 +1,26 @@
 from Models.fasciaOraria import FasciaOraria
 
 DURATA_FASCIA_ORARIA = 60 #durata in minuti di ogni fascia oraria
-
 class SalaPesi:
-    def __init__(self,codice: str, maxCapienza: int, fasciaOraria: list[FasciaOraria]):
-        self._codice = codice
-        self.maxCapienza = maxCapienza
-        self.fasciaOraria = fasciaOraria
+    def __init__(self,id: str, maxCapienza: int, fasciaOraria: list[FasciaOraria]):
+        self._id = id
+        self._maxCapienza = maxCapienza
+        self._fasciaOraria = fasciaOraria
 
 
-    def get_codice(self) -> str:
-        return self._codice
+    def get_id(self) -> str:
+        return self._id
 
     def get_maxCapienza(self) -> int:
-        return self.maxCapienza
+        return self._maxCapienza
 
     def get_fasciaOraria(self) -> list:
-        return self.fasciaOraria
+        return self._fasciaOraria
 
     def set_maxCapienza(self, maxCapienza: int) -> None:
         if not isinstance(maxCapienza, int):
             raise TypeError("La capienza massima deve essere un intero.")
-        self.maxCapienza = maxCapienza
+        self._maxCapienza = maxCapienza
 
     def set_fasciaOraria(self, fasciaOraria: list) -> None:
         if not isinstance(fasciaOraria, list):
@@ -29,23 +28,23 @@ class SalaPesi:
         for fascia in fasciaOraria:
             if not isinstance(fascia, FasciaOraria):
                 raise TypeError("Ogni fascia oraria deve essere un oggetto FasciaOraria.")
-        self.fasciaOraria = fasciaOraria  
+        self._fasciaOraria = fasciaOraria  
 
     def toDict(self) -> dict:
         return {
-            "codice": self._codice,
-            "maxCapienza": self.maxCapienza,
-            "fasciaOraria": self.fasciaOraria
+            "id": self._id,
+            "maxCapienza": self._maxCapienza,
+            "fasciaOraria": self._fasciaOraria
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "SalaPesi":
-        return cls( d["codice"], d["maxCapienza"], d["fasciaOraria"] )
+        return cls( d["id"], d["maxCapienza"], d["fasciaOraria"] )
     
     def __str__(self) -> str:
         salaPesi = (f"Sala pesi :\n"
-                  f"\tcapienza massima: {self.maxCapienza}\n"
-                  f"\tfascia oraria: {self.fasciaOraria}\n")
+                  f"\tcapienza massima: {self._maxCapienza}\n"
+                  f"\tfascia oraria: {self._fasciaOraria}\n")
         return salaPesi
     
     #la fine della fascia oraria la faccio calcolare direttamente a un servizio dividendo 

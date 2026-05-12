@@ -1,6 +1,6 @@
 
-from datetime import datetime, date
-from Enumerazione import TipoAbbonamento
+from datetime import datetime, timedelta, time, date
+from Enumerazione.tipoAbbonamento import TipoAbbonamento
 from . import Cliente
 
 class Abbonamento():
@@ -10,29 +10,30 @@ class Abbonamento():
         self._id = id
         self._durata = durata
         self._dataInizio = dataInizio
-        self._dataFine = datetime.now() # self._dataInizio + self._durata
+        #dummy = datetime.combine(durata, self._dataInizio.time())
+        self._dataFine = self._dataInizio + self._durata
         self._stato = stato
         self._tipo = tipo
 
-    def getCliente(self) -> Cliente:
+    def get_cliente(self) -> Cliente:
         return self._cliente
 
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
 
-    def getDurata(self) -> date:
+    def get_durata(self) -> timedelta:
         return self._durata
 
-    def getDataInizio(self) -> datetime:
+    def get_dataInizio(self) -> datetime:
         return self._dataInizio
 
-    def getDataFine(self) -> datetime:
+    def get_dataFine(self) -> datetime:
         return self._dataFine
 
-    def getStato(self) -> bool:
+    def get_stato(self) -> bool:
         return self._stato
 
-    def getTipo(self) -> TipoAbbonamento:
+    def get_tipo(self) -> TipoAbbonamento:
         return self._tipo
 
     # def setCliente(self, nuovoCliente: Cliente) -> None:
@@ -43,9 +44,9 @@ class Abbonamento():
     #     if isinstance(nuovoId, str):
     #         self._id = nuovoId
     
-    def setDurata(self, nuovaDurata: date) -> None:
-        if isinstance(nuovaDurata, date):
-            raise TypeError("La durata deve essere un valore di tipo date.")
+    def set_durata(self, nuovaDurata: timedelta) -> None:
+        if isinstance(nuovaDurata, timedelta):
+            raise TypeError("La durata deve essere un valore di tipo timedelta.")
         self._durata = nuovaDurata
         self._dataFine = self._dataInizio + self._durata
             # durata > 12mesi -> tipo annuales
@@ -58,12 +59,12 @@ class Abbonamento():
     #     if isinstance(nuovaData, datetime):
     #         self._dataFine = nuovaData
     
-    def setStato(self, nuovoStato: bool) -> None:
+    def set_stato(self, nuovoStato: bool) -> None:
         if isinstance(nuovoStato, bool):
             raise TypeError("Lo stato deve essere un valore booleano.")
         self._stato = nuovoStato
     
-    def setTipo(self, nuovoTipo: TipoAbbonamento) -> None:
+    def set_tipo(self, nuovoTipo: TipoAbbonamento) -> None:
         if isinstance(nuovoTipo, TipoAbbonamento):
             raise TypeError("Il tipo deve essere un'istanza di TipoAbbonamento.")
         self._tipo = nuovoTipo
@@ -90,7 +91,7 @@ class Abbonamento():
     
     def __str__(self) -> str:
         abbonamento = (f"Abbonamento :\n"
-                       f"\tCliente: {self._cliente.getNome()} {self._cliente.getCognome()}\n"
+                       f"\tCliente: {self._cliente.get_nome()} {self._cliente.get_cognome()}\n"
                        f"\tID: {self._id}\n"
                        f"\tDurata: {self._durata}\n"
                        f"\tData Inizio: {self._dataInizio}\n"

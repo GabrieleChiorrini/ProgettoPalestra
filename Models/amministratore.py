@@ -5,18 +5,8 @@ class Amministratore(Utente):
     def __init__(self, nome: str, cognome: str, dataNascita: date,
                codiceFiscale: str, email: str, telefono: str, id: str):
         
-        super().__init__(nome, cognome, dataNascita, codiceFiscale, email, telefono)
+        super().__init__(nome, cognome, dataNascita, codiceFiscale, email, telefono, id)
 
-        self._id = id
-
-    def get_id(self) -> str:
-        return self._id
-
-    def toDict(self) -> dict:
-        d = super().toDict()
-        d["id"] = self._id
-        return d
-    
     @classmethod
     def fromDict(cls, d: dict) -> "Amministratore":
         return cls( d["nome"], d["cognome"], date.fromisoformat(d["dataNascita"]), 
@@ -26,3 +16,4 @@ class Amministratore(Utente):
         amministratore = super().__str__()
         codice = f"\tcodice amministratore: {self._id}\n"
         return amministratore + codice
+    

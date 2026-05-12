@@ -1,6 +1,7 @@
 from datetime import time
-from Enumerazione import GiorniSettimana
-from . import SalaPesi, Corso
+from Enumerazione.giorniSettimana import GiorniSettimana
+from . import SalaPesi
+from . import Corso
 
 class Palestra :
     def __init__ (self, id: str, nome: str, indirizzo: str, orarioapertura: time,  orariochiusura: time, 

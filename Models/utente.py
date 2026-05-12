@@ -2,13 +2,14 @@ from datetime import date
 
 class Utente:
     def __init__(self, nome: str, cognome: str, dataNascita: date,
-               codiceFiscale: str, email: str, telefono: str):
+               codiceFiscale: str, email: str, telefono: str, id: str):
         self._nome = nome
         self._cognome = cognome
         self._dataNascita = dataNascita
         self._codiceFiscale = codiceFiscale
         self._email = email
         self._telefono = telefono
+        self._id = id
 
     def get_nome(self) -> str:
         return self._nome
@@ -28,6 +29,9 @@ class Utente:
     def get_telefono(self) -> str:
         return self._telefono
     
+    def get_id(self) -> str:
+        return self._id
+    
     def set_email(self, email: str) -> None:
         if not isinstance(email, str):
             raise TypeError("L'email deve essere una stringa.")
@@ -45,13 +49,14 @@ class Utente:
             "dataNascita": self._dataNascita.isoformat(), #converte date in stringa ISO 8601
             "codiceFiscale": self._codiceFiscale,
             "email": self._email,
-            "telefono": self._telefono
+            "telefono": self._telefono,
+            "id": self._id
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "Utente":
         return cls( d["nome"], d["cognome"], date.fromisoformat(d["dataNascita"]), 
-                   d["codiceFiscale"], d["email"], d["telefono"] )
+                   d["codiceFiscale"], d["email"], d["telefono"], d["id"] )
     
     def __str__(self) -> str:
         utente = (f"Utente :\n"
@@ -60,9 +65,6 @@ class Utente:
                   f"\tnato il: {self._dataNascita}\n"
                   f"\tCodice Fiscale: {self._codiceFiscale}\n"
                   f"\tEmail: {self._email}\n"
-                  f"\tTelefono: {self._telefono}\n")
+                  f"\tTelefono: {self._telefono}\n"
+                  f"\tId: {self._id}\n")
         return utente 
-
-if __name__ == "__main__":
-    u = Utente("Mario", "Rossi", date(1997, 11, 23), "RSSMRA97Z23E388S", "mario.rossi@GMAIL.COM", "33450928340")
-    print(u)

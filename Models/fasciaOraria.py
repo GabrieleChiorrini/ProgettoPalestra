@@ -1,11 +1,12 @@
-from datetime import time, timedelta
+from datetime import time, timedelta, datetime
 
 class FasciaOraria:
     def __init__(self, id:str, orarioInizio: time, durata: timedelta):
         self._id = id
         self._orarioInizio = orarioInizio
         self._durata = durata
-        self._orarioFine = orarioInizio + durata
+        dummy = datetime.combine(datetime.today(), orarioInizio)
+        self._orarioFine = (dummy + durata).time()
     
     def getId(self) -> str:
         return self._id

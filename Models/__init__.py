@@ -1,3 +1,4 @@
+
 from Models.utente import Utente
 from Models.cliente import Cliente
 from Models.amministratore import Amministratore
@@ -13,4 +14,4 @@ from Models.pagamento import Pagamento
 from Models.statistica import Statistica
 from Models.prenotazione import Prenotazione
 from Models.prenotazioneCorso import PrenotazioneCorso
-
+from Models.prenotazioneSalaPesi import PrenotazioneSalaPesi
