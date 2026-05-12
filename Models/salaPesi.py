@@ -1,6 +1,5 @@
 from Models.fasciaOraria import FasciaOraria
 
-DURATA_FASCIA_ORARIA = 60 #durata in minuti di ogni fascia oraria
 class SalaPesi:
     def __init__(self,id: str, maxCapienza: int, fasciaOraria: list[FasciaOraria]):
         self._id = id
@@ -34,12 +33,13 @@ class SalaPesi:
         return {
             "id": self._id,
             "maxCapienza": self._maxCapienza,
-            "fasciaOraria": self._fasciaOraria
+            "fasciaOraria": [f.toDict() for f in self._fasciaOraria]
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "SalaPesi":
-        return cls( d["id"], d["maxCapienza"], d["fasciaOraria"] )
+        fasce = [FasciaOraria.fromDict(f) for f in d["fasciaOraria"]]
+        return cls( d["id"], d["maxCapienza"], fasce)
     
     def __str__(self) -> str:
         salaPesi = (f"Sala pesi :\n"

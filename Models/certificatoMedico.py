@@ -28,7 +28,7 @@ class CertificatoMedico:
     def get_validità(self) -> bool:
         return self._validità
     
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
     
     def set_validità(self, validità: bool) -> None:
@@ -39,7 +39,7 @@ class CertificatoMedico:
     def toDict(self) -> dict:
         return {
             "id": self._id,
-            "cliente": self._cliente.getId(),
+            "cliente": self._cliente.get_id(),
             "dataEffettuato": self._dataEffettuato.isoformat(), #converte date in stringa ISO 8601
             "certificato": self._certificato,
             "validità": int(self._validità)
@@ -47,11 +47,11 @@ class CertificatoMedico:
     
     @classmethod
     def fromDict(cls, d: dict) -> "CertificatoMedico":
-        return cls( d["cliente"], date.fromisoformat(d["dataEffettuato"]), d["certificato"], bool(d["validità"]) , d["id"])
+        return cls( d["cliente"], date.fromisoformat(d["dataEffettuato"]), d["certificato"], bool(int(d["validità"])) , d["id"])
     
     def __str__(self) -> str:
         certificatoMedico = (f"certificato medico :\n"
-                  f"\tcliente: {self._cliente}\n"
+                  f"\tcliente: {self._cliente.get_nome()}{self._cliente.get_cognome}\n"
                   f"\tdata effettuato: {self._dataEffettuato}\n"
                   f"\tcertificato: {self._certificato}\n"
                   f"\tvalidità: {'Attivo' if self._validità else 'Scaduto'}\n")

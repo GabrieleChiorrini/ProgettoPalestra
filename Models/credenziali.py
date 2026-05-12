@@ -7,7 +7,7 @@ class Credenziali:
         self._username = username
         self._password = password
 
-    def getId(self):
+    def get_id(self):
         return self._id
 
     def get_utente(self) -> Utente:
@@ -33,7 +33,7 @@ class Credenziali:
     
     def __str__(self) -> str:
         credenziali = (f"Credenziali :\n"
-                  f"\tutente: {self._utente}\n"
+                  f"\tutente: {self._utente.get_codiceFiscale()}\n"
                   f"\tusername: {self._username}\n"
                   f"\tpassword: {self._password}\n")
         return credenziali

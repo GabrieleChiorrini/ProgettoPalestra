@@ -9,6 +9,8 @@ if __name__ == "__main__":
         corso = Corso("C001", "Yoga", 20, amministratore, time(15,00), [GiorniSettimana.LUNEDI, GiorniSettimana.MERCOLEDI], [cliente1, cliente2])
 
         print(corso)
+        print (cliente1)
+        print(amministratore)
 
         abbonamento = Abbonamento(
     cliente = cliente1,
@@ -17,6 +19,22 @@ if __name__ == "__main__":
     dataInizio = datetime(2026, 5, 12, 10, 30),
     stato = True,
     tipo = TipoAbbonamento.CORSI,
-
 )
         print(abbonamento)
+
+accesso = Accesso(
+    cliente=cliente1,
+    orario=date(2026, 5, 12),
+    id="A001")
+print(accesso)
+
+cert = CertificatoMedico(
+    cliente=cliente2,
+    dataEffettuato=date(2026, 5, 12),
+    certificato="Certificato medico sportivo",
+    validità=True,
+    id="CERT001"
+)
+
+print(cert)
+

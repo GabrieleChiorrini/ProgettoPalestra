@@ -18,9 +18,10 @@ class Accesso:
     
     def toDict(self) -> dict:
         return {
-            "cliente": self._cliente.getId(),  # Riferimento al codice del cliente
-            "orario": self._orario.isoformat()  # Converte date in stringa ISO 8601
-        }
+            "id": self._id,
+            "cliente": self._cliente.get_id(),
+            "orario": self._orario.isoformat()
+    }
     
     @classmethod
     def fromDict(cls, d: dict) -> "Accesso":
@@ -28,6 +29,6 @@ class Accesso:
     
     def __str__(self) -> str:
         accesso = (f"Accesso :\n"
-                  f"\tcliente: {self._cliente.get_nome()}\n"
+                  f"\tcliente: {self._cliente.get_id()}\n"
                   f"\torario: {self._orario}\n")
         return accesso

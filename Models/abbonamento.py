@@ -4,7 +4,7 @@ from Enumerazione.tipoAbbonamento import TipoAbbonamento
 from . import Cliente
 
 class Abbonamento():
-    def __init__(self, cliente: Cliente, id: str, durata: date, 
+    def __init__(self, cliente: Cliente, id: str, durata: timedelta, 
                  dataInizio: datetime, stato: bool, tipo: TipoAbbonamento):
         self._cliente = cliente
         self._id = id
@@ -35,6 +35,9 @@ class Abbonamento():
 
     def get_tipo(self) -> TipoAbbonamento:
         return self._tipo
+    
+    def _aggiorna_data_fine(self):
+        self._dataFine = self._dataInizio + self._durata
 
     # def setCliente(self, nuovoCliente: Cliente) -> None:
     #     if isinstance(nuovoCliente, self._cliente):
@@ -45,10 +48,11 @@ class Abbonamento():
     #         self._id = nuovoId
     
     def set_durata(self, nuovaDurata: timedelta) -> None:
-        if isinstance(nuovaDurata, timedelta):
-            raise TypeError("La durata deve essere un valore di tipo timedelta.")
+        if not isinstance(nuovaDurata, timedelta):
+            raise TypeError("La durata deve essere un timedelta.")
+
         self._durata = nuovaDurata
-        self._dataFine = self._dataInizio + self._durata
+        self._aggiorna_data_fine()
             # durata > 12mesi -> tipo annuales
     
     # def setDataInizio(self, nuovaData: datetime) -> None:
@@ -60,34 +64,34 @@ class Abbonamento():
     #         self._dataFine = nuovaData
     
     def set_stato(self, nuovoStato: bool) -> None:
-        if isinstance(nuovoStato, bool):
+        if not isinstance(nuovoStato, bool):
             raise TypeError("Lo stato deve essere un valore booleano.")
         self._stato = nuovoStato
     
     def set_tipo(self, nuovoTipo: TipoAbbonamento) -> None:
-        if isinstance(nuovoTipo, TipoAbbonamento):
+        if not isinstance(nuovoTipo, TipoAbbonamento):
             raise TypeError("Il tipo deve essere un'istanza di TipoAbbonamento.")
         self._tipo = nuovoTipo
     
     def toDict(self) -> dict:
         return {
-            "cliente" : self._cliente.get_codice(), #Da rivedere
+            "cliente" : self._cliente.get_id(), #Da rivedere
             "id" : self._id,
-            "durata": self._durata.isoformat(),
+            "durata": int(self._durata.total_seconds() / 60),
             "dataInizio" : self._dataInizio.isoformat(),
             "stato" : int(self._stato),
             "tipo" : self._tipo.value
         }
     
     @classmethod
-    def fromDict(cls, d:dict)-> Abbonamento:
-        return cls(d["cliente"], #Da rivedere
-                   d["id"],
-                   date.fromisoformat(d["durata"]),
-                   datetime.fromisoformat(d["dataInizio"]),
-                   bool(d["stato"]),
-                   TipoAbbonamento(int(d["tipo"]))
-                   )
+    def fromDict(cls, d: dict ) -> "Abbonamento":
+        return cls(
+            d["cliente"],
+            d["id"],
+            timedelta(minutes=int(d["durata"])),
+            datetime.fromisoformat(d["dataInizio"]),
+            bool(int(d["stato"])),
+            TipoAbbonamento(int(d["tipo"])))
     
     def __str__(self) -> str:
         abbonamento = (f"Abbonamento :\n"

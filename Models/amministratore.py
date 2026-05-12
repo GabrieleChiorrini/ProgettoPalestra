@@ -14,6 +14,5 @@ class Amministratore(Utente):
     
     def __str__(self) -> str:
         amministratore = super().__str__()
-        codice = f"\tcodice amministratore: {self._id}\n"
-        return amministratore + codice
+        return amministratore 
     

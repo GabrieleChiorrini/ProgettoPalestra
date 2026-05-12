@@ -8,7 +8,7 @@ class FasciaOraria:
         dummy = datetime.combine(datetime.today(), orarioInizio)
         self._orarioFine = (dummy + durata).time()
     
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
 
     def get_orarioInizio(self) -> time:
@@ -20,15 +20,21 @@ class FasciaOraria:
     def get_orarioFine(self) -> time:
         return self._orarioFine
     
+    def _aggiorna_orario_fine(self):   #devo aggiornare fine se modifico durata
+        dummy = datetime.combine(datetime.today(), self._orarioInizio)
+        self._orarioFine = (dummy + self._durata).time()
+    
     def set_orarioInizio(self, orarioInizio: time) -> None:
         if not isinstance(orarioInizio, time):
-            raise TypeError("L'orario di inizio deve essere un oggetto time.")
+            raise TypeError("l'orario deve essere un time")
         self._orarioInizio = orarioInizio
+        self._aggiorna_orario_fine()
 
     def set_durata(self, durata: timedelta) -> None:
         if not isinstance(durata, timedelta):
-            raise TypeError("La durata deve essere un oggetto timedelta.")
+            raise TypeError("la durata deve essere timedelta")
         self._durata = durata
+        self._aggiorna_orario_fine()
 
     def toDict(self) -> dict:
         return {

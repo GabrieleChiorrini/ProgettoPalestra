@@ -15,7 +15,7 @@ class Palestra :
         self._corsi = corsi
         self._salePesi = salePesi
     
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
 
     def get_nome(self) -> str:
@@ -57,7 +57,7 @@ class Palestra :
                 raise TypeError("Ogni giorno di apertura deve essere un giorno della settimana.")
         self._giorniApertura = giorniApertura
     
-    def set_corso(self, corso: list) -> None:
+    def set_corsi(self, corso: list) -> None:
         if not isinstance(corso, list):
             raise TypeError("I corsi devono essere una lista.")
         for c in corso:
@@ -81,15 +81,16 @@ class Palestra :
             "indirizzo": self._indirizzo,
             "orarioapertura": self._orarioapertura.isoformat(), #converte time in stringa ISO 8601
             "orariochiusura": self._orariochiusura.isoformat(), #converte time in stringa ISO 8601
-            "giorniApertura": self._giorniApertura,
-            "corso": [corso.get_codice() for corso in self._corso],
-            "salaPesi": [sala.get_codice() for sala in self._salaPesi]
+            "giorniApertura": [g.value for g in self._giorniApertura],
+            "corsi": [corso.get_id() for corso in self._corsi],
+            "salaPesi": [sala.get_id() for sala in self._salePesi]
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "Palestra":
+        giorni = [GiorniSettimana(g) for g in d["giorniApertura"]]
         return cls(d["id"], d["nome"], d["indirizzo"], d["orarioapertura"],
-                    d["orariochiusura"], d["giorniApertura"], d["corso"], d["salaPesi"] )
+                    d["orariochiusura"], giorni, d["corso"], d["salaPesi"] )
     
     def __str__(self) -> str:
         palestra = (f"Palestra :\n"

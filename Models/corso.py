@@ -13,7 +13,7 @@ class Corso:
         self._giorni = giorni
         self._iscritti = iscritti
 
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
     
     def get_nome(self) -> str:
@@ -71,23 +71,30 @@ class Corso:
             "nome": self._nome,
             "maxCapienza": self._maxCapienza,
             "istruttore": self._istruttore.get_id(), 
-            "orario": self._orario,
+            "orario": self._orario.isoformat(),
             "giorni": [giorno.value for giorno in self._giorni], #da rivedere
             "iscritti": [iscritto.get_id() for iscritto in self._iscritti]
         }
-    
     @classmethod
     def fromDict(cls, d: dict) -> "Corso":
-        giorni= [GiorniSettimana(g) for g in d["giorni"]]
-        return cls( d["id"], d["nome"], d["maxCapienza"], d["istruttore"],
-                    d["orario"], giorni, d["iscritti"] )
+        giorni = [GiorniSettimana(g) for g in d["giorni"]]
+
+        return cls(
+            d["id"],
+            d["nome"],
+            d["maxCapienza"],
+            d["istruttore"],
+            time.fromisoformat(d["orario"]),
+            giorni,
+            d["iscritti"]
+    )
     
     def __str__(self) -> str:
         corso = (f"Corso :\n"
                   f"\tcodice: {self._id}\n"
                   f"\tnome: {self._nome}\n"
                   f"\tcapienza massima: {self._maxCapienza}\n"
-                  f"\tistruttore: {self._istruttore.get_nome()+ self._istruttore.get_cognome()}\n"
+                  f"\tistruttore: {self._istruttore.get_nome()}{ self._istruttore.get_cognome()}\n"
                   f"\torario: {self._orario}\n"
                   f"\tgiorni: {[giorno.name for giorno in self._giorni]}\n"
                   f"\tiscritti: {[iscritto.get_id() for iscritto in self._iscritti]}\n")
