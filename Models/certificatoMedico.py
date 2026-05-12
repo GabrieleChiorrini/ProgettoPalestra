@@ -51,7 +51,7 @@ class CertificatoMedico:
     
     def __str__(self) -> str:
         certificatoMedico = (f"certificato medico :\n"
-                  f"\tcliente: {self._cliente.get_nome()}{self._cliente.get_cognome}\n"
+                  f"\tcliente: {self._cliente.get_nome()} {self._cliente.get_cognome()}\n"
                   f"\tdata effettuato: {self._dataEffettuato}\n"
                   f"\tcertificato: {self._certificato}\n"
                   f"\tvalidità: {'Attivo' if self._validità else 'Scaduto'}\n")
