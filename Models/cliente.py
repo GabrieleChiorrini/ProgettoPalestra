@@ -1,4 +1,4 @@
-from Models import Utente
+from Models.utente import Utente
 from datetime import date
 
 class Cliente(Utente):
@@ -26,5 +26,3 @@ class Cliente(Utente):
         cliente = super().__str__()
         codice = f"\tcodice cliente: {self._codice}\n"
         return cliente + codice
-    
-    

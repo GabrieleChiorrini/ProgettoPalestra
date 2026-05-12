@@ -1,5 +1,7 @@
-from Models import FasciaOraria
+from Models.fasciaOraria import FasciaOraria
+
 DURATA_FASCIA_ORARIA = 60 #durata in minuti di ogni fascia oraria
+
 class SalaPesi:
     def __init__(self,codice: str, maxCapienza: int, fasciaOraria: list[FasciaOraria]):
         self._codice = codice

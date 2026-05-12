@@ -1,5 +1,4 @@
-from Models import Amministratore
-from Models import Cliente
+from . import Amministratore, Cliente
 from Enumerazione import GiorniSettimana
 from datetime import time
 

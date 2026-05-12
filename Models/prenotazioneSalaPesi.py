@@ -1,9 +1,9 @@
-from Models import Prenotazione, FasciaOraria
+from . import Prenotazione, FasciaOraria, Cliente
 
 class PrenotazioneSalaPesi(Prenotazione):
 
-    def __init__(self, cliente, fascia_oraria):
-        super().__init__(cliente)
+    def __init__(self, cliente: Cliente, fascia_oraria: FasciaOraria):
+        super().__init__(cliente, "Cooo!")
         self._fascia_oraria = fascia_oraria
 
     def annulla(self):
@@ -12,7 +12,7 @@ class PrenotazioneSalaPesi(Prenotazione):
     def toDict(self):
         return {
             "tipo": "sala",
-            "cliente": self._cliente.get_codice(),
+            "cliente": self._cliente.getId(),
             "fascia_oraria": self._fascia_oraria.toDict()
         }
 

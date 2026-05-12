@@ -1,11 +1,9 @@
-from Models import Prenotazione
-from Models import Cliente
-from Models import Corso
+from . import Prenotazione, Cliente, Corso
 
 class PrenotazioneCorso(Prenotazione):
 
     def __init__(self, cliente: Cliente, corso: Corso):
-        super().__init__(cliente)
+        super().__init__(cliente, "C==!")
         self._corso = corso
 
     def annulla(self):
@@ -14,8 +12,8 @@ class PrenotazioneCorso(Prenotazione):
     def toDict(self):
         return {
             "tipo": "corso",
-            "cliente": self._cliente.get_codice(),
-            "corso": self._corso.get_codice()
+            "cliente": self._cliente.getId(),
+            "corso": self._corso.getId()
         }
 
     @classmethod

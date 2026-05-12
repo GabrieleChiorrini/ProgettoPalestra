@@ -1,4 +1,4 @@
-from Models import Utente
+from . import Utente
 from datetime import date
 
 class Amministratore(Utente):

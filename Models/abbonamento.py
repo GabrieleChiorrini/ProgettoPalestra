@@ -1,7 +1,7 @@
 
 from datetime import datetime, date
 from Enumerazione import TipoAbbonamento
-from Models import Cliente
+from . import Cliente
 
 class Abbonamento():
     def __init__(self, cliente: Cliente, id: str, durata: date, 
@@ -10,7 +10,7 @@ class Abbonamento():
         self._id = id
         self._durata = durata
         self._dataInizio = dataInizio
-        self._dataFine = self._dataInizio + self._durata
+        self._dataFine = datetime.now() # self._dataInizio + self._durata
         self._stato = stato
         self._tipo = tipo
 

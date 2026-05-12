@@ -1,4 +1,4 @@
-from Models import Utente
+from . import Utente
 
 class Credenziali:
     def __init__(self, id: str, utente: Utente, username: str, password: str):

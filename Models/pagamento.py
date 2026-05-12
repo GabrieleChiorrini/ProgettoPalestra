@@ -1,4 +1,4 @@
-from Models import Cliente
+from . import Cliente
 
 class Pagamento:
     def __init__(self, id: str, importo: float, data: str, cliente: Cliente): #attributo pagamento?

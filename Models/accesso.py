@@ -1,4 +1,4 @@
-from Models import Cliente
+from . import Cliente
 from datetime import date
 
 class Accesso:

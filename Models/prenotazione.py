@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Models import Cliente
+from . import Cliente
 
 class Prenotazione(ABC):
 
