@@ -65,13 +65,13 @@ class Palestra :
                 raise TypeError("Ogni corso deve essere un oggetto Corso.")
         self._corso = corso
     
-    def set_salaPesi(self, salaPesi: list) -> None:
-        if not isinstance(salaPesi, list):
+    def set_salaPesi(self, salePesi: list) -> None:
+        if not isinstance(salePesi, list):
             raise TypeError("Le sale pesi devono essere una lista.")
-        for s in salaPesi:
+        for s in salePesi:
             if not isinstance(s, SalaPesi):
                 raise TypeError("Ogni sala pesi deve essere un oggetto SalaPesi.")
-        self._salaPesi = salaPesi
+        self._salaPesi = salePesi
 
 
     def toDict(self) -> dict:
@@ -83,14 +83,14 @@ class Palestra :
             "orariochiusura": self._orariochiusura.isoformat(), #converte time in stringa ISO 8601
             "giorniApertura": [g.value for g in self._giorniApertura],
             "corsi": [corso.get_id() for corso in self._corsi],
-            "salaPesi": [sala.get_id() for sala in self._salePesi]
+            "salePesi": [sala.get_id() for sala in self._salePesi]
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "Palestra":
         giorni = [GiorniSettimana(g) for g in d["giorniApertura"]]
         return cls(d["id"], d["nome"], d["indirizzo"], d["orarioapertura"],
-                    d["orariochiusura"], giorni, d["corso"], d["salaPesi"] )
+                    d["orariochiusura"], giorni, d["corso"], d["salePesi"] )
     
     def __str__(self) -> str:
         palestra = (f"Palestra :\n"
@@ -98,8 +98,8 @@ class Palestra :
                   f"\tIndirizzo: {self._indirizzo}\n"
                   f"\torario apertura: {self._orarioapertura}\n"
                   f"\torario chiusura: {self._orariochiusura}\n"
-                  f"\tgiorni apertura: {self._giorniApertura}\n"
-                  f"\tcorso: {self._corso}\n"
-                  f"\tsala pesi: {self._salaPesi}\n")
+                  f"\tgiorni apertura: {[giorno.name for giorno in self._giorniApertura]}\n"
+                  f"\tcorso: {[corso._nome for corso in self._corsi]}\n"
+                  f"\tsala pesi: {[sala._id for sala in self._salePesi]}\n")
         return palestra
     

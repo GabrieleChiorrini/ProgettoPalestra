@@ -1,6 +1,7 @@
-from Models import Utente,Cliente,Amministratore,Credenziali,CertificatoMedico,SalaPesi,Corso,Pagamento,Palestra,FasciaOraria,Abbonamento,Accesso,Statistica
+from Models import Utente,Cliente,Amministratore,Credenziali,CertificatoMedico,SalaPesi,Corso,Pagamento,Palestra,FasciaOraria,Abbonamento,Accesso,Statistica,Prenotazione,PrenotazioneCorso,PrenotazioneSalaPesi
 from Enumerazione import GiorniSettimana, TipoAbbonamento
 from datetime import time, datetime, date, timedelta
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
         cliente1 = Cliente("Luca", "Bianchi", date(1995,5,5), "BNCLCU95E15H501U", "luca.bianchi@gmail.com", "33450928340", "C001")
@@ -51,6 +52,10 @@ fascia = FasciaOraria(
     orarioInizio=time(9, 0),          
     durata=timedelta(minutes=60)     
 )
+fascia2 = FasciaOraria(
+    id="F-POM-01",
+    orarioInizio=time(17, 30),
+    durata=timedelta(minutes=90))
 print(fascia)
 
 pagamento = Pagamento(
@@ -60,6 +65,13 @@ pagamento = Pagamento(
     cliente=cliente1
 )
 print(pagamento)
+
+sala_pesi_principale = SalaPesi(
+    id="SP-MAIN-01",
+    maxCapienza=25, 
+    fasciaOraria=[fascia, fascia2]
+)
+print(sala_pesi_principale)
 
 mia_palestra = Palestra(
     id="PAL-001",
@@ -75,4 +87,25 @@ mia_palestra = Palestra(
         GiorniSettimana.VENERDI, 
         GiorniSettimana.SABATO
     ],
-    [corso],
+    corsi=[corso],              
+    salePesi=[sala_pesi_principale] 
+)
+
+print(mia_palestra)
+
+#prenotazione=Prenotazione(cliente=cliente1, id="P001")
+#print(prenotazione)
+
+prenotazione_yoga = PrenotazioneCorso(
+    cliente=cliente1, 
+    id="PREN-YOG-001", 
+    corso=corso)
+print(prenotazione_yoga)
+
+prenotazione_sala = PrenotazioneSalaPesi(
+    cliente=cliente2,           
+    fascia_oraria=fascia2,      
+    id="PREN-SALA-001"
+)
+
+print(prenotazione_sala) 

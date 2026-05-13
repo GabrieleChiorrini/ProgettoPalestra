@@ -29,3 +29,11 @@ class PrenotazioneSalaPesi(Prenotazione):
             FasciaOraria.fromDict(d["fascia_oraria"]),
             d["id"]
         )
+    
+    def __str__(self) -> str:
+        return (
+            f"Prenotazione Sala:\n"
+            f"\tID: {self._id}\n"
+            f"\tCliente: {self._cliente.get_id()}\n"
+            f"\tFascia Oraria: {self._fascia_oraria.get_orarioInizio()}\n"
+        )
