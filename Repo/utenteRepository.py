@@ -31,7 +31,7 @@ class UtenteRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._utenti)[-1] if self._utenti else "AB000"
+        return list(self._utenti)[-1] if self._utenti else "UT000"
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
