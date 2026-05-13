@@ -1,4 +1,4 @@
-from Repo.abbonamentoRepository import Abbonamento
+from Repo.abbonamentoRepository import AbbonamentoRepository
 from Repo.accessoRepository import AccessoRepository
 from Repo.amministratoreRepository import AmministratoreRepository
 from Repo.certificatoMedicoRepository import CertificatoMedicoRepository
