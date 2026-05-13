@@ -39,6 +39,16 @@ class CredenzialiRepository: # Repository
                 return a
         else:
             return None
+    
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._corsi)[-1] if self._corsi else "CR000"
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, credenziali: Credenziali) -> None:
         self._credenziali[credenziali.getId()] = credenziali # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso

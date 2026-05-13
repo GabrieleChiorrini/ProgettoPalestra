@@ -31,7 +31,7 @@ class FasciaOrariaRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._fasceOrarie)[-1] if self._fasceOrarie else "AB000"
+        return list(self._fasceOrarie)[-1] if self._fasceOrarie else "FO000"
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

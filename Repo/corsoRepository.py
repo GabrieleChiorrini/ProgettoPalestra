@@ -36,7 +36,7 @@ class CorsoRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._corsi)[-1] if self._corsi else "AB000"
+        return list(self._corsi)[-1] if self._corsi else "CO000"
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

@@ -41,6 +41,9 @@ class PrenotazioneRepository: # Repository
         return self._prenotazioni.get(id) # _prenotazioni è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def listPrenotazioniPerFasciaOraria(self, id:str) -> list:
+        return [prenotazione for prenotazione in list(self._prenotazioni.values()) if isinstance(prenotazione, PrenotazioneSalaPesi) and prenotazione.get_fascia_oraria().get_id() == id]
+
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._prenotazioni)[-1] if self._prenotazioni else "PR000"
@@ -54,6 +57,10 @@ class PrenotazioneRepository: # Repository
     def aggiungi(self, prenotazione: Prenotazione) -> None:
         self._prenotazioni[prenotazione.get_id()] = prenotazione # come chiave si usa l'id dell'oggetto Prenotazione, come valore l'oggetto Prenotazione stesso
         self.salva() # salva in json self._clienti
+
+    def rimuovi(self, prenotazione: Prenotazione) -> None:
+        self._prenotazioni.pop(prenotazione.get_id(), None)
+        self.salva()
 
     def tutti(self) -> list: # converte self._prenotazioni (dict di oggetti Prenotazione) in una lista di oggetti Prenotazione
         return list(self._prenotazioni.values())

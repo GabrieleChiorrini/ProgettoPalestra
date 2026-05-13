@@ -8,6 +8,7 @@ from Repo.credenzialiRepository import CredenzialiRepository
 from Repo.fasciaOrariaRepository import FasciaOrariaRepository
 from Repo.pagamentoRepository import PagamentoRepository
 from Repo.palestraRepository import PalestraRepository
+from Repo.prenotazioneRepository import PrenotazioneRepository
 from Repo.salaPesiRepository import SalaPesiRepository
 from Repo.statisticaRepository import StatisticaRepository
 from Repo.utenteRepository import UtenteRepository
