@@ -1,11 +1,11 @@
 from . import Cliente
-from datetime import date
+from datetime import date, datetime
 
 class Accesso:
     def __init__(self, cliente: Cliente, orario: date, id:str):
         self._id = id
         self._cliente = cliente
-        self._orario = orario
+        self._orario = datetime.now()
 
     def get_id(self) -> str:
         return self._id

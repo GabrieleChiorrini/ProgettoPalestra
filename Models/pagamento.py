@@ -5,7 +5,7 @@ class Pagamento:
     def __init__(self, id: str, importo: float, data: datetime, cliente: Cliente):
         self._id = id
         self._importo = importo
-        self._data = data
+        self._data = datetime.now()
         self._cliente = cliente
 
     def get_id(self) -> str:
