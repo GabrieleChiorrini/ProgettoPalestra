@@ -5,7 +5,7 @@ from Repo import AmministratoreRepository, ClienteRepository
 class CorsoRepository: # Repository
     def __init__(self, amministratoreRepo: AmministratoreRepository, clienteRepo: ClienteRepository, path: str = "corsi.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
-        self._corsi: dict = {} # dizionario che contiene i corsi
+        self._corsi: dict[str, Corso] = {} # dizionario che contiene i corsi
         self._amministratoreRepo = amministratoreRepo #repo admin
         self._clienteRepo = clienteRepo #repo clienti
         self.carica() # la repo carica immediatamente i corsi dalla memoria
@@ -30,7 +30,7 @@ class CorsoRepository: # Repository
                 [a.toDict() for a in self._corsi.values()], f)# list comprehension. 
                 #cicla sui Corsi nella repo e li salva nel file .json
 
-    def trovaPerId(self, id: str):
+    def trovaPerId(self, id: str) -> Corso | None:
         return self._corsi.get(id) # _corsi è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
