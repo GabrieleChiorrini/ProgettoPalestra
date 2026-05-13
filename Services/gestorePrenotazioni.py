@@ -23,3 +23,4 @@ class GestorePrenotazioni:
 
         corso.set_iscritti(corso.get_iscritti().append(cliente))
         self._corsoRepo.salva()
+        return f'Prenotazione per il corso {corso.get_nome()} effettuata con successo!'
