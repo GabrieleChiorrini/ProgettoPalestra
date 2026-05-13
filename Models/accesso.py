@@ -7,7 +7,7 @@ class Accesso:
         self._cliente = cliente
         self._orario = orario
 
-    def getId(self) -> str:
+    def get_id(self) -> str:
         return self._id
 
     def get_cliente(self) -> Cliente:
