@@ -25,9 +25,22 @@ class AmministratoreRepository: # Repository
                 [l.toDict() for l in self._amministratori.values()], f)# list comprehension. 
                 #cicla sugli amministratori nella repo e li salva nel file .json
 
-    def trovaPerId(self, codice: str):
-        return self._amministratori.get(codice) # _amministratori è un dizionario;
+    def trovaPerId(self, id: str)-> Amministratore | None:
+        return self._amministratori.get(id)  # _amministratori è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
+
+    def trovaPerCF(self, codiceFiscale: str):
+    #siccome chiave del dizionario è id devo trovare tra gli oggetti del dizionario i valori
+        for admin in self._amministratori.values():
+            if admin["codiceFoscale"] == codiceFiscale: 
+                return admin
+            else:
+                return None  
+        return None 
+    
+    def eliminaPerId(self, id:str)-> None:
+            if id in self._amministratori:
+                del self._amministratori[id]
 
     def lastId(self) -> str:
         # Cerca l'ultimo id

@@ -25,8 +25,8 @@ class ClienteRepository: # Repository
                 [l.toDict() for l in self._clienti.values()], f)# list comprehension. 
                 #cicla sui clienti nella repo e li salva nel file .json
 
-    def trovaPerId(self, codice: str):
-        return self._clienti.get(codice) # _clienti è un dizionario;
+    def trovaPerId(self, id: str):
+        return self._clienti.get(id) # _clienti è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
     def trovaPerCF(self, codiceFiscale: str):
