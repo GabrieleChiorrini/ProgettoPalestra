@@ -24,3 +24,14 @@ class GestorePrenotazioni:
         corso.set_iscritti(corso.get_iscritti().append(cliente))
         self._corsoRepo.salva()
         return f'Prenotazione per il corso {corso.get_nome()} effettuata con successo!'
+
+    def eliminaPrenotazione(self, prenotazioneId: str, clienteId: str) -> str:
+        prenotazione = self._prenotazioneRepo.trovaPerId(prenotazioneId)
+        cliente = self._clienteRepo.trovaPerId(clienteId)
+
+        self._prenotazioneRepo.rimuovi(prenotazione)
+
+        if isinstance(prenotazione, PrenotazioneCorso):
+            corso: Corso = prenotazione.get_corso()
+            corso.set_iscritti(corso.get_iscritti().remove(cliente))
+            self._corsoRepo.salva()

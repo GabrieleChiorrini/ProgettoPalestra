@@ -58,5 +58,9 @@ class PrenotazioneRepository: # Repository
         self._prenotazioni[prenotazione.get_id()] = prenotazione # come chiave si usa l'id dell'oggetto Prenotazione, come valore l'oggetto Prenotazione stesso
         self.salva() # salva in json self._clienti
 
+    def rimuovi(self, prenotazione: Prenotazione) -> None:
+        self._prenotazioni.pop(prenotazione.get_id(), None)
+        self.salva()
+
     def tutti(self) -> list: # converte self._prenotazioni (dict di oggetti Prenotazione) in una lista di oggetti Prenotazione
         return list(self._prenotazioni.values())
