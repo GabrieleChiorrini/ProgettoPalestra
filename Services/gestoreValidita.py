@@ -14,3 +14,11 @@ class GestoreValidita:
                 if a.get_dataFine() < datetime.today():
                     a.set_stato(False)
                     self._abbonmaneotRepo.aggiungi(a)
+    
+    def controllaValiditaCertificati(self) -> None:
+        certificati = self._certificatoMedicoRepo.tutti()
+        if certificati:
+            for c in certificati:
+                if c.get_dataScadenza < datetime.today():
+                    c.set_validità(False)
+                    self._certificatoMedicoRepo.aggiungi(c)
