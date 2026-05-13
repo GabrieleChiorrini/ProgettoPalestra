@@ -2,10 +2,10 @@ from . import Cliente
 from datetime import date, datetime
 
 class Accesso:
-    def __init__(self, cliente: Cliente, orario: date, id:str):
+    def __init__(self, cliente: Cliente, id:str, orario: datetime = datetime.now()):
         self._id = id
         self._cliente = cliente
-        self._orario = datetime.now()
+        self._orario = orario or datetime.now()
 
     def get_id(self) -> str:
         return self._id
@@ -25,7 +25,7 @@ class Accesso:
     
     @classmethod
     def fromDict(cls, d: dict) -> "Accesso":
-        return cls(d["cliente"], date.fromisoformat(d["orario"]), d["id"])
+        return cls(d["cliente"], d["id"], datetime.fromisoformat(d["orario"]))
     
     def __str__(self) -> str:
         accesso = (f"Accesso :\n"

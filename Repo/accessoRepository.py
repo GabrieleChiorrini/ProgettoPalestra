@@ -40,6 +40,9 @@ class AccessoRepository: # Repository
         else:
             return None
         
+    def listPerCliente(self, cliente: Cliente) -> list:
+        return [accesso for accesso in self._accessi if cliente == accesso.get_cliente()]
+        
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._accessi)[-1] if self._accessi else "AC000"
