@@ -41,6 +41,9 @@ class PrenotazioneRepository: # Repository
         return self._prenotazioni.get(id) # _prenotazioni è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def listPrenotazioniPerFasciaOraria(self, id:str) -> list:
+        return [prenotazione for prenotazione in list(self._prenotazioni.values()) if isinstance(prenotazione, PrenotazioneSalaPesi) and prenotazione.get_fascia_oraria().get_id() == id]
+
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._prenotazioni)[-1] if self._prenotazioni else "PR000"

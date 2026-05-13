@@ -32,6 +32,14 @@ class SalaPesiRepository: # Repository
         return self._salePesi.get(id) # _salePesi è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
+    def trovaPerFasciaOraria(self, id:str) -> SalaPesi:
+        return next((
+            sala
+            for sala in self._salePesi.values()
+            for fasciaOraria in sala.get_fasciaOraria()
+            if id == fasciaOraria.get_id()
+            ), None)
+    
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._salePesi)[-1] if self._salePesi else "SP000"
