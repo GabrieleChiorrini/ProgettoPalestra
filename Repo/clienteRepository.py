@@ -37,6 +37,10 @@ class ClienteRepository: # Repository
         else:
             return None
     
+    def eliminaPerId(self, id:str)-> None:
+            if id in self._clienti:
+                del self._clienti[id]
+    
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._clienti)[-1] if self._clienti else "CL000"
