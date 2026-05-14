@@ -32,10 +32,10 @@ class AbbonamentoRepository: # Repository
         return self._abbonamenti.get(id) # _abbonamenti è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
-    def trovaPerCliente(self, cliente: Cliente):
+    def trovaPerCliente(self, idCliente: str):
         #Ricerca l'abbonamento associato al cliente fornito, altrimenti ritorna None
         for a in self._abbonamenti.values():
-            if a["cliente"] == cliente.get_id():
+            if a.get_cliente().get_id() == idCliente:
                 return a
         else:
             return None
