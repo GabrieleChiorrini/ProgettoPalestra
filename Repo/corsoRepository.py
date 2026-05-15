@@ -16,8 +16,9 @@ class CorsoRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati dei corsi
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["istruttore"] = self._amministratoreRepo.trovaPerId(dati["istruttore"])
-            dati["iscritti"] = [self._clienteRepo.trovaPerId(c) for c in dati["iscritti"]]  # trovo il cliente perché ho salvato solo l'id
+            for d in dati:
+                d["istruttore"] = self._amministratoreRepo.trovaPerId(d["istruttore"])
+                d["iscritti"] = [self._clienteRepo.trovaPerId(c) for c in d["iscritti"]]
             self._corsi = {
                 d["id"]: Corso.fromDict(d) for d in dati # from dict è metodo di classe di Corso
             }
@@ -33,6 +34,38 @@ class CorsoRepository: # Repository
     def trovaPerId(self, id: str) -> Corso | None:
         return self._corsi.get(id) # _corsi è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
+
+    def trovaPerNome(self, nome: str) -> Corso | None:
+        for corso in self._corsi.values():
+            if corso.get_nome() == nome:
+                return corso
+        return None
+
+    def istruttoreOccupato(self, istruttore: str, orari, giorni) -> bool:
+        if isinstance(istruttore, str):
+            istruttore_id = istruttore
+        else:
+            try:
+                istruttore_id = istruttore.get_id()
+            except AttributeError:
+                return False
+
+        for corso in self._corsi.values():
+            docente = corso.get_istruttore()
+            try:
+                docente_id = docente.get_id()
+            except AttributeError:
+                continue
+            if docente_id != istruttore_id:
+                continue
+            if corso.get_orario() != orari:
+                continue
+            if not giorni:
+                return False
+            if any(g in corso.get_giorni() for g in giorni):
+                return True
+
+        return False
 
     def lastId(self) -> str:
         # Cerca l'ultimo id

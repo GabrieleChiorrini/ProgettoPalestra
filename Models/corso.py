@@ -67,7 +67,7 @@ class Corso:
 
     def toDict(self) -> dict:
         return {
-            "codice": self._codice,
+            "id": self._id,
             "nome": self._nome,
             "maxCapienza": self._maxCapienza,
             "istruttore": self._istruttore.get_id(), 
