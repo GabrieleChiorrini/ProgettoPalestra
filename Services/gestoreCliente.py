@@ -8,7 +8,8 @@ class GestoreCliente:
         self._certificatoRepo = CertificatoRepo
 
     def RegistraCliente(self, nome: str, cognome: str, dataNascita: date, 
-                           codiceFiscale: str, email: str, telefono: str): #non passo id perchè lo genera sistema
+                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: date,
+                           certificato: str, validità: bool): #non passo id perchè lo genera sistema
         #check se esiste
             clienteEsistente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
@@ -28,10 +29,18 @@ class GestoreCliente:
                  id= nuovoId
             )
 
-            self._clienteRepo.aggiungi(nuovoCliente)
+            nuovoIdCert= self._certificatoRepo.newId()
+            nuovoCertificato = CertificatoMedico(
+                 cliente= nuovoCliente,
+                 dataEffettuato=dataEffettuato,
+                 certificato= certificato,
+                 validità=True,
+                 id= nuovoIdCert)
 
-            self._amministratoreRepo.salva()
-            return "cliente creato"
+            self._clienteRepo.aggiungi(nuovoCliente)
+            self._certificatoRepo.aggiungi(nuovoCertificato)
+
+            return "cliente e certificato creato"
 
     def TrovaCliente(self, id:str):
          return self._clienteRepo.trovaPerId(id)
@@ -64,7 +73,7 @@ class GestoreCliente:
 
          return "cliente eliminato"
     
-    def VisualizzaCertificato(self, cliente ):
+    def VisualizzaCertificato(self, cliente: Cliente ):
          certificato = self._certificatoRepo.trovaPerCliente(cliente)
 
          if certificato is None:
@@ -79,8 +88,8 @@ class GestoreCliente:
 
          return {
     "dataScadenza": scadenza,
-    "giorniAllaScadenza": giorniAllaScadenza,
-    "validità" : {'Attivo' if certificato._validità else 'Scaduto'}
+    "giorniAllaScadenza": {giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto"},
+    "validità" : {'Attivo' if validità==True else 'Scaduto'}
 }
 
 

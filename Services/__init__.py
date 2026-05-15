@@ -6,3 +6,4 @@ from Services.gestoreCliente import GestoreCliente
 from Services.gestorePagamento import GestorePagamento
 from Services.gestoreStatistiche import GestoreStatistiche
 from Services.gestoreValidita import GestoreValidita
+from Services.gestoreAbbonamenti import GestoreAbbonamenti
