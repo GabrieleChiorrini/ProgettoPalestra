@@ -56,3 +56,12 @@ class SalaPesiRepository: # Repository
 
     def tutti(self) -> list: # converte self._salePesi (dict di oggetti SalaPesi) in una lista di oggetti SalaPesi
         return list(self._salePesi.values())
+    
+    def getMaxCapienza(self, salaPesiId: str) -> int:
+        sala = self.trovaPerId(salaPesiId)
+        if sala is None:
+            raise ValueError(f"Sala pesi con ID {salaPesiId} non trovata")
+        return sala.get_maxCapienza()
+    
+    def aggiornaCapienza(self) -> None:
+        self.salva()

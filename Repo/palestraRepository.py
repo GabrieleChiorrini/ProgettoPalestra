@@ -50,3 +50,6 @@ class PalestraRepository: # Repository
 
     def tutti(self) -> list: # converte self._palestre (dict di oggetti Palestra) in una lista di oggetti Palestra
         return list(self._palestre.values())
+    
+    def aggiornaOrario(self) -> None:
+        self.salva()
