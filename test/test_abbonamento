@@ -1,0 +1,115 @@
+import unittest
+from test.entità_finte import cliente_finto,abbonamento_finto
+from Enumerazione import TipoAbbonamento
+from datetime import timedelta, datetime, date
+from Models import Abbonamento
+
+class TestAbbonamento(unittest.TestCase):
+
+    def setUp(self):
+        # Fase 1 - Arrange
+        # eseguito prima di ogni test. 
+        # Questo consente di eseguire i test su uno stato "Pulito" ogni volta
+        self.cliente = cliente_finto()
+        self.abbonamento = abbonamento_finto(self.cliente)
+
+    def test_cliente(self):
+        self.assertEqual(self.abbonamento.get_cliente(), self.cliente)
+
+    def test_id(self):
+        self.assertEqual(self.abbonamento.get_id(), "ABB-001")
+
+    def test_durata(self):
+        self.assertEqual(self.abbonamento.get_durata(), timedelta(days=30))
+
+    def test_dataInizio(self):
+        self.assertEqual(
+            self.abbonamento.get_dataInizio(),
+            datetime(2025, 1, 1, 10, 0, 0)
+        )
+
+    def test_stato(self):
+        self.assertTrue(self.abbonamento.get_stato())
+
+    def test_tipo(self):
+        self.assertEqual(self.abbonamento.get_tipo(), TipoAbbonamento.CORSI)
+
+
+    def test_set_non_disponibile(self):
+        # Fase 2 - Act
+        self.abbonamento.set_stato(False)
+        # Fase 3 - Assert
+        self.assertFalse(self.abbonamento.get_stato()) # visto che lo stato di default deve essere true alla creazione
+
+    def test_set_disponibile_true(self):
+        self.abbonamento.set_stato(False)
+        self.abbonamento.set_stato(True)
+        self.assertTrue(self.abbonamento.get_stato()) # visto che lo stato di default deve essere true alla creazione
+
+    def test_stato_errato_raises(self):
+        # il codice nel with DEVE sollevare TypeError
+        # altrimenti il test fallisce
+        with self.assertRaises(TypeError): # qui specificate il tipo di errore che vi aspettate
+            self.abbonamento.set_stato("si") # qui le espressioni che dovrebbero generare l'errore
+
+    def test_set_durata(self):
+        nuova_durata = timedelta(days=60)
+        self.abbonamento.set_durata(nuova_durata)
+        self.assertEqual(self.abbonamento.get_durata(),nuova_durata)
+
+    def test_set_durata_errata_raises(self):
+        with self.assertRaises(TypeError):
+            self.abbonamento.set_durata("30 giorni")
+
+    def test_set_tipo(self):
+        self.abbonamento.set_tipo(TipoAbbonamento.SALAPESI)
+        self.assertEqual(self.abbonamento.get_tipo(),TipoAbbonamento.SALAPESI)
+
+    def test_set_tipo_errato_raises(self):
+        with self.assertRaises(TypeError):
+            self.abbonamento.set_tipo("CORSI")
+
+    def test_data_fine_calcolata(self):
+        data_fine_attesa = (self.abbonamento.get_dataInizio()+ self.abbonamento.get_durata())
+        self.assertEqual(self.abbonamento.get_dataFine(),data_fine_attesa)
+
+    def test_to_dict(self):
+        d = self.abbonamento.toDict()
+
+        self.assertEqual(d["cliente"], self.cliente.get_id())
+        self.assertEqual(d["id"], "ABB-001")
+        self.assertEqual(d["durata"],int(timedelta(days=30).total_seconds() / 60))
+        self.assertEqual(d["dataInizio"],datetime(2025, 1, 1, 10, 0, 0).isoformat())
+        self.assertEqual(d["stato"], 1)
+        self.assertEqual(d["tipo"],TipoAbbonamento.CORSI.value)
+        
+
+    def test_from_dict(self):
+
+        d = {
+            "cliente": "C001",
+            "id": "ABB-001",
+            "durata": 43200,  # 30 giorni in minuti
+            "dataInizio": "2025-01-01T10:00:00",
+            "stato": 1,
+            "tipo": TipoAbbonamento.CORSI.value
+        }
+
+        abbonamento = Abbonamento.fromDict(d)
+
+        self.assertEqual(abbonamento.get_cliente(), "C001")
+
+        self.assertEqual(abbonamento.get_id(), "ABB-001")
+
+        self.assertEqual(abbonamento.get_durata(),timedelta(days=30))
+
+        self.assertEqual(abbonamento.get_dataInizio(),datetime(2025, 1, 1, 10, 0, 0))
+
+        self.assertTrue(abbonamento.get_stato())
+
+        self.assertEqual(abbonamento.get_tipo(),TipoAbbonamento.CORSI)
+
+
+
+if __name__ == "__main__":
+    unittest.main()
