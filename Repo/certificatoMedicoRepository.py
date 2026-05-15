@@ -32,10 +32,10 @@ class CertificatoMedicoRepository: # Repository
         return self._certificatiMedici.get(id) # _certificatiMedici è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
-    def trovaPerCliente(self, cliente: Cliente):
+    def trovaPerCliente(self, idCliente: str):
         # Cerca il cliente con id uguale a quello fornito e lo restituisce, altrimenti ritorna None
         for a in self._certificatiMedici.values():
-            if a["cliente"] == cliente.get_id():
+            if a.get_cliente().get_id() == idCliente:
                 return a
         else:
             return None
