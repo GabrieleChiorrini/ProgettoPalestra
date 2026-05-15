@@ -1,5 +1,5 @@
 import unittest
-from test.entità_finte import cliente_finto,abbonamento_finto
+from test.entita_finte import cliente_finto,abbonamento_finto
 from Enumerazione import TipoAbbonamento
 from datetime import timedelta, datetime, date
 from Models import Abbonamento
@@ -108,8 +108,6 @@ class TestAbbonamento(unittest.TestCase):
         self.assertTrue(abbonamento.get_stato())
 
         self.assertEqual(abbonamento.get_tipo(),TipoAbbonamento.CORSI)
-
-
 
 if __name__ == "__main__":
     unittest.main()
