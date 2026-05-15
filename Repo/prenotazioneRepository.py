@@ -1,13 +1,14 @@
 import json
 from Models import Prenotazione, PrenotazioneCorso, PrenotazioneSalaPesi, Corso, SalaPesi, Cliente
-from Repo import CorsoRepository, FasciaOrariaRepository, ClienteRepository
+from Repo import CorsoRepository, FasciaOrariaRepository, ClienteRepository, SalaPesiRepository
 
 class PrenotazioneRepository: # Repository
-    def __init__(self, corsoRepo: CorsoRepository, fasciaOrariaRepo: FasciaOrariaRepository, clienteRepo: ClienteRepository, path: str = "corsi.json"):
+    def __init__(self, corsoRepo: CorsoRepository, fasciaOrariaRepo: FasciaOrariaRepository, salaPesiRepo: SalaPesiRepository, clienteRepo: ClienteRepository, path: str = "prenotazioni.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._prenotazioni: dict = {} # dizionario che contiene le prenotazioni
         self._corsoRepo = corsoRepo #repo corsi
-        self._salaPesiRepo = fasciaOrariaRepo #repo fasce orarie
+        self._fasciaOrariaRepo = fasciaOrariaRepo #repo fasce orarie
+        self._salaPesiRepo = salaPesiRepo #repo sale pesi
         self._clienteRepo = clienteRepo #repo clienti
         self.carica() # la repo carica immediatamente le prenotazioni dalla memoria
 
@@ -43,6 +44,13 @@ class PrenotazioneRepository: # Repository
 
     def listPrenotazioniPerFasciaOraria(self, id:str) -> list:
         return [prenotazione for prenotazione in list(self._prenotazioni.values()) if isinstance(prenotazione, PrenotazioneSalaPesi) and prenotazione.get_fascia_oraria().get_id() == id]
+
+    def controllaCapienzaFasciaOraria(self, fasciaOrariaId: str) -> bool:
+        salaPesi = self._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId)
+        if salaPesi is None:
+            return False
+        prenotazioni = self.listPrenotazioniPerFasciaOraria(fasciaOrariaId)
+        return len(prenotazioni) < salaPesi.get_maxCapienza()
 
     def lastId(self) -> str:
         # Cerca l'ultimo id

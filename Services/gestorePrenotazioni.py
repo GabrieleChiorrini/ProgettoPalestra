@@ -35,3 +35,27 @@ class GestorePrenotazioni:
             corso: Corso = prenotazione.get_corso()
             corso.set_iscritti(corso.get_iscritti().remove(cliente))
             self._corsoRepo.salva()
+    
+    def prenotareSalaPesi(self, fasciaOrariaId: str, clienteId: str) -> str:
+        fasciaOraria: FasciaOraria = self._fasciaOrariaRepo.trovaPerId(fasciaOrariaId)
+        cliente: Cliente = self._clienteRepo.trovaPerId(clienteId)
+        
+        if fasciaOraria is None:
+            return "Fascia oraria non trovata"
+        
+        if cliente is None:
+            return "Cliente non trovato"
+        
+        salaPesi = self._prenotazioneRepo._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId)
+        if salaPesi is None:
+            return "Sala pesi non trovata"
+        
+        prenotazioni = self._prenotazioneRepo.listPrenotazioniPerFasciaOraria(fasciaOrariaId)
+        if len(prenotazioni) >= salaPesi.get_maxCapienza():
+            return "Fascia oraria piena"
+        
+        prenotazione = PrenotazioneSalaPesi(cliente, fasciaOraria, self._prenotazioneRepo.newId())
+        self._prenotazioneRepo.aggiungi(prenotazione)
+        self._prenotazioneRepo.salva()
+        
+        return "Prenotazione effettuata"
