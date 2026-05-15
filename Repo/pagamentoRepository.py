@@ -40,6 +40,13 @@ class PagamentoRepository: # Repository
         else:
             return None
     
+    def trovaRicevute(self, clienteId: str):
+        ricevuta = []
+        for a in self._pagamenti.values():
+            if a.get_cliente().get_id() == clienteId:
+                ricevuta.append(a)
+        return ricevuta
+        
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._pagamenti)[-1] if self._pagamenti else "PA000"
