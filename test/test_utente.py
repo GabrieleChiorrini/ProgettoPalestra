@@ -3,7 +3,7 @@ from test.entita_finte import utente_finto
 from datetime import timedelta, datetime, date
 from Models import Utente
 
-class TestAbbonamento(unittest.TestCase):
+class TestUtente(unittest.TestCase):
 
     def setUp(self):
         # Fase 1 - Arrange

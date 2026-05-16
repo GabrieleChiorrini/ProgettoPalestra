@@ -56,9 +56,7 @@ class GestoreAbbonamenti:
             return "abbonamento rinnovato"
         
         else:
-            self.CreaAbbonamento(idCliente=idCliente, 
-                                durata=nuovaDurata,  
-                                tipo=tipo)
+            self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
             
         
     def VisualizzaAbbonamento(self, idCliente: str ):
@@ -72,7 +70,7 @@ class GestoreAbbonamenti:
 
          oggi = date.today()
 
-         giorniAllaScadenza = scadenza - oggi
+         giorniAllaScadenza = (scadenza - oggi).days
 
          return {
     "dataScadenza": scadenza,
