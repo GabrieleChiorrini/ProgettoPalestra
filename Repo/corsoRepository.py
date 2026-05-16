@@ -51,12 +51,12 @@ class CorsoRepository: # Repository
                 return False
 
         for corso in self._corsi.values():
-            docente = corso.get_istruttore()
+            insegnante = corso.get_istruttore()
             try:
-                docente_id = docente.get_id()
+                insegnante_id = insegnante.get_id()
             except AttributeError:
                 continue
-            if docente_id != istruttore_id:
+            if insegnante_id != istruttore_id:
                 continue
             if corso.get_orario() != orari:
                 continue
