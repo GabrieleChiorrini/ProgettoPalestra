@@ -1,24 +1,33 @@
 import json
 from Models import Cliente
+from Repo import CertificatoMedicoRepository
 
 class ClienteRepository: # Repository
-    def __init__(self, path: str = "clienti.json"):
+    def __init__(self, certificatoRepo: CertificatoMedicoRepository,path: str = "clienti.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._clienti: dict = {} # dizionario che contiene i clienti
         # N.B. il dizionario avrà come chiave un identificativo del cliente
+        self._certificatoRepo = certificatoRepo
         self.carica() # la repo carica immediatamente i clienti dalla memoria
 
-    def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
+    def carica(self) -> None:
         try:
             with open(self._path, "r") as f:
-                dati = json.load(f) # carico il file json contente i dati dei clienti
-            self._clienti = {
-                d["id"]: Cliente.fromDict(d) for d in dati # from dict è metodo di classe di Cliente
-                # invoca il costruttore sulla base dei dati contenti in un dizionario 
-            }
-        except FileNotFoundError:
-            self._clienti = {} # al primo avvio
+                dati = json.load(f)
 
+            self._clienti = {
+                d["id"]: Cliente.fromDict(d)
+                for d in dati
+            }
+
+            for d in dati:
+                if "certificato" in d and d["certificato"] is not None:
+                    cliente = self._clienti[d["id"]]
+                    cliente._certificato = self._certificatoRepo.trovaPerId(d["certificato"])
+
+        except FileNotFoundError:
+            self._clienti = {}
+                
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
