@@ -1,6 +1,5 @@
-from . import Utente
+from . import Utente, CertificatoMedico
 from datetime import date
-from Models import CertificatoMedico
 
 
 class Cliente(Utente):

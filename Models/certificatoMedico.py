@@ -1,4 +1,3 @@
-from . import Cliente
 from datetime import date, timedelta
 
 DURATA_CERTIFICATO = timedelta(days=365) #durata di un anno
