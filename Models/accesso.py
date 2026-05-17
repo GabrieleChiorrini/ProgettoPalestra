@@ -13,7 +13,7 @@ class Accesso:
     def get_cliente(self) -> Cliente:
         return self._cliente
 
-    def get_orario(self) -> date:
+    def get_orario(self) -> datetime:
         return self._orario
     
     def toDict(self) -> dict:

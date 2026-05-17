@@ -15,10 +15,11 @@ class AccessoRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati degli accessi
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["cliente"] = self._clienteRepo.trovaPerId(dati["cliente"]) # trovo il cliente perché ho salvato solo l'id
             self._accessi = {
-                d["id"]: Accesso.fromDict(d) for d in dati # from dict è metodo di classe di Accesso
-            }
+                d["id"]: Accesso.fromDict({
+                **d, #Unpacking del dizionario
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+            })  for d in dati} # from dict è metodo di classe di Accesso
         except FileNotFoundError:
             self._accessi = {} # al primo avvio
 
@@ -42,6 +43,14 @@ class AccessoRepository: # Repository
         
     def listPerCliente(self, cliente: Cliente) -> list:
         return [accesso for accesso in self._accessi if cliente == accesso.get_cliente()]
+    
+    def nPerGiorni(self) -> list:
+        #Conta il numero di accessi per ogni giorno(Lunedì al posto 0 e Domenica al posto 6) e li mette in lista
+        lista = [0, 0, 0, 0, 0, 0, 0]
+        for a in self._accessi:
+            giorno = a.get_orario().weekday
+            lista[giorno] += 1
+        return lista
         
     def lastId(self) -> str:
         # Cerca l'ultimo id
