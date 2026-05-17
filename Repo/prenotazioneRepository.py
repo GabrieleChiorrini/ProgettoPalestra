@@ -1,36 +1,18 @@
 import json
+from abc import ABC, abstractmethod
 from Models import Prenotazione, PrenotazioneCorso, PrenotazioneSalaPesi, Corso, SalaPesi, Cliente
 from Repo import CorsoRepository, FasciaOrariaRepository, ClienteRepository, SalaPesiRepository
 
-class PrenotazioneRepository: # Repository
-    def __init__(self, corsoRepo: CorsoRepository, fasciaOrariaRepo: FasciaOrariaRepository, salaPesiRepo: SalaPesiRepository, clienteRepo: ClienteRepository, path: str = "prenotazioni.json"):
+class PrenotazioneRepository(ABC): # Repository
+    def __init__(self, clienteRepo: ClienteRepository, path: str = "prenotazioni.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._prenotazioni: dict = {} # dizionario che contiene le prenotazioni
-        self._corsoRepo = corsoRepo #repo corsi
-        self._fasciaOrariaRepo = fasciaOrariaRepo #repo fasce orarie
-        self._salaPesiRepo = salaPesiRepo #repo sale pesi
         self._clienteRepo = clienteRepo #repo clienti
         self.carica() # la repo carica immediatamente le prenotazioni dalla memoria
 
+    @abstractmethod
     def carica(self) -> None: # Ricrea gli oggetti dal file di persistenza
-        try:
-            with open(self._path, "r") as f:
-                dati = json.load(f) # carico il file json contente i dati delle prenotazioni
-                # i dati nel file json sono gli argomenti richiesti dal costruttore
-                # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["cliente"] = [self._clienteRepo.trovaPerId(c) for c in dati["cliente"]] # trovo il cliente perché ho salvato solo l'id
-            match dati["tipo"]:
-                case "corso":
-                    self._prenotazioni = {
-                        d["id"]: PrenotazioneCorso.fromDict(d) for d in dati # from dict è metodo di classe di PrenotazioneCorso
-                    }
-                case "sala":
-                    self._prenotazioni = {
-                        d["id"]: PrenotazioneSalaPesi.fromDict(d) for d in dati # from dict è metodo di classe di PrenotazioneSalaPesi
-                    
-            }
-        except FileNotFoundError:
-            self._prenotazioni = {} # al primo avvio
+        pass
 
     def salva(self) -> None:
         with open(self._path, "w") as f:
@@ -42,27 +24,17 @@ class PrenotazioneRepository: # Repository
         return self._prenotazioni.get(id) # _prenotazioni è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
-    def listPrenotazioniPerFasciaOraria(self, id:str) -> list:
-        return [prenotazione for prenotazione in list(self._prenotazioni.values()) if isinstance(prenotazione, PrenotazioneSalaPesi) and prenotazione.get_fascia_oraria().get_id() == id]
-
-    def controllaCapienzaFasciaOraria(self, fasciaOrariaId: str) -> bool:
-        salaPesi = self._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId)
-        if salaPesi is None:
-            return False
-        prenotazioni = self.listPrenotazioniPerFasciaOraria(fasciaOrariaId)
-        return len(prenotazioni) < salaPesi.get_maxCapienza()
-
     def lastId(self) -> str:
         # Cerca l'ultimo id
         return list(self._prenotazioni)[-1] if self._prenotazioni else None
     
+    @abstractmethod
     def newId(self) -> str:
-        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
-        ultimoId = self.lastId()
-        if not ultimoId:
-            return "PR000"
-        nId = str(int(ultimoId[2:]) + 1)
-        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+        pass 
+    
+    def incrementaId(self, oldId: str) -> str:
+        nId = str(int(oldId[2:]) + 1)
+        return oldId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, prenotazione: Prenotazione) -> None:
         self._prenotazioni[prenotazione.get_id()] = prenotazione # come chiave si usa l'id dell'oggetto Prenotazione, come valore l'oggetto Prenotazione stesso

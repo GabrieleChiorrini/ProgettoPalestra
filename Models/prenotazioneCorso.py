@@ -16,7 +16,6 @@ class PrenotazioneCorso(Prenotazione):
 
     def toDict(self):
         return {
-            "tipo": "corso",
             "cliente": self._cliente.get_id(),
             "corso": self._corso.get_id(),
             "id": self._id

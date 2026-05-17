@@ -16,7 +16,6 @@ class PrenotazioneSalaPesi(Prenotazione):
 
     def toDict(self):
         return {
-            "tipo": "sala",
             "cliente": self._cliente.get_id(),
             "fascia_oraria": self._fascia_oraria.toDict(),
             "id": self._id
