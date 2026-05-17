@@ -23,7 +23,6 @@ class HomePage(QWidget):
 
         vLayoutf = QVBoxLayout()
 
-
         hLayout2 = QHBoxLayout()
         lblPersonale = QLabel("Personale")
         hLayout2.addWidget(lblPersonale, 1)
@@ -33,6 +32,8 @@ class HomePage(QWidget):
         vLayoutf.addLayout(hLayout2)
 
         vLayout2 = QVBoxLayout()
+        vLayout2.setSpacing(0)
+        vLayout2.setContentsMargins(0, 0, 0, 0)
         btnRegPers = QPushButton("Registra personale")
         vLayout2.addWidget(btnRegPers)
         btnModPers = QPushButton("Modifca personale")
@@ -41,8 +42,11 @@ class HomePage(QWidget):
         vLayout2.addWidget(btnElPers)
 
         self.frame2 = QFrame()
-        self.frame2.setFixedHeight(0)
+        #self.frame2.setFixedHeight(0)
+        self.frame2.setMaximumHeight(0);
+        self.frame2.setMinimumHeight(0);
         self.frame2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.frame2.setStyleSheet("background-color: blue;")
         self.frame2.setLayout(vLayout2)
         vLayoutf.addWidget(self.frame2)
 
@@ -61,6 +65,9 @@ class HomePage(QWidget):
         vLayoutf.addWidget(lblTest)
         lbl2 = QLabel("Statistiche")
         vLayoutf.addWidget(lbl2)
+        lbl3 = QLabel()
+        vLayoutf.addWidget(lbl3)
+        vLayoutf.addStretch(1)
 
         gridLayout = QGridLayout()
         hLayout.addLayout(gridLayout)
@@ -90,16 +97,15 @@ class HomePage(QWidget):
 
     def dropDownMenu1(self):
         hAttuale = self.frame2.height()
-        print(hAttuale)
 
         if hAttuale == 0:
-            hDopo = 200
+            hDopo = self.frame2.sizeHint().height()
             tDopo = "v"
         else:
             hDopo = 0
             tDopo = ">"
 
-        self.animation = QPropertyAnimation(self.frame2, b"minimumHeight")
+        self.animation = QPropertyAnimation(self.frame2, b"maximumHeight")
         self.animation.setDuration(250)
         self.animation.setStartValue(hAttuale)
         self.animation.setEndValue(hDopo)
