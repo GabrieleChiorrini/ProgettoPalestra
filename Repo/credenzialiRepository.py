@@ -42,8 +42,8 @@ class CredenzialiRepository: # Repository
         else:
             return None
     
-    def trovaUsername(self, username:str):
-        return next((c.get_utente() for c in self._credenzialiRepo if c.get_username() == username), None)
+    def trovaPerUsername(self, username:str):
+        return next((c for c in self._credenzialiRepo if c.get_username() == username), None)
     
     def lastId(self) -> str:
         # Cerca l'ultimo id
