@@ -15,10 +15,12 @@ class SalaPesiRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati delle sale pesi
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["fasciaOrarie"] = [self._fasciaOrariaRepo.trovaPerId(dati["fascieOrarie"]) for c in dati["fascieOrarie"]]
+
             self._salePesi = {
-                d["id"]: SalaPesi.fromDict(d) for d in dati # from dict è metodo di classe di SalaPesi
-            }
+                d["id"]: SalaPesi.fromDict({
+                **d, #Unpacking del dizionario
+                "fasciaOrarie": [self._fasciaOrariaRepo.trovaPerId(dati["fascieOrarie"]) for c in dati["fascieOrarie"]] # trovo le fasce orarie perché ho salvato solo l'id
+            })  for d in dati} # from dict è metodo di classe di SalaPesi
         except FileNotFoundError:
             self._salePesi = {} # al primo avvio
 

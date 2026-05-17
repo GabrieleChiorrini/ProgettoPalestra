@@ -16,12 +16,13 @@ class CorsoRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati dei corsi
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            for d in dati:
-                d["istruttore"] = self._amministratoreRepo.trovaPerId(d["istruttore"])
-                d["iscritti"] = [self._clienteRepo.trovaPerId(c) for c in d["iscritti"]]
+            
             self._corsi = {
-                d["id"]: Corso.fromDict(d) for d in dati # from dict è metodo di classe di Corso
-            }
+                d["id"]: Corso.fromDict({
+                **d, #Unpacking del dizionario
+                "istruttore": self.istruttore.trovaPerId(d["istruttore"]), # trovo l'istruttore perché ho salvato solo l'id
+                "iscritti": [self._clienteRepo.trovaPerId(c) for c in d["iscritti"]] # trovo gli iscritti perché ho salvato solo gli id
+            })  for d in dati} # from dict è metodo di classe di Corso
         except FileNotFoundError:
             self._corsi = {} # al primo avvio
 

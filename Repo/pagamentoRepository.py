@@ -15,10 +15,12 @@ class PagamentoRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati dei pagamenti
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["cliente"] = self._clienteRepo.trovaPerId(dati["cliente"]) # trovo il cliente perché ho salvato solo l'id
+            
             self._pagamenti = {
-                d["id"]: Pagamento.fromDict(d) for d in dati # from dict è metodo di classe di Pagamento
-            }
+                d["id"]: Pagamento.fromDict({
+                **d, #Unpacking del dizionario
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+            })  for d in dati} # from dict è metodo di classe di Pagamento
         except FileNotFoundError:
             self._pagamenti = {} # al primo avvio
 

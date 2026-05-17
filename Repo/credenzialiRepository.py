@@ -15,10 +15,12 @@ class CredenzialiRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati delle credenziali
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["cliente"] = self._clienteRepo.trovaPerId(dati["cliente"]) # trovo il cliente perché ho salvato solo l'id
+            
             self._credenzialiRepo = {
-                d["id"]: Credenziali.fromDict(d) for d in dati # from dict è metodo di classe di Credenziali
-            }
+                d["id"]: Credenziali.fromDict({
+                **d, #Unpacking del dizionario
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+            })  for d in dati} # from dict è metodo di classe di Credenziali
         except FileNotFoundError:
             self._credenzialiRepo = {} # al primo avvio
 

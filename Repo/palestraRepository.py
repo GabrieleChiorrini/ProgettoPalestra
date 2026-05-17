@@ -16,11 +16,13 @@ class PalestraRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati dei corsi
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["corsi"] = [self._corsoRepo.trovaPerId(dati["corsi"]) for c in dati["corsi"]]
-            dati["salePesi"] = [self._salaPesiRepo.trovaPerId(c) for c in dati["salePesi"]]  # trovo il cliente perché ho salvato solo l'id
+            
             self._palestre = {
-                d["id"]: Palestra.fromDict(d) for d in dati # from dict è metodo di classe di Palestra
-            }
+                d["id"]: Palestra.fromDict({
+                **d, #Unpacking del dizionario
+                "salePesi": [self._salaPesiRepo.trovaPerId(c) for c in dati["salePesi"]], # trovo le sale pesi perché ho salvato solo l'id
+                "corsi" : [self._corsoRepo.trovaPerId(dati["corsi"]) for c in dati["corsi"]] # trovo i corsi perché ho salvato solo l'id
+            })  for d in dati} # from dict è metodo di classe di Palestra
         except FileNotFoundError:
             self._palestre = {} # al primo avvio
 

@@ -18,7 +18,7 @@ class ClienteRepository: # Repository
             self._clienti = {
                 d["id"]: Cliente.fromDict({
                 **d, #Unpacking del dizionario
-                "certificato": self._certificatoRepo.trovaPerId(d["certificato"])
+                "certificato": self._certificatoRepo.trovaPerId(d["certificato"]) # trovo il certificato perché ho salvato solo l'id
             })  for d in dati}
 
         except FileNotFoundError:
