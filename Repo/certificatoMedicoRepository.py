@@ -34,6 +34,18 @@ class CertificatoMedicoRepository:
 
     def trovaPerId(self, id: str):
         return self._certificati.get(id)
+    
+    def lastId(self) -> str:
+        # Cerca l'ultimo id
+        return list(self._certificatiMedici)[-1] if self._certificatiMedici else None
+    
+    def newId(self) -> str:
+        # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
+        ultimoId = self.lastId()
+        if not ultimoId:
+            return "CM000"
+        nId = str(int(ultimoId[2:]) + 1)
+        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, certificato: CertificatoMedico) -> None:
         self._certificati[certificato.get_id()] = certificato

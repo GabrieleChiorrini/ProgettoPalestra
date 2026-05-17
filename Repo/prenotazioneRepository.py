@@ -54,11 +54,13 @@ class PrenotazioneRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._prenotazioni)[-1] if self._prenotazioni else "PR000"
+        return list(self._prenotazioni)[-1] if self._prenotazioni else None
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
         ultimoId = self.lastId()
+        if not ultimoId:
+            return "PR000"
         nId = str(int(ultimoId[2:]) + 1)
         return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
