@@ -12,21 +12,16 @@ class CertificatoMedicoRepository:
     def carica(self) -> None:
         try:
             with open(self._path, "r") as f:
-                dati = json.load(f)
+                dati = json.load(f) # carico il file json contente i dati dei certificati medici
+                # i dati nel file json sono gli argomenti richiesti dal costruttore
+                # dati sarà una lista di Dict, essendo il file json un array di oggetti json
 
-            self._certificati = {}
-
-            for d in dati:
-
-                certificato = CertificatoMedico(
-                    dataEffettuato=date.fromisoformat(d["dataEffettuato"]),
-                    validità=bool(int(d["validità"])),
-                    id=d["id"])
-
-                self._certificati[certificato.get_id()] = certificato
+            self._certificatiMedici = {
+                d["id"]: CertificatoMedico.fromDict(d) for d in dati # from dict è metodo di classe di CertificatoMedico
+            }
 
         except FileNotFoundError:
-            self._certificati = {}
+            self._certificati = {} #al primo avvio
 
     def salva(self) -> None:
         with open(self._path, "w") as f:

@@ -10,20 +10,16 @@ class ClienteRepository: # Repository
         self._certificatoRepo = certificatoRepo
         self.carica() # la repo carica immediatamente i clienti dalla memoria
 
-    def carica(self) -> None:
+    def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
         try:
             with open(self._path, "r") as f:
                 dati = json.load(f)
 
             self._clienti = {
-                d["id"]: Cliente.fromDict(d)
-                for d in dati
-            }
-
-            for d in dati:
-                if "certificato" in d and d["certificato"] is not None:
-                    cliente = self._clienti[d["id"]]
-                    cliente._certificato = self._certificatoRepo.trovaPerId(d["certificato"])
+                d["id"]: Cliente.fromDict({
+                **d, #Unpacking del dizionario
+                "certificato": self._certificatoRepo.trovaPerId(d["certificato"])
+            })  for d in dati}
 
         except FileNotFoundError:
             self._clienti = {}

@@ -15,10 +15,12 @@ class AbbonamentoRepository: # Repository
                 dati = json.load(f) # carico il file json contente i dati degli abbonamenti
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
-            dati["cliente"] = self._clienteRepo.trovaPerId(dati["cliente"]) # trovo il cliente perché ho salvato solo l'id
             self._abbonamenti = {
-                d["id"]: Abbonamento.fromDict(d) for d in dati # from dict è metodo di classe di Abbonamento
-            }
+                d["id"]: Abbonamento.fromDict({
+                **d, #Unpacking del dizionario
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"])
+            })  for d in dati}
+
         except FileNotFoundError:
             self._abbonamenti = {} # al primo avvio
 
