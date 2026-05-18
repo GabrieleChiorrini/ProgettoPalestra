@@ -3,6 +3,7 @@ from test.entita_finte import corso_finto, personale_finto, cliente_finto
 from datetime import time
 from Enumerazione.giorniSettimana import GiorniSettimana
 from Models import Corso, Amministratore, Cliente
+from Repo import AmministratoreRepository
 
 
 class TestCorso(unittest.TestCase):
@@ -14,9 +15,10 @@ class TestCorso(unittest.TestCase):
         self.iscritti = [cliente_finto()]
         self.giorni = [GiorniSettimana.LUNEDI, GiorniSettimana.MERCOLEDI, GiorniSettimana.VENERDI]
 
+
     def test_get_id(self):
         #Test del getter dell'id
-        self.assertEqual(self.corso.get_id(), "CORS001")
+        self.assertEqual(self.corso.get_id(), "CO001")
 
     def test_get_nome(self):
         #test getter nome
@@ -68,8 +70,10 @@ class TestCorso(unittest.TestCase):
 
     def test_set_istruttore(self):
         #test setter istruttore
+        admin_repo = AmministratoreRepository()
+        admin_id = admin_repo.newId()
         nuovo_istruttore = Amministratore("Giulia", "Verdi", None, "VRDGLI00A01H501U", 
-                                         "giulia@gmail.com", "3334567890", "A002")
+                                         "giulia@gmail.com", "3334567890", admin_id)
         self.corso.set_istruttore(nuovo_istruttore)
         
         self.assertEqual(self.corso.get_istruttore(), nuovo_istruttore)
@@ -124,9 +128,14 @@ class TestCorso(unittest.TestCase):
 
     def test_set_iscritti(self):
         #test setter iscritto
+
         cliente1 = cliente_finto()
+        from Repo import ClienteRepository, CertificatoMedicoRepository
+        cert_repo = CertificatoMedicoRepository()
+        cliente_repo = ClienteRepository(cert_repo)
+        cliente_id = cliente_repo.newId()
         cliente2 = Cliente("Anna", "Verdi", None, "VRDANNA00L60H501U", 
-                          "anna@gmail.com", "3334567890", "C002", None)
+                          "anna@gmail.com", "3334567890", cliente_id, None)
         nuovi_iscritti = [cliente1, cliente2]
         
         self.corso.set_iscritti(nuovi_iscritti)
@@ -155,7 +164,7 @@ class TestCorso(unittest.TestCase):
         #test conversione dell'oggetto in dizionario
         d = self.corso.toDict()
         
-        self.assertEqual(d["id"], "CORS001")
+        self.assertEqual(d["id"], "CO001")
         self.assertEqual(d["nome"], "Yoga")
         self.assertEqual(d["maxCapienza"], 20)
         self.assertEqual(d["istruttore"], "A001")
@@ -169,15 +178,15 @@ class TestCorso(unittest.TestCase):
             "id": "CORS004",
             "nome": "Zumba",
             "maxCapienza": 25,
-            "istruttore": "A001",
+            "istruttore": "AD001",
             "orario": "18:00:00",
             "giorni": [1, 3, 5],  # Lunedì, Mercoledì, Venerdì
-            "iscritti": ["C001"]
+            "iscritti": ["CL001"]
         }
         
         corso = Corso.fromDict(d)
         
-        self.assertEqual(corso.get_id(), "CORS004")
+        self.assertEqual(corso.get_id(), "CO004")
         self.assertEqual(corso.get_nome(), "Zumba")
         self.assertEqual(corso.get_maxCapienza(), 25)
         self.assertEqual(corso.get_orario(), time(18, 0))

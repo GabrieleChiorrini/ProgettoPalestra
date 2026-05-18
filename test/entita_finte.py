@@ -2,18 +2,30 @@ from datetime import datetime, timedelta, date, time
 from Models import Cliente, Abbonamento, Amministratore, Utente, CertificatoMedico, Corso
 from Enumerazione import TipoAbbonamento
 from Enumerazione.giorniSettimana import GiorniSettimana
+from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepository, AmministratoreRepository, UtenteRepository, CorsoRepository
 
 def certificato_finto():
-    return CertificatoMedico(date(2025, 1, 15), "CERT001", True)
+    cert_repo = CertificatoMedicoRepository()
+    cert_id = cert_repo.newId()
+    return CertificatoMedico(date(2025, 1, 15), cert_id, True)
 
 def cliente_finto():
     certificato = certificato_finto()
-    return Cliente("Luca", "Bianchi", date(1995,5,5), "BNCLCU95E15H501U", "luca.bianchi@gmail.com", "33450928340", "C001", certificato)
+    cert_repo = CertificatoMedicoRepository()
+    cliente_repo = ClienteRepository(cert_repo)
+    cliente_id = cliente_repo.newId()
+    return Cliente("Luca", "Bianchi", date(1995,5,5), "BNCLCU95E15H501U", "luca.bianchi@gmail.com", "33450928340", cliente_id, certificato)
 
 def abbonamento_finto(cliente):
+    # genera l'id tramite la repository 
+    cert_repo = CertificatoMedicoRepository()
+    cliente_repo = ClienteRepository(cert_repo)
+    abbon_repo = AbbonamentoRepository(cliente_repo)
+    new_id = abbon_repo.newId()
+
     return Abbonamento(
         cliente=cliente,
-        id="ABB-001",
+        id=new_id,
         durata=timedelta(days=30),
         dataInizio= datetime(2025, 1, 1, 10, 0, 0),
         stato=True,
@@ -21,7 +33,9 @@ def abbonamento_finto(cliente):
     )
 
 def personale_finto():
-    return Amministratore("Mario", "Rossi", date(1980,1,1), "MRARSS80A01H501U", "mario.rossi@gmail.com", "33450928340", "A001")
+    admin_repo = AmministratoreRepository()
+    admin_id = admin_repo.newId()
+    return Amministratore("Mario", "Rossi", date(1980,1,1), "MRARSS80A01H501U", "mario.rossi@gmail.com", "33450928340", admin_id)
 
 def utente_finto():
     return Utente(
@@ -31,11 +45,16 @@ def utente_finto():
     codiceFiscale="BNCLCU95E15H501U",
     email="luca.bianchi@gmail.com",
     telefono="3331234567",
-    id="U001"
+    id=UtenteRepository().newId()
 )
 
 def corso_finto():
     istruttore = personale_finto()
     iscritti = [cliente_finto()]
     giorni = [GiorniSettimana.LUNEDI, GiorniSettimana.MERCOLEDI, GiorniSettimana.VENERDI]
-    return Corso("CORS001", "Yoga", 20, istruttore, time(10, 0), giorni, iscritti)
+    cert_repo = CertificatoMedicoRepository()
+    cliente_repo = ClienteRepository(cert_repo)
+    admin_repo = AmministratoreRepository()
+    corso_repo = CorsoRepository(admin_repo, cliente_repo)
+    corso_id = corso_repo.newId()
+    return Corso(corso_id, "Yoga", 20, istruttore, time(10, 0), giorni, iscritti)

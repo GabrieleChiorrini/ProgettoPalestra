@@ -1,6 +1,6 @@
 import json
 from Models import Pagamento, Cliente
-from Repo import ClienteRepository
+from .clienteRepository import ClienteRepository
 
 class PagamentoRepository: # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "pagamenti.json"):

@@ -11,7 +11,7 @@ class TestCertificatoMedico(unittest.TestCase):
     def setUp(self):
         """Configurazione iniziale per ogni test"""
         self.data_effettuato = date(2025, 1, 15)
-        self.id_certificato = "CERT001"
+        self.id_certificato = "CM001"
         self.validita = True
         self.certificato = CertificatoMedico(self.data_effettuato, self.id_certificato, self.validita)
 
@@ -28,12 +28,12 @@ class TestCertificatoMedico(unittest.TestCase):
         """Test del getter della validità"""
         self.assertTrue(self.certificato.get_validità())
         
-        certificato_scaduto = CertificatoMedico(date(2024, 1, 1), "CERT002", False)
+        certificato_scaduto = CertificatoMedico(date(2024, 1, 1), "CM002", False)
         self.assertFalse(certificato_scaduto.get_validità())
 
     def test_get_id(self):
         """Test del getter dell'id"""
-        self.assertEqual(self.certificato.get_id(), "CERT001")
+        self.assertEqual(self.certificato.get_id(), "CM001")
 
     def test_set_dataEffettuato(self):
         """Test del setter della data di effettuazione"""
@@ -75,7 +75,7 @@ class TestCertificatoMedico(unittest.TestCase):
         """Test della conversione dell'oggetto a dizionario"""
         d = self.certificato.toDict()
         
-        self.assertEqual(d["id"], "CERT001")
+        self.assertEqual(d["id"], "CM001")
         self.assertEqual(d["dataEffettuato"], "2025-01-15")
         self.assertEqual(d["validità"], 1)  # True convertito a 1
 
@@ -83,14 +83,14 @@ class TestCertificatoMedico(unittest.TestCase):
     def test_from_dict(self):
         """Test della creazione di un CertificatoMedico da un dizionario"""
         d = {
-            "id": "CERT003",
+            "id": "CM003",
             "dataEffettuato": "2025-03-10",
             "validità": 1
         }
         
         certificato = CertificatoMedico.fromDict(d)
         
-        self.assertEqual(certificato.get_id(), "CERT003")
+        self.assertEqual(certificato.get_id(), "CM003")
         self.assertEqual(certificato.get_dataEffettuato(), date(2025, 3, 10))
         self.assertTrue(certificato.get_validità())
 

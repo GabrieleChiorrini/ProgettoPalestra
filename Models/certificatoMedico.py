@@ -3,7 +3,7 @@ from datetime import date, timedelta
 DURATA_CERTIFICATO = timedelta(days=365) #durata di un anno
 
 class CertificatoMedico:
-    def __init__ (self, dataEffettuato: date, id:str, validità: True): 
+    def __init__ (self, dataEffettuato: date, id:str, validità: bool=True): 
         self._dataEffettuato = dataEffettuato
         self._dataScadenza = dataEffettuato + DURATA_CERTIFICATO
         self._validità = validità

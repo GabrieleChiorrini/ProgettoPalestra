@@ -13,13 +13,13 @@ class TestAccesso(unittest.TestCase):
 
         self.accesso = Accesso(
             cliente=self.cliente,
-            id="ACC001",
+            id="AC001",
             orario=self.orario
         )
 
     def test_get_id(self):
 
-        self.assertEqual(self.accesso.get_id(), "ACC001")
+        self.assertEqual(self.accesso.get_id(), "AC001")
 
     def test_get_cliente(self):
 
@@ -33,19 +33,19 @@ class TestAccesso(unittest.TestCase):
 
         d = self.accesso.toDict()
 
-        self.assertEqual(d["id"], "ACC001")
+        self.assertEqual(d["id"], "AC001")
         self.assertEqual(d["cliente"], self.cliente.get_id())
         self.assertEqual(d["orario"], self.orario.isoformat())
 
     def test_from_dict(self):
 
         d = { "cliente": self.cliente.get_id(),
-            "id": "ACC001",
+            "id": "AC001",
             "orario": "2025-01-01T10:00:00"}
 
         accesso = Accesso.fromDict(d)
 
-        self.assertEqual(accesso.get_id(), "ACC001")
+        self.assertEqual(accesso.get_id(), "AC001")
 
         self.assertEqual(accesso.get_cliente(), self.cliente.get_id())
 
