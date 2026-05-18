@@ -7,7 +7,7 @@ class GestoreValidita:
         self._abbonmaneotRepo = abbonamentoRepo
         self._certificatoMedicoRepo = certificatoRepo
 
-    def controllaValiditaAbbonamnti(self) -> None:
+    def verificaValiditaAbbonamenti(self) -> None:
         abbonamenti = self._abbonmaneotRepo.tutti()
         if abbonamenti:
             for a in abbonamenti:
@@ -15,7 +15,7 @@ class GestoreValidita:
                     a.set_stato(False)
                     self._abbonmaneotRepo.aggiungi(a)
     
-    def controllaValiditaCertificati(self) -> None:
+    def verificaValiditaCertificati(self) -> None:
         certificati = self._certificatoMedicoRepo.tutti()
         if certificati:
             for c in certificati:

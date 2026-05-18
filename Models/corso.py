@@ -4,14 +4,14 @@ from datetime import time
 
 class Corso:
     def __init__(self, id: str, nome: str, maxCapienza:int, istruttore: Amministratore,
-                 orario: time, giorni: list[GiorniSettimana], iscritti: list[Cliente]):
+                 orario: time, giorni: list[GiorniSettimana], iscritti: list[Cliente] = None):
         self._id = id
         self._nome = nome
         self._maxCapienza = maxCapienza
         self._istruttore = istruttore
         self._orario = orario
         self._giorni = giorni
-        self._iscritti = iscritti
+        self._iscritti = iscritti if iscritti else [] 
 
     def get_id(self) -> str:
         return self._id

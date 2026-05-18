@@ -2,13 +2,13 @@ from AES_Python import AES
 from Repo import CredenzialiRepository, ClienteRepository
 from Models import Credenziali, Cliente, Amministratore
 
-class GestoreCredenziali():
+class GestoreAutenticazione():
     def __init__(self, credenzialiRepo: CredenzialiRepository, clienteRepo: ClienteRepository):
         self._credenzialiRepo = credenzialiRepo
         self._clienteRepo = clienteRepo
         self.aes = AES(running_mode="CBC", key="ciaoSonoLaChiave")
 
-    def registrazione(self, username: str, password:str, codiceFiscale:str):
+    def registrazione(self, username: str, password:str, codiceFiscale:str) -> str:
         if not isinstance(username, str):
             return "L'username deve essere una stringa!"
         
@@ -32,7 +32,7 @@ class GestoreCredenziali():
         self._credenzialiRepo.aggiungi(credenziali)
         return "Cliente registrato correttamente!"
     
-    def login(self, username:str, password:str):
+    def login(self, username:str, password:str) -> str:
         if not isinstance(username, str):
             return "L'username deve essere una stringa!"
         

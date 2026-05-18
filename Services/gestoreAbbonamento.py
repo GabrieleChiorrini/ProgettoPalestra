@@ -3,12 +3,12 @@ from Repo import AbbonamentoRepository,ClienteRepository
 from datetime import timedelta, datetime,date
 from Enumerazione import TipoAbbonamento
 
-class GestoreAbbonamenti:
+class GestoreAbbonamento:
     def __init__(self, AbbonamentoRepo: AbbonamentoRepository, ClienteRepo: ClienteRepository):
         self._abbonamentorepo = AbbonamentoRepo
         self._clienterepo = ClienteRepo
 
-    def CreaAbbonamento (self, idCliente:str, durata: timedelta,  tipo: TipoAbbonamento):
+    def creaAbbonamento (self, idCliente:str, durata: timedelta,  tipo: TipoAbbonamento) -> str:
         
         abbonamentoEsistente = self._abbonamentorepo.trovaPerCliente(idCliente)
 
@@ -30,7 +30,7 @@ class GestoreAbbonamenti:
         self._abbonamentorepo.aggiungi(nuovoAbbonamento)
         return "Abbonamento Creato"
 
-    def RinnovaAbbonamento(self, idCliente: str, nuovaDurata: timedelta,tipo: TipoAbbonamento):
+    def rinnovaAbbonamento(self, idCliente: str, nuovaDurata: timedelta,tipo: TipoAbbonamento) -> str:
 
         #cliente = self._clienterepo.trovaPerId(idCliente)
         abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
@@ -59,7 +59,7 @@ class GestoreAbbonamenti:
             self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
             
         
-    def VisualizzaAbbonamento(self, idCliente: str ):
+    def visualizzaAbbonamento(self, idCliente: str ) -> dict:
          abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
 
          if abbonamento is None:

@@ -5,12 +5,12 @@ class GestoreSalaPesi():
     def __init__(self, salaPesiRepo: SalaPesiRepository):
         self._salaPesiRepo = salaPesiRepo
 
-    def modificaCapienza(self, salaPesiId: str, nuovaCapienza: int = None) -> int | str:
+    def modificaCapienza(self, salaPesiId: str, nuovaCapienza: int) -> str:
         if nuovaCapienza is None:
-            return self._salaPesiRepo.getMaxCapienza(salaPesiId)
+            return "Capienza inserita non valida"
         
         if nuovaCapienza <= 0:
-            return "Capienza deve essere positiva"
+            return "La capienza deve essere positiva"
         
         sala = self._salaPesiRepo.trovaPerId(salaPesiId)
         if sala is None:
