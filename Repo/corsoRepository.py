@@ -86,3 +86,9 @@ class CorsoRepository: # Repository
 
     def tutti(self) -> list: # converte self._corsi (dict di oggetti Corso) in una lista di oggetti Corso
         return list(self._corsi.values())
+    
+    def cancella(self, id: str):
+        if id in self._corsi:
+            del self._corsi[id]  # cancella il corso con l'id specificato
+            self.salva() 
+ 
