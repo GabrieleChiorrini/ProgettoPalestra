@@ -1,5 +1,5 @@
 from Repo import AccessoRepository, ClienteRepository, AbbonamentoRepository, CertificatoMedicoRepository
-from Models import Accesso, Cliente, Abbonamento, CertificatoMedico
+from Models import Ingresso, Cliente, Abbonamento, CertificatoMedico
 from datetime import date
 
 class GestoreIngressi():
@@ -24,7 +24,7 @@ class GestoreIngressi():
         
         lastAccesso = self._accessoRepo.listPerCliente(cliente)[-1]
         if lastAccesso is None or not lastAccesso.get_orario().date() == date.today():
-            accesso = Accesso(cliente, self._accessoRepo.newId())
+            accesso = Ingresso(cliente, self._accessoRepo.newId())
             self._accessoRepo.aggiungi(accesso)
             return True
         return False

@@ -1,14 +1,14 @@
 from datetime import time, timedelta, datetime
 from Enumerazione.giorniSettimana import GiorniSettimana
-from . import SalaPesi, Corso
-from Models.fasciaOraria import FasciaOraria
-from Repo import FasciaOrariaRepository
+from .fasciaOraria import FasciaOraria
+from .salaPesi import SalaPesi
+from .corso import Corso
 
 DURATA_FASCIA = timedelta(hours=1)
 
 class Palestra:
     def __init__(self,id: str,nome: str,indirizzo: str,orarioapertura: time,orariochiusura: time,
-        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi],fasciaRepo: FasciaOrariaRepository):
+        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi],fasciaRepo):
         self._id = id
         self._nome = nome
         self._indirizzo = indirizzo
@@ -83,6 +83,34 @@ class Palestra:
             raise TypeError("Le sale pesi devono essere una lista.")
         self._salePesi = salePesi
 
+    def toDict(self) -> dict:
+        return {
+            "id": self._id,
+            "nome": self._nome,
+            "indirizzo": self._indirizzo,
+            "orarioapertura": self._orarioapertura.isoformat(),
+            "orariochiusura": self._orariochiusura.isoformat(),
+            "giorniApertura": [g.value for g in self._giorniApertura],
+            "corsi": [c.get_id() for c in self._corsi],
+            "salePesi": [s.get_id() for s in self._salePesi]
+        }
+
+    @classmethod
+    def fromDict(cls, d: dict) -> "Palestra":
+
+        giorni = [GiorniSettimana(g) for g in d["giorniApertura"]]
+
+        return cls(
+            d["id"],
+            d["nome"],
+            d["indirizzo"],
+            time.fromisoformat(d["orarioapertura"]),
+            time.fromisoformat(d["orariochiusura"]),
+            giorni,
+            d["corsi"],
+            d["salePesi"],
+            d["fasciaRepo"]
+        )
 
     def _genera_fasce_orarie(self) -> list[FasciaOraria]:
         fasce = []  #creo lista vuota
@@ -95,6 +123,8 @@ class Palestra:
             nuovo_id = self._fasciaRepo.newId()
 
             fascia = FasciaOraria(nuovo_id,inizio.time()) #.time prende solo l'orario
+
+            self._fasciaRepo.aggiungi(fascia)
 
             fasce.append(fascia)
 

@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from Models import Accesso
+from Models import Ingresso
 from test.entita_finte import cliente_finto
 
 
@@ -11,7 +11,7 @@ class TestAccesso(unittest.TestCase):
 
         self.orario = datetime(2025, 1, 1, 10, 0, 0)
 
-        self.accesso = Accesso(
+        self.accesso = Ingresso(
             cliente=self.cliente,
             id="AC001",
             orario=self.orario
@@ -43,7 +43,7 @@ class TestAccesso(unittest.TestCase):
             "id": "AC001",
             "orario": "2025-01-01T10:00:00"}
 
-        accesso = Accesso.fromDict(d)
+        accesso = Ingresso.fromDict(d)
 
         self.assertEqual(accesso.get_id(), "AC001")
 

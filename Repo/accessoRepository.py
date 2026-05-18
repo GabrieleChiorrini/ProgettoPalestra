@@ -1,5 +1,5 @@
 import json
-from Models import Accesso, Cliente
+from Models import Ingresso, Cliente
 from .clienteRepository import ClienteRepository
 
 class AccessoRepository: # Repository
@@ -16,7 +16,7 @@ class AccessoRepository: # Repository
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
             self._accessi = {
-                d["id"]: Accesso.fromDict({
+                d["id"]: Ingresso.fromDict({
                 **d, #Unpacking del dizionario
                 "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di Accesso
@@ -64,7 +64,7 @@ class AccessoRepository: # Repository
         nId = str(int(ultimoId[2:]) + 1)
         return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
-    def aggiungi(self, accesso: Accesso) -> None:
+    def aggiungi(self, accesso: Ingresso) -> None:
         self._accessi[accesso.get_id()] = accesso # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
         self.salva() # salva in json self._clienti
 
