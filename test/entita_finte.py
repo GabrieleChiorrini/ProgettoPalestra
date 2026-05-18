@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta, date, time
-from Models import Cliente, Abbonamento, Amministratore, Utente, CertificatoMedico, Corso
+from Models import Cliente, Abbonamento, Amministratore, Utente, CertificatoMedico, Corso, FasciaOraria
 from Enumerazione import TipoAbbonamento
 from Enumerazione.giorniSettimana import GiorniSettimana
-from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepository, AmministratoreRepository, UtenteRepository, CorsoRepository
+from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepository, AmministratoreRepository, UtenteRepository, CorsoRepository, FasciaOrariaRepository
 
 def certificato_finto():
     cert_repo = CertificatoMedicoRepository()
@@ -61,3 +61,10 @@ def corso_finto():
     corso_repo = CorsoRepository(admin_repo, cliente_repo)
     corso_id = corso_repo.newId()
     return Corso(corso_id, "Yoga", 20, istruttore, time(10, 0), giorni, iscritti)
+
+
+def fascia_oraria_finta():
+    # genera l'id tramite la repository per la fascia oraria finta
+    fascia_repo = FasciaOrariaRepository()
+    fascia_id = fascia_repo.newId()
+    return FasciaOraria(fascia_id, time(15, 0))
