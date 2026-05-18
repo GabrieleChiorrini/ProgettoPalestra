@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 
-class HomePage(QWidget):
-    def __init__(self):
+class HomePageCliente(QWidget):
+    def __init__(self, stack):
         super().__init__()
         vLayout = QVBoxLayout()
         vLayout.setContentsMargins(0, 0, 0, 0)
@@ -23,32 +23,65 @@ class HomePage(QWidget):
 
         vLayoutf = QVBoxLayout()
 
+        #Prenotazione
         hLayout2 = QHBoxLayout()
-        lblPersonale = QLabel("Personale")
-        hLayout2.addWidget(lblPersonale, 1)
-        self.btnPersonale = QPushButton(">")
-        self.btnPersonale.clicked.connect(self.dropDownMenu1)
-        hLayout2.addWidget(self.btnPersonale)
+        lblPrenotazione = QLabel("Prenotazione")
+        hLayout2.addWidget(lblPrenotazione, 1)
+        self.btnPrenotazione = QPushButton(">")
+        self.btnPrenotazione.clicked.connect(lambda: self.dropDownMenu1(self.frame2))
+        hLayout2.addWidget(self.btnPrenotazione)
         vLayoutf.addLayout(hLayout2)
 
         vLayout2 = QVBoxLayout()
         vLayout2.setSpacing(0)
         vLayout2.setContentsMargins(0, 0, 0, 0)
-        btnRegPers = QPushButton("Registra personale")
-        vLayout2.addWidget(btnRegPers)
-        btnModPers = QPushButton("Modifca personale")
-        vLayout2.addWidget(btnModPers)
-        btnElPers = QPushButton("Elimina personale")
-        vLayout2.addWidget(btnElPers)
+        btnPrenSP = QPushButton("Prenota sala pesi")
+        vLayout2.addWidget(btnPrenSP)
+        btnPrenCorso = QPushButton("Prenota corso ")
+        vLayout2.addWidget(btnPrenCorso)
+        btnAnnullaPren = QPushButton("Annulla prenotazione")
+        vLayout2.addWidget(btnAnnullaPren)
 
         self.frame2 = QFrame()
-        #self.frame2.setFixedHeight(0)
         self.frame2.setMaximumHeight(0);
         self.frame2.setMinimumHeight(0);
         self.frame2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.frame2.setStyleSheet("background-color: blue;")
         self.frame2.setLayout(vLayout2)
         vLayoutf.addWidget(self.frame2)
+
+        #Visualizza
+        hLayout3 = QHBoxLayout()
+        lblVisualizza = QLabel("Visualizza")
+        hLayout3.addWidget(lblVisualizza, 1)
+        self.btnVisualizza = QPushButton(">")
+        self.btnVisualizza.clicked.connect(lambda: self.dropDownMenu1(self.frame3))
+        hLayout3.addWidget(self.btnVisualizza)
+        vLayoutf.addLayout(hLayout3)
+
+        vLayout3 = QVBoxLayout()
+        vLayout3.setSpacing(0)
+        vLayout3.setContentsMargins(0, 0, 0, 0)
+        btnShowCertificato = QPushButton("Visualizza certificato")
+        vLayout3.addWidget(btnShowCertificato)
+        btnShowAbbonamento = QPushButton("Visualizza abbonamento")
+        vLayout3.addWidget(btnShowAbbonamento)
+        btnShowStatistiche = QPushButton("Visualizza statistiche")
+        vLayout3.addWidget(btnShowStatistiche)
+        btnShowPagamenti = QPushButton("Visualizza pagamenti")
+        vLayout3.addWidget(btnShowPagamenti)
+        btnShowOrari = QPushButton("Visualizza orari corsi")
+        vLayout3.addWidget(btnShowOrari)
+        btnShowIscritti = QPushButton("Visualizza iscritti corsi")
+        vLayout3.addWidget(btnShowIscritti)
+
+        self.frame3 = QFrame()
+        self.frame3.setMaximumHeight(0)
+        self.frame3.setMinimumHeight(0)
+        self.frame3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.frame3.setStyleSheet("background-color: blue;")
+        self.frame3.setLayout(vLayout3)
+        vLayoutf.addWidget(self.frame3)
 
         hLayout = QHBoxLayout()
         vLayout.addLayout(hLayout, 1)
@@ -61,10 +94,6 @@ class HomePage(QWidget):
         self.frame1.setLayout(vLayoutf)
         hLayout.addWidget(self.frame1, 1)
 
-        lblTest = QLabel("ListaCorsi")
-        vLayoutf.addWidget(lblTest)
-        lbl2 = QLabel("Statistiche")
-        vLayoutf.addWidget(lbl2)
         lbl3 = QLabel()
         vLayoutf.addWidget(lbl3)
         vLayoutf.addStretch(1)
@@ -95,26 +124,26 @@ class HomePage(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
 
-    def dropDownMenu1(self):
-        hAttuale = self.frame2.height()
+    def dropDownMenu1(self, frame: QFrame):
+        hAttuale = frame.height()
 
         if hAttuale == 0:
-            hDopo = self.frame2.sizeHint().height()
+            hDopo = frame.sizeHint().height()
             tDopo = "v"
         else:
             hDopo = 0
             tDopo = ">"
 
-        self.animation = QPropertyAnimation(self.frame2, b"maximumHeight")
+        self.animation = QPropertyAnimation(frame, b"maximumHeight")
         self.animation.setDuration(250)
         self.animation.setStartValue(hAttuale)
         self.animation.setEndValue(hDopo)
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
-        self.btnPersonale.setText(tDopo)
+        self.sender().setText(tDopo)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app
-    f = HomePage() # creo finestra
+    f = HomePageCliente() # creo finestra
     f.show() # mostro finestra
     sys.exit(app.exec()) # avvio il loop degli eventi
