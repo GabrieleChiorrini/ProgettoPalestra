@@ -6,8 +6,8 @@ class GestorePersonale:
     def __init__(self, AmministratoreRepo: AmministratoreRepository):
         self._amministratoreRepo = AmministratoreRepo
 
-    def RegistraPersonale(self, nome: str, cognome: str, dataNascita: date, 
-                           codiceFiscale: str, email: str, telefono: str): #non passo id perchè lo genera sistema
+    def registraPersonale(self, nome: str, cognome: str, dataNascita: date, 
+                           codiceFiscale: str, email: str, telefono: str) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
@@ -31,7 +31,7 @@ class GestorePersonale:
 
             return "personale creato"
 
-    def ModificaPersonale(self, id:str,nuovaEmail:str, nuovoTelefono:str):
+    def modificaPersonale(self, id:str,nuovaEmail:str, nuovoTelefono:str) -> str:
          personale= self._amministratoreRepo.trovaPerId(id)
 
          if personale is None:
@@ -47,7 +47,7 @@ class GestorePersonale:
 
          return "Personale modificato"
     
-    def EliminaPersonale(self, id:str):
+    def eliminaPersonale(self, id:str) -> str:
          personale= self._amministratoreRepo.trovaPerId(id)
 
          if personale is None:

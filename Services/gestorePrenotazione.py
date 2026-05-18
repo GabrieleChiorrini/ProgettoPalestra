@@ -2,7 +2,7 @@ from Repo import CorsoRepository, FasciaOrariaRepository, PrenotazioneCorsoRepos
 from Models import PrenotazioneCorso, PrenotazioneSalaPesi, Corso, Cliente, FasciaOraria
 from . import GestoreCapienza
 
-class GestorePrenotazioni:
+class GestorePrenotazione:
     def __init__(self, clienteRepo: ClienteRepository, prenotazioneCorsoRepo: PrenotazioneCorsoRepository, prenotazioneSalaPesiRepo: PrenotazioneSalaPesiRepository, corsoRepo: CorsoRepository, fasciaOrariaRepo: FasciaOrariaRepository, gestoreCapienza: GestoreCapienza):
         self._clienteRepo = clienteRepo
         self._prenotazioneCorsoRepo = prenotazioneCorsoRepo

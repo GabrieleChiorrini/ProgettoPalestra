@@ -6,7 +6,7 @@ class GestoreCorso():
     def __init__(self, corsoRepo: CorsoRepository): # salvo la repository del corso in una variabile da usare nei vari metodi
         self._corsoRepo = corsoRepo  
     
-    def creareCorso(self, nome: str, orari: time, maxCapienza: int, istruttore, giorni=None)-> str:
+    def creaCorso(self, nome: str, orari: time, maxCapienza: int, istruttore, giorni)-> str:
         if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or []): #controllo se l'istruttore è già occupato 
             return None, 'Istruttore occupato'
 
@@ -34,7 +34,7 @@ class GestoreCorso():
         return 'Corso modificato'
     
 
-    def cancellaCorso(self, corsoId: str)-> str:
+    def eliminaCorso(self, corsoId: str)-> str:
         corso = self._corsoRepo.trovaperId(corsoId) #verifico che il corso da cancellare esista
         if not corso:
             return 'Corso non trovato' 
@@ -42,7 +42,7 @@ class GestoreCorso():
         return 'Corso eliminato'
     
 
-    def visualizzaTabellaOrariCorsi(self) -> list[dict[str, str]]: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche
+    def visualizzaOrari(self) -> list[dict[str, str]]: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche
         corsi = self._corsoRepo.tutti()  # prendo tutti i corsi e li salvo nella variabile corsi
         tabella_orari = [] #inizializzo la lista tabella orari vuota
 

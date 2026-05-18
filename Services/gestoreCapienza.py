@@ -8,7 +8,7 @@ class GestoreCapienza:
         self._salaPesiRepo = salaPesiRepo
         self._fasciaOrariaRepo = fasciaOrariaRepository
     
-    def controllaCapienzaCorso(self, corsoId:str) -> bool:
+    def controllaCapienzaCorso(self, corsoId: str) -> bool:
         corso: Corso | None = self._corsoRepo.trovaPerId(corsoId)
         if corso is None:
             return False

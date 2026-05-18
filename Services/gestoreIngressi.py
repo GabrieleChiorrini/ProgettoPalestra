@@ -2,14 +2,14 @@ from Repo import AccessoRepository, ClienteRepository, AbbonamentoRepository, Ce
 from Models import Accesso, Cliente, Abbonamento, CertificatoMedico
 from datetime import date
 
-class GestoreAccessi():
+class GestoreIngressi():
     def __init__(self, accessoRepo: AccessoRepository, clienteRepo: ClienteRepository, abbonamentoRepo: AbbonamentoRepository, certificatoRepo: CertificatoMedicoRepository):
         self._accessoRepo = accessoRepo
         self._clienteRepo = clienteRepo
         self._abbonamentoRepo = abbonamentoRepo
         self._certificatoMedicoRepo = certificatoRepo
 
-    def gestisciAccesso(self, clienteId: str) -> bool:
+    def gestisciIngresso(self, clienteId: str) -> bool:
         cliente = self._clienteRepo.trovaPerId(clienteId)
         if cliente is None:
             return False

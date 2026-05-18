@@ -7,9 +7,9 @@ class GestoreCliente:
         self._clienteRepo = ClienteRepo
         self._certificatoRepo = CertificatoRepo
 
-    def RegistraCliente(self, nome: str, cognome: str, dataNascita: date, 
+    def registraCliente(self, nome: str, cognome: str, dataNascita: date, 
                            codiceFiscale: str, email: str, telefono: str, dataEffettuato: date,
-                           certificato: str, validità: bool): #non passo id perchè lo genera sistema
+                           certificato: str, validità: bool) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             clienteEsistente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
@@ -44,7 +44,7 @@ class GestoreCliente:
     #def TrovaCliente(self, id:str):
      #    return self._clienteRepo.trovaPerId(id)
     
-    def ModificaCliente(self,id: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: date = None):
+    def modificaCliente(self,id: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: date = None) -> str:
 
      cliente = self._clienteRepo.trovaPerId(id)
 
@@ -74,7 +74,7 @@ class GestoreCliente:
 
      return "Cliente modificato correttamente"
      
-    def EliminaCliente(self, id: str):
+    def eliminaCliente(self, id: str) -> str:
 
      cliente = self._clienteRepo.trovaPerId(id)
 
@@ -94,7 +94,7 @@ class GestoreCliente:
 
      return "cliente eliminato"
     
-    def VisualizzaCertificato(self, idCliente: str):
+    def visualizzaCertificato(self, idCliente: str) -> str:
 
      cliente = self._clienteRepo.trovaPerId(idCliente)
 
