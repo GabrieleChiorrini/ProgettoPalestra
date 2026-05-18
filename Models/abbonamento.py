@@ -59,7 +59,7 @@ class Abbonamento():
     #     if isinstance(nuovaData, datetime):
     #         self._dataInizio = nuovaData
     
-    def setDataFine(self, nuovaFine: datetime) -> None:
+    def set_dataFine(self, nuovaFine: datetime) -> None:
         if not isinstance(nuovaFine, datetime):
              raise TypeError("La durata deve essere datetime")
          

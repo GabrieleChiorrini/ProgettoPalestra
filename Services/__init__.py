@@ -1,4 +1,4 @@
-from Services.gestoreIngressi import GestoreAccessi
+from Services.gestoreIngressi import GestoreIngressi
 from Services.gestoreCapienza import GestoreCapienza
 from Services.gestorePrenotazione import GestorePrenotazione
 from Services.gestorePersonale import GestorePersonale

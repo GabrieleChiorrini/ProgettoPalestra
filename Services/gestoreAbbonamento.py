@@ -12,7 +12,7 @@ class GestoreAbbonamento:
         
         abbonamentoEsistente = self._abbonamentorepo.trovaPerCliente(idCliente)
 
-        if abbonamentoEsistente is not None:
+        if abbonamentoEsistente is not None and abbonamentoEsistente.get_stato():
             return "Esistente"
 
         nuovoId = self._abbonamentorepo.newId()
@@ -35,48 +35,43 @@ class GestoreAbbonamento:
         #cliente = self._clienterepo.trovaPerId(idCliente)
         abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
         if abbonamento is None:
-            return self.CreaAbbonamento(
+            return self.creaAbbonamento(
                 idCliente=idCliente,
                 durata=nuovaDurata,
                 tipo=tipo
                 )
 
         validitàAbb = abbonamento.get_stato()
-        scadenza = abbonamento.get_dataFine()
+        scadenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
 
-        if validitàAbb==True:
-            abbonamento.set_durata(nuovaDurata)
+        abbonamento.set_durata(nuovaDurata)
 
-            nuovaFine = scadenza + nuovaDurata
+        nuovaFine = scadenza + nuovaDurata
+        abbonamento.set_dataFine(nuovaFine)
 
-            abbonamento.set_dataFine(nuovaFine)
+        abbonamento.set_stato(True) #Set per sicurezza che sarebbe necessario solo se è scaduto, ma richiederrebbe un if in più
 
-            self._abbonamentorepo.salva()
+        self._abbonamentorepo.salva()
 
-            return "abbonamento rinnovato"
-        
-        else:
-            return self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
-            
-            
+        return "Abbonamento rinnovato"
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
          abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
 
          if abbonamento is None:
-              return "nessun abbonamento trovato"
+              return "Nessun abbonamento trovato"
          
          scadenza = abbonamento.get_dataFine()
          validità = abbonamento.get_stato()
 
-         oggi = date.today()
+         oggi = datetime.today()
 
          giorniAllaScadenza = (scadenza - oggi).days
 
          return {
     "dataScadenza": scadenza,
-    "giorniAllaScadenza": {giorniAllaScadenza if giorniAllaScadenza.days>0 else "scaduto"},
-    "validità" : {'Attivo' if validità==True else 'Scaduto'}
+    "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza > 0 else "scaduto",
+    "validità" : 'Attivo' if validità==True else 'Scaduto'
     }
 
         

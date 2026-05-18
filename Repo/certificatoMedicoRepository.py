@@ -16,7 +16,7 @@ class CertificatoMedicoRepository:
                 # i dati nel file json sono gli argomenti richiesti dal costruttore
                 # dati sarà una lista di Dict, essendo il file json un array di oggetti json
 
-            self._certificatiMedici = {
+            self._certificati = {
                 d["id"]: CertificatoMedico.fromDict(d) for d in dati # from dict è metodo di classe di CertificatoMedico
             }
 
@@ -32,7 +32,7 @@ class CertificatoMedicoRepository:
     
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._certificatiMedici)[-1] if self._certificatiMedici else None
+        return list(self._certificati)[-1] if self._certificati else None
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
