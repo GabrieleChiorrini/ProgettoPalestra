@@ -57,7 +57,6 @@ class GestoreAbbonamento:
         
         else:
             self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
-
             
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
