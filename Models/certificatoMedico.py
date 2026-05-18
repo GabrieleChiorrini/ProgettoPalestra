@@ -41,7 +41,7 @@ class CertificatoMedico:
     
     @classmethod
     def fromDict(cls, d: dict) -> "CertificatoMedico":
-        return cls( date.fromisoformat(d["dataEffettuato"]), bool(int(d["validità"])) , d["id"])
+        return cls( date.fromisoformat(d["dataEffettuato"]), d["id"], bool(int(d["validità"])) )
     
     def __str__(self) -> str:
         certificatoMedico = (f"certificato medico :\n"

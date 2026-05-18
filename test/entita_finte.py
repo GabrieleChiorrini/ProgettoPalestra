@@ -1,9 +1,14 @@
-from datetime import datetime, timedelta,date
-from Models import Cliente,Abbonamento, Amministratore, Utente
+from datetime import datetime, timedelta, date, time
+from Models import Cliente, Abbonamento, Amministratore, Utente, CertificatoMedico, Corso
 from Enumerazione import TipoAbbonamento
+from Enumerazione.giorniSettimana import GiorniSettimana
+
+def certificato_finto():
+    return CertificatoMedico(date(2025, 1, 15), "CERT001", True)
 
 def cliente_finto():
-    return Cliente("Luca", "Bianchi", date(1995,5,5), "BNCLCU95E15H501U", "luca.bianchi@gmail.com", "33450928340", "C001")
+    certificato = certificato_finto()
+    return Cliente("Luca", "Bianchi", date(1995,5,5), "BNCLCU95E15H501U", "luca.bianchi@gmail.com", "33450928340", "C001", certificato)
 
 def abbonamento_finto(cliente):
     return Abbonamento(
@@ -28,3 +33,9 @@ def utente_finto():
     telefono="3331234567",
     id="U001"
 )
+
+def corso_finto():
+    istruttore = personale_finto()
+    iscritti = [cliente_finto()]
+    giorni = [GiorniSettimana.LUNEDI, GiorniSettimana.MERCOLEDI, GiorniSettimana.VENERDI]
+    return Corso("CORS001", "Yoga", 20, istruttore, time(10, 0), giorni, iscritti)
