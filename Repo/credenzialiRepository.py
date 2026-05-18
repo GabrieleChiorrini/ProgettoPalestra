@@ -3,7 +3,7 @@ from Models import Credenziali, Cliente
 from .clienteRepository import ClienteRepository
 
 class CredenzialiRepository: # Repository
-    def __init__(self, clienteRepo: ClienteRepository, path: str = "accessi.json"):
+    def __init__(self, clienteRepo: ClienteRepository, path: str = "credenziali.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._credenzialiRepo: dict = {} # dizionario che contiene gli accessi
         self._clienteRepo = clienteRepo #repo clienti
