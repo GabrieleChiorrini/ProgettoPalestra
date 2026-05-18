@@ -4,9 +4,8 @@ from datetime import date
 
 
 class GestoreCertificato:
-    def __init__(self, ClienteRepo: ClienteRepository, CertificatoRepo: CertificatoMedicoRepository):
+    def __init__(self, ClienteRepo: ClienteRepository):
         self._clienteRepo = ClienteRepo
-        self._certificatoRepo = CertificatoRepo
 
 def VisualizzaCertificato(self, idCliente: str):
 

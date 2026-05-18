@@ -1,7 +1,6 @@
 import json
 from Models import Palestra, Corso, SalaPesi
-from .corsoRepository import CorsoRepository
-from .salaPesiRepository import SalaPesiRepository
+from . import CorsoRepository, SalaPesiRepository
 
 class PalestraRepository: # Repository
     def __init__(self, corsoRepo: CorsoRepository, salaPesiRepo: SalaPesiRepository, path: str = "palestra.json"):

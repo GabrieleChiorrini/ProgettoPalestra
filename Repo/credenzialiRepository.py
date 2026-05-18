@@ -1,6 +1,6 @@
 import json
 from Models import Credenziali, Cliente
-from .clienteRepository import ClienteRepository
+from . import ClienteRepository
 
 class CredenzialiRepository: # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "credenziali.json"):
@@ -58,7 +58,7 @@ class CredenzialiRepository: # Repository
         return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
     def aggiungi(self, credenziali: Credenziali) -> None:
-        self._credenzialiRepo[credenziali.get_id()] = credenziali # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
+        self._credenzialiRepo[credenziali.get_id()] = credenziali # come chiave si usa l'id dell'oggetto Credenziali, come valore l'oggetto Credenziali stesso
         self.salva() # salva in json self._clienti
 
     def tutti(self) -> list: # converte self._credenzialiRepo (dict di oggetti Credenziali) in una lista di oggetti Credenziali

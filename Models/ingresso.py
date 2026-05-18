@@ -24,11 +24,11 @@ class Ingresso:
     }
     
     @classmethod
-    def fromDict(cls, d: dict) -> "Accesso":
+    def fromDict(cls, d: dict) -> "Ingresso":
         return cls(d["cliente"], d["id"], datetime.fromisoformat(d["orario"]))
     
     def __str__(self) -> str:
-        accesso = (f"Accesso :\n"
+        ingresso = (f"Ingresso :\n"
                   f"\tcliente: {self._cliente.get_id()}\n"
                   f"\torario: {self._orario}\n")
-        return accesso
+        return ingresso

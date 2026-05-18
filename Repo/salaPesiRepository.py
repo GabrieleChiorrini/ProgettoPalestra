@@ -1,6 +1,6 @@
 import json
 from Models import SalaPesi
-from .fasciaOrariaRepository import FasciaOrariaRepository
+from . import FasciaOrariaRepository
 
 class SalaPesiRepository: # Repository
     def __init__(self, fasciaOrariaRepo: FasciaOrariaRepository, path: str = "salePesi.json"):
