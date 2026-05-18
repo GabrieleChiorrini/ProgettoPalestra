@@ -5,7 +5,7 @@ from . import Cliente
 
 class Abbonamento():
     def __init__(self, cliente: Cliente, id: str, durata: timedelta, 
-                 dataInizio: datetime, stato: bool, tipo: TipoAbbonamento):
+                 dataInizio: datetime, tipo: TipoAbbonamento, stato: True):
         self._cliente = cliente
         self._id = id
         self._durata = durata
