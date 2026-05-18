@@ -44,7 +44,7 @@ class TestUtente(unittest.TestCase):
     def test_id(self):
         self.assertEqual(
             self.utente.get_id(),
-            "U001"
+            "UT000"
         )
 
     def test_set_email(self):
@@ -88,7 +88,7 @@ class TestUtente(unittest.TestCase):
         self.assertEqual(d["codiceFiscale"], "BNCLCU95E15H501U")
         self.assertEqual(d["email"], "luca.bianchi@gmail.com")
         self.assertEqual(d["telefono"], "3331234567")
-        self.assertEqual(d["id"], "U001")
+        self.assertEqual(d["id"], "UT000")
 
     def test_from_dict(self):
 
@@ -99,7 +99,7 @@ class TestUtente(unittest.TestCase):
             "codiceFiscale": "BNCLCU95E15H501U",
             "email": "luca.bianchi@gmail.com",
             "telefono": "3331234567",
-            "id": "U001"
+            "id": "UT000"
         }
 
         utente = Utente.fromDict(d)
@@ -113,4 +113,4 @@ class TestUtente(unittest.TestCase):
 
         self.assertEqual(utente.get_telefono(),"3331234567")
 
-        self.assertEqual(utente.get_id(),"U001")
+        self.assertEqual(utente.get_id(),"UT000")

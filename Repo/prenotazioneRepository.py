@@ -1,7 +1,10 @@
 import json
 from abc import ABC, abstractmethod
 from Models import Prenotazione, PrenotazioneCorso, PrenotazioneSalaPesi, Corso, SalaPesi, Cliente
-from Repo import CorsoRepository, FasciaOrariaRepository, ClienteRepository, SalaPesiRepository
+from .corsoRepository import CorsoRepository
+from .fasciaOrariaRepository import FasciaOrariaRepository
+from .clienteRepository import ClienteRepository
+from .salaPesiRepository import SalaPesiRepository
 
 class PrenotazioneRepository(ABC): # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "prenotazioni.json"):

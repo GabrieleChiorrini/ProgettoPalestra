@@ -1,6 +1,8 @@
 import json
 from collections import defaultdict
-from . import PrenotazioneRepository, CorsoRepository, ClienteRepository
+from .prenotazioneRepository import PrenotazioneRepository
+from .corsoRepository import CorsoRepository
+from .clienteRepository import ClienteRepository
 from Models import PrenotazioneCorso
 
 class PrenotazioneCorsoRepository(PrenotazioneRepository):

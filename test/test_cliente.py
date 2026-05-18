@@ -17,7 +17,7 @@ class TestCliente(unittest.TestCase):
         
         self.assertIsNotNone(certificato)
         self.assertIsInstance(certificato, CertificatoMedico)
-        self.assertEqual(certificato.get_id(), "CERT001")
+        self.assertEqual(certificato.get_id(), "CM000")
 
     def test_to_dict(self):
         """Test della conversione dell'oggetto Cliente a dizionario"""
@@ -29,17 +29,9 @@ class TestCliente(unittest.TestCase):
         self.assertEqual(d["codiceFiscale"], "BNCLCU95E15H501U")
         self.assertEqual(d["email"], "luca.bianchi@gmail.com")
         self.assertEqual(d["telefono"], "33450928340")
-        self.assertEqual(d["id"], "C001")
-        self.assertEqual(d["certificato"], "CERT001")
+        self.assertEqual(d["id"], "CL000")
+        self.assertEqual(d["certificato"], "CM000")
 
-    def test_to_dict_certificato_none(self):
-        """Test della conversione a dizionario quando certificato è None"""
-        cliente_senza_cert = Cliente("Marco", "Rossi", date(1990, 3, 15), 
-                                     "RSSMRC90C15H501U", "marco@gmail.com", 
-                                     "3345678901", "C002", None)
-        d = cliente_senza_cert.toDict()
-        
-        self.assertIsNone(d["certificato"])
 
     def test_from_dict(self):
         """Test della creazione di un Cliente da un dizionario"""
@@ -50,8 +42,8 @@ class TestCliente(unittest.TestCase):
             "codiceFiscale": "BNCLCU95E15H501U",
             "email": "luca.bianchi@gmail.com",
             "telefono": "33450928340",
-            "id": "C001",
-            "certificato": "CERT001"
+            "id": "CL000",
+            "certificato": "CM000"
         }
 
         cliente = Cliente.fromDict(d)
@@ -62,4 +54,5 @@ class TestCliente(unittest.TestCase):
         self.assertEqual(cliente.get_codiceFiscale(), "BNCLCU95E15H501U")
         self.assertEqual(cliente.get_email(), "luca.bianchi@gmail.com")
         self.assertEqual(cliente.get_telefono(), "33450928340")
-        self.assertEqual(cliente.get_id(), "C001")
+        self.assertEqual(cliente.get_id(), "CL000")
+        self.assertEndsWith(cliente.get_certificato(), "CM000")

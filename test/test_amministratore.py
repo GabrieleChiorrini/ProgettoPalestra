@@ -22,7 +22,7 @@ class TestAmministratore(unittest.TestCase):
         self.assertEqual(d["codiceFiscale"], "MRARSS80A01H501U")
         self.assertEqual(d["email"], "mario.rossi@gmail.com")
         self.assertEqual(d["telefono"], "33450928340")
-        self.assertEqual(d["id"], "A001")
+        self.assertEqual(d["id"], "AD000")
 
     def test_from_dict(self):
 
@@ -33,7 +33,7 @@ class TestAmministratore(unittest.TestCase):
             "codiceFiscale": "MRARSS80A01H501U",
             "email": "mario.rossi@gmail.com",
             "telefono": "33450928340",
-            "id": "A001"
+            "id": "AD000"
         }
 
         admin = Amministratore.fromDict(d)
@@ -44,4 +44,4 @@ class TestAmministratore(unittest.TestCase):
         self.assertEqual(admin.get_codiceFiscale(), "MRARSS80A01H501U")
         self.assertEqual(admin.get_email(), "mario.rossi@gmail.com")
         self.assertEqual(admin.get_telefono(), "33450928340")
-        self.assertEqual(admin.get_id(), "A001")
+        self.assertEqual(admin.get_id(), "AD000")

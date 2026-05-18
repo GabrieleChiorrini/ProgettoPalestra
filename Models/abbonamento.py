@@ -5,7 +5,7 @@ from . import Cliente
 
 class Abbonamento():
     def __init__(self, cliente: Cliente, id: str, durata: timedelta, 
-                 dataInizio: datetime, tipo: TipoAbbonamento, stato: True):
+                 dataInizio: datetime, tipo: TipoAbbonamento, stato: bool=True):
         self._cliente = cliente
         self._id = id
         self._durata = durata
@@ -92,8 +92,8 @@ class Abbonamento():
             d["id"],
             timedelta(minutes=int(d["durata"])),
             datetime.fromisoformat(d["dataInizio"]),
-            bool(int(d["stato"])),
-            TipoAbbonamento(int(d["tipo"])))
+            TipoAbbonamento(int(d["tipo"])),
+            bool(int(d["stato"])))
     
     def __str__(self) -> str:
         abbonamento = (f"Abbonamento :\n"
