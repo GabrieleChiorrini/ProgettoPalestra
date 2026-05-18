@@ -16,6 +16,12 @@ class FasciaOraria:
     def get_orarioInizio(self) -> time:
         return self._orarioInizio
 
+    def get_durata(self) -> timedelta:
+        return timedelta(hours=1)
+
+    def get_orarioFine(self) -> time:
+        return (datetime.combine(datetime.today(), self._orarioInizio) + timedelta(hours=1)).time()
+
     # SETTER
 
     def set_orarioInizio(self, orarioInizio: time) -> None:

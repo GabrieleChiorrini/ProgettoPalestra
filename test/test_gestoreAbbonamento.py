@@ -1,6 +1,6 @@
 import unittest, os
 from datetime import timedelta, datetime
-from . import entita_finte as ef
+from test import entita_finte as ef
 from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepository
 from Services import GestoreAbbonamento
 from Enumerazione import TipoAbbonamento

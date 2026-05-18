@@ -10,7 +10,7 @@ DURATA_FASCIA = timedelta(hours=1)
 
 class Palestra:
     def __init__(self,id: str,nome: str,indirizzo: str,orarioapertura: time,orariochiusura: time,
-        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi],fasciaRepo):
+        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi],fasciaRepo:FasciaOrariaRepository):
         self._id = id
         self._nome = nome
         self._indirizzo = indirizzo

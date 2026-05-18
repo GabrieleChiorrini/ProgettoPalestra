@@ -7,6 +7,7 @@ class FasciaOrariaRepository: # Repository
         self._fasceOrarie: dict = {} # dizionario che contiene le fasceOrarie
         # N.B. il dizionario avrà come chiave un identificativo delle fasceOrarie
         self.carica() # la repo carica immediatamente le fasceOrarie dalla memoria
+        self._last_id = self.lastId()
 
     def carica(self) -> None: #Ricrea gli oggetti dal file di persistenza
         try:
@@ -35,14 +36,18 @@ class FasciaOrariaRepository: # Repository
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)
-        ultimoId = self.lastId()
+        ultimoId = self._last_id
         if not ultimoId:
-            return "FO000"
-        nId = str(int(ultimoId[2:]) + 1)
-        return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+            nuovo_id = "FO000"
+        else:
+            nId = str(int(ultimoId[2:]) + 1)
+            nuovo_id = ultimoId[0:2] + (3-len(nId)) * "0" + nId
+        self._last_id = nuovo_id
+        return nuovo_id
 
     def aggiungi(self, fasciaOraria: FasciaOraria) -> None:
         self._fasceOrarie[fasciaOraria.get_id()] = fasciaOraria # come chiave si usa l'id dell'oggetto FasciaOraria, come valore l'oggetto FasciaOraria stesso
+        self._last_id = fasciaOraria.get_id()
         self.salva() # salva in json self._fasceOrarie
 
     def tutti(self) -> list: # converte self._fasceOrarie (dict di oggetti FasciaOraria) in una lista di oggetti FasciaOraria
