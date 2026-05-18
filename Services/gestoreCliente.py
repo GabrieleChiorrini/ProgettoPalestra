@@ -84,8 +84,6 @@ class GestoreCliente:
      # elimina certificato associato
      certificato = cliente.get_certificato()
 
-     certificato = cliente.get_certificato()
-
      if certificato is not None:
           self._certificatoRepo.eliminaPerId(certificato.get_id())
 
