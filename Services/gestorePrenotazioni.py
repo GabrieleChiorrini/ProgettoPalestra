@@ -66,15 +66,15 @@ class GestorePrenotazioni:
         if cliente is None:
             return "Cliente non trovato"
         
-        salaPesi = self._prenotazioneRepo._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId)
+        salaPesi = self._prenotazioneSalaPesiRepo._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId)
         if salaPesi is None:
             return "Sala pesi non trovata"
         
-        prenotazioni = self._prenotazioneRepo.listPrenotazioniPerFasciaOraria(fasciaOrariaId)
+        prenotazioni = self._prenotazioneSalaPesiRepo.listPrenotazioniPerFasciaOraria(fasciaOrariaId)
         if len(prenotazioni) >= salaPesi.get_maxCapienza():
             return "Fascia oraria piena"
         
-        prenotazione = PrenotazioneSalaPesi(cliente, fasciaOraria, self._prenotazioneRepo.newId())
+        prenotazione = PrenotazioneSalaPesi(cliente, fasciaOraria, self._prenotazioneSalaPesiRepo.newId())
         self._prenotazioneRepo.aggiungi(prenotazione)
         self._prenotazioneRepo.salva()
         

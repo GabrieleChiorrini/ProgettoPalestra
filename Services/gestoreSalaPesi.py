@@ -10,7 +10,7 @@ class GestoreSalaPesi():
             return self._salaPesiRepo.getMaxCapienza(salaPesiId)
         
         if nuovaCapienza <= 0:
-            return "Capienza deve essere positiva"
+            return "La capienza deve essere positiva"
         
         sala = self._salaPesiRepo.trovaPerId(salaPesiId)
         if sala is None:
