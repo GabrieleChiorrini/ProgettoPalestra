@@ -1,6 +1,4 @@
-from . import Prenotazione
-from . import FasciaOraria
-from . import Cliente
+from . import Prenotazione, FasciaOraria, Cliente
 
 class PrenotazioneSalaPesi(Prenotazione):
 

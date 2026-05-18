@@ -1,7 +1,7 @@
 from . import Cliente
 from datetime import date, datetime
 
-class Accesso:
+class Ingresso:
     def __init__(self, cliente: Cliente, id:str, orario: datetime = datetime.now()):
         self._id = id
         self._cliente = cliente

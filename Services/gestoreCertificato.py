@@ -3,7 +3,7 @@ from Repo import ClienteRepository,CertificatoMedicoRepository
 from datetime import date
 
 
-class GestoreCliente:
+class GestoreCertificato:
     def __init__(self, ClienteRepo: ClienteRepository, CertificatoRepo: CertificatoMedicoRepository):
         self._clienteRepo = ClienteRepo
         self._certificatoRepo = CertificatoRepo

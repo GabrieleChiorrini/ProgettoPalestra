@@ -1,12 +1,10 @@
 from datetime import time, timedelta, datetime
 from Enumerazione.giorniSettimana import GiorniSettimana
-from . import SalaPesi
+from . import SalaPesi, Corso
 from Models.fasciaOraria import FasciaOraria
-from . import Corso
 from Repo import FasciaOrariaRepository
 
 DURATA_FASCIA = timedelta(hours=1)
-
 
 class Palestra:
     def __init__(self,id: str,nome: str,indirizzo: str,orarioapertura: time,orariochiusura: time,

@@ -1,6 +1,4 @@
-from . import Prenotazione
-from . import Cliente
-from . import Corso
+from . import Prenotazione, Cliente, Corso
 
 class PrenotazioneCorso(Prenotazione):
 
