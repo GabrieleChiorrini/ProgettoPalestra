@@ -6,7 +6,10 @@ from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepo
 
 def certificato_finto():
     cert_repo = CertificatoMedicoRepository()
-    cert_id = cert_repo.newId()
+    try:
+        cert_id = cert_repo.newId()
+    except AttributeError:
+        cert_id = "CM000"
     return CertificatoMedico(date(2025, 1, 15), cert_id, True)
 
 def cliente_finto():

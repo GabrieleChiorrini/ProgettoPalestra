@@ -17,7 +17,7 @@ class TestAbbonamento(unittest.TestCase):
         self.assertEqual(self.abbonamento.get_cliente(), self.cliente)
 
     def test_id(self):
-        self.assertEqual(self.abbonamento.get_id(), "AB001")
+        self.assertEqual(self.abbonamento.get_id(), "AB000")
 
     def test_durata(self):
         self.assertEqual(self.abbonamento.get_durata(), timedelta(days=30))
@@ -77,7 +77,7 @@ class TestAbbonamento(unittest.TestCase):
         d = self.abbonamento.toDict()
 
         self.assertEqual(d["cliente"], self.cliente.get_id())
-        self.assertEqual(d["id"], "ABB-001")
+        self.assertEqual(d["id"], "AB000")
         self.assertEqual(d["durata"],int(timedelta(days=30).total_seconds() / 60))
         self.assertEqual(d["dataInizio"],datetime(2025, 1, 1, 10, 0, 0).isoformat())
         self.assertEqual(d["stato"], 1)

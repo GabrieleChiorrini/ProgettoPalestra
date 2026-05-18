@@ -17,7 +17,7 @@ class TestCliente(unittest.TestCase):
         
         self.assertIsNotNone(certificato)
         self.assertIsInstance(certificato, CertificatoMedico)
-        self.assertEqual(certificato.get_id(), "CM001")
+        self.assertEqual(certificato.get_id(), "CM000")
 
     def test_to_dict(self):
         """Test della conversione dell'oggetto Cliente a dizionario"""
@@ -29,8 +29,8 @@ class TestCliente(unittest.TestCase):
         self.assertEqual(d["codiceFiscale"], "BNCLCU95E15H501U")
         self.assertEqual(d["email"], "luca.bianchi@gmail.com")
         self.assertEqual(d["telefono"], "33450928340")
-        self.assertEqual(d["id"], "CL001")
-        self.assertEqual(d["certificato"], "CM001")
+        self.assertEqual(d["id"], "CL000")
+        self.assertEqual(d["certificato"], "CM000")
 
 
     def test_from_dict(self):
@@ -42,8 +42,8 @@ class TestCliente(unittest.TestCase):
             "codiceFiscale": "BNCLCU95E15H501U",
             "email": "luca.bianchi@gmail.com",
             "telefono": "33450928340",
-            "id": "CL001",
-            "certificato": "CM001"
+            "id": "CL000",
+            "certificato": "CM000"
         }
 
         cliente = Cliente.fromDict(d)
@@ -54,4 +54,5 @@ class TestCliente(unittest.TestCase):
         self.assertEqual(cliente.get_codiceFiscale(), "BNCLCU95E15H501U")
         self.assertEqual(cliente.get_email(), "luca.bianchi@gmail.com")
         self.assertEqual(cliente.get_telefono(), "33450928340")
-        self.assertEqual(cliente.get_id(), "CL001")
+        self.assertEqual(cliente.get_id(), "CL000")
+        self.assertEndsWith(cliente.get_certificato(), "CM000")

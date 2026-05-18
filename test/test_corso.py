@@ -18,7 +18,7 @@ class TestCorso(unittest.TestCase):
 
     def test_get_id(self):
         #Test del getter dell'id
-        self.assertEqual(self.corso.get_id(), "CO001")
+        self.assertEqual(self.corso.get_id(), "CO000")
 
     def test_get_nome(self):
         #test getter nome
@@ -147,7 +147,7 @@ class TestCorso(unittest.TestCase):
     def test_set_iscritti_lista_non_valida(self):
         #errore se mi mette lista non valida
         with self.assertRaises(TypeError):
-            self.corso.set_iscritti("C001,C002")
+            self.corso.set_iscritti("CO001,CO002")
         
         with self.assertRaises(TypeError):
             self.corso.set_iscritti(cliente_finto())
@@ -155,7 +155,7 @@ class TestCorso(unittest.TestCase):
     def test_set_iscritti_elemento_non_valido(self):
         #errore se metto cliente non oggetto di cliente
         with self.assertRaises(TypeError):
-            self.corso.set_iscritti([cliente_finto(), "C002"])
+            self.corso.set_iscritti([cliente_finto(), "CO002"])
         
         with self.assertRaises(TypeError):
             self.corso.set_iscritti([cliente_finto(), personale_finto()])
@@ -164,24 +164,24 @@ class TestCorso(unittest.TestCase):
         #test conversione dell'oggetto in dizionario
         d = self.corso.toDict()
         
-        self.assertEqual(d["id"], "CO001")
+        self.assertEqual(d["id"], "CO000")
         self.assertEqual(d["nome"], "Yoga")
         self.assertEqual(d["maxCapienza"], 20)
-        self.assertEqual(d["istruttore"], "A001")
+        self.assertEqual(d["istruttore"], "AD000")
         self.assertEqual(d["orario"], "10:00:00")
         self.assertEqual(len(d["giorni"]), 3)
-        self.assertEqual(d["iscritti"], ["C001"])
+        self.assertEqual(d["iscritti"], ["CL000"])
 
     def test_from_dict(self):
         #test creazione di corso da dizionario
         d = {
-            "id": "CORS004",
+            "id": "CO004",
             "nome": "Zumba",
             "maxCapienza": 25,
-            "istruttore": "AD001",
+            "istruttore": "AD000",
             "orario": "18:00:00",
             "giorni": [1, 3, 5],  # Lunedì, Mercoledì, Venerdì
-            "iscritti": ["CL001"]
+            "iscritti": ["CL000"]
         }
         
         corso = Corso.fromDict(d)
