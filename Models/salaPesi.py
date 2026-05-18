@@ -44,8 +44,6 @@ class SalaPesi:
     def __str__(self) -> str:
         salaPesi = (f"Sala pesi :\n"
                   f"\tcapienza massima: {self._maxCapienza}\n"
-                  f"\tfascia oraria: {[fascia._orarioIniziostrftime("%H:%M") for fascia in self._fasciaOraria ]}\n")  #formatto gli orari perchè senno non si leggono
+                  f"\tfascia oraria: {[fascia.get_orarioInizio().strftime('%H:%M') for fascia in self._fasciaOraria]}\n")   #formatto gli orari perchè senno non si leggono
         return salaPesi
     
-    #la fine della fascia oraria la faccio calcolare direttamente a un servizio dividendo 
-    #ogni ora la durata di apertura della palestra o metto orario di inizio e di fine 

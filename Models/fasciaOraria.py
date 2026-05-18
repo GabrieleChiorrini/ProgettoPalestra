@@ -1,7 +1,5 @@
 from datetime import time, timedelta, datetime
 
-DURATA_FASCIA = timedelta(hours=1)
-
 
 class FasciaOraria:
 
@@ -9,10 +7,6 @@ class FasciaOraria:
 
         self._id = id
         self._orarioInizio = orarioInizio
-        self._durata = DURATA_FASCIA
-
-        dummy = datetime.combine(datetime.today(), orarioInizio)
-        self._orarioFine = (dummy + self._durata).time()
 
     # GETTER
 
@@ -21,23 +15,6 @@ class FasciaOraria:
 
     def get_orarioInizio(self) -> time:
         return self._orarioInizio
-
-    def get_durata(self) -> timedelta:
-        return self._durata
-
-    def get_orarioFine(self) -> time:
-        return self._orarioFine
-
-    def _aggiorna_orario_fine(self):
-
-        dummy = datetime.combine(
-            datetime.today(),
-            self._orarioInizio
-        )
-
-        self._orarioFine = (
-            dummy + self._durata
-        ).time()
 
     # SETTER
 
@@ -49,9 +26,7 @@ class FasciaOraria:
             )
 
         self._orarioInizio = orarioInizio
-
-        self._aggiorna_orario_fine()
-
+        
     # SERIALIZZAZIONE
 
     def toDict(self) -> dict:
@@ -76,7 +51,6 @@ class FasciaOraria:
         fasciaOraria = (
             f"Fascia oraria :\n"
             f"\torario inizio: {self._orarioInizio}\n"
-            f"\torario fine: {self._orarioFine}\n"
         )
 
         return fasciaOraria
