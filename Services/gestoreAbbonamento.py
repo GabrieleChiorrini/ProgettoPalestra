@@ -56,7 +56,7 @@ class GestoreAbbonamento:
             return "abbonamento rinnovato"
         
         else:
-            self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
+            return self.CreaAbbonamento(idCliente=idCliente,durata=nuovaDurata,tipo=tipo)
             
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
