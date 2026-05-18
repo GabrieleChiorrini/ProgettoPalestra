@@ -2,8 +2,8 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout)
 
-class FormCliente(QWidget):
-    def __init__(self):
+class FormPersonale(QWidget):
+    def __init__(self, stack):
         super().__init__()
 
         self._listaCampi = ["Nome", "Cognome", "Data di nascita", "Codice Fiscale", "Email", "Telefono"]
@@ -41,6 +41,6 @@ class FormCliente(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app
-    f = FormCliente() # creo finestra
+    f = FormPersonale() # creo finestra
     f.show() # mostro finestra
     sys.exit(app.exec()) # avvio il loop degli eventi

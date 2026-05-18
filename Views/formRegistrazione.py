@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout)
 
 class FormRegistrazione(QWidget):
-    def __init__(self):
+    def __init__(self, stack):
         super().__init__()
 
         self._listaCampi = ["Codice fiscale", "Username", "Password", "Conferma password"]
@@ -21,12 +21,20 @@ class FormRegistrazione(QWidget):
             fLayout.addRow(a + ":", _lineEdit)
 
             self._listaCampi[i] = _lineEdit
-
-        btnReg = QPushButton("Registrati")
-
         vLayout.addLayout(fLayout)
 
+        btnReg = QPushButton("Registrati")
         vLayout.addWidget(btnReg)
+
+        hLayout = QHBoxLayout()
+
+        lblGiaRegistrato = QLabel("Hai già le credenziali?")
+        hLayout.addWidget(lblGiaRegistrato)
+        btnGiaRegistrato = QPushButton("Login")
+        btnGiaRegistrato.clicked.connect(lambda: stack.setCurrentIndex(0))
+        hLayout.addWidget(btnGiaRegistrato)
+
+        vLayout.addLayout(hLayout)
 
         gridLayout = QGridLayout()
 

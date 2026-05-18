@@ -1,9 +1,9 @@
-from Repo import PrenotazioneRepository, CorsoRepository, SalaPesiRepository, FasciaOrariaRepository
+from Repo import PrenotazioneCorsoRepository, PrenotazioneSalaPesiRepository, CorsoRepository, SalaPesiRepository, FasciaOrariaRepository
 from Models import Corso, FasciaOraria
 
 class GestoreCapienza:
-    def __init__(self, prenotazioneRepo: PrenotazioneRepository, corsoRepo: CorsoRepository, salaPesiRepo: SalaPesiRepository, fasciaOrariaRepository: FasciaOrariaRepository):
-        self._prenotazioneRepo = prenotazioneRepo
+    def __init__(self, prenotazioneSalaPesiRepo: PrenotazioneSalaPesiRepository, corsoRepo: CorsoRepository, salaPesiRepo: SalaPesiRepository, fasciaOrariaRepository: FasciaOrariaRepository):
+        self._prenotazioneSalaPesiRepo = prenotazioneSalaPesiRepo
         self._corsoRepo = corsoRepo
         self._salaPesiRepo = salaPesiRepo
         self._fasciaOrariaRepo = fasciaOrariaRepository
@@ -19,4 +19,4 @@ class GestoreCapienza:
         fasciaOraria: FasciaOraria | None = self._fasciaOrariaRepo.trovaPerId(fasciaOrariaId)
         if fasciaOraria is None:
             return False
-        return len(self._prenotazioneRepo.listPrenotazioniPerFasciaOraria(fasciaOrariaId)) < self._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId).get_maxCapienza()
+        return len(self._prenotazioneSalaPesiRepo.listPrenotazioniPerFasciaOraria(fasciaOrariaId)) < self._salaPesiRepo.trovaPerFasciaOraria(fasciaOrariaId).get_maxCapienza()

@@ -1,8 +1,10 @@
 from datetime import time, timedelta, datetime
+from typing import TYPE_CHECKING
 from Enumerazione.giorniSettimana import GiorniSettimana
-from .fasciaOraria import FasciaOraria
-from .salaPesi import SalaPesi
-from .corso import Corso
+from . import SalaPesi, Corso, FasciaOraria
+
+if TYPE_CHECKING:
+    from Repo import FasciaOrariaRepository
 
 DURATA_FASCIA = timedelta(hours=1)
 

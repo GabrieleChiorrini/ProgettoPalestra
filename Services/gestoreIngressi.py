@@ -1,10 +1,10 @@
-from Repo import AccessoRepository, ClienteRepository, AbbonamentoRepository, CertificatoMedicoRepository
+from Repo import IngressoRepository, ClienteRepository, AbbonamentoRepository, CertificatoMedicoRepository
 from Models import Ingresso, Cliente, Abbonamento, CertificatoMedico
 from datetime import date
 
 class GestoreIngressi():
-    def __init__(self, accessoRepo: AccessoRepository, clienteRepo: ClienteRepository, abbonamentoRepo: AbbonamentoRepository, certificatoRepo: CertificatoMedicoRepository):
-        self._accessoRepo = accessoRepo
+    def __init__(self, ingressoRepo: IngressoRepository, clienteRepo: ClienteRepository, abbonamentoRepo: AbbonamentoRepository, certificatoRepo: CertificatoMedicoRepository):
+        self._ingressoRepo = ingressoRepo
         self._clienteRepo = clienteRepo
         self._abbonamentoRepo = abbonamentoRepo
         self._certificatoMedicoRepo = certificatoRepo
@@ -22,9 +22,9 @@ class GestoreIngressi():
         if certificatoMedico is None or not certificatoMedico.get_validità():
             return False
         
-        lastAccesso = self._accessoRepo.listPerCliente(cliente)[-1]
-        if lastAccesso is None or not lastAccesso.get_orario().date() == date.today():
-            accesso = Ingresso(cliente, self._accessoRepo.newId())
-            self._accessoRepo.aggiungi(accesso)
+        lastIngresso = self._ingressoRepo.listPerCliente(cliente)[-1]
+        if lastIngresso is None or not lastIngresso.get_orario().date() == date.today():
+            ingresso = Ingresso(cliente, self._ingressoRepo.newId())
+            self._ingressoRepo.aggiungi(ingresso)
             return True
         return False

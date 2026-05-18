@@ -1,4 +1,4 @@
-from Models.fasciaOraria import FasciaOraria
+from . import FasciaOraria
 
 class SalaPesi:
     def __init__(self,id: str, maxCapienza: int, fasciaOraria: list[FasciaOraria]):

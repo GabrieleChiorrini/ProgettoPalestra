@@ -1,8 +1,8 @@
 import json
 from Models import Ingresso, Cliente
-from .clienteRepository import ClienteRepository
+from . import ClienteRepository
 
-class AccessoRepository: # Repository
+class IngressoRepository: # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "accessi.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._accessi: dict = {} # dizionario che contiene gli accessi
@@ -19,7 +19,7 @@ class AccessoRepository: # Repository
                 d["id"]: Ingresso.fromDict({
                 **d, #Unpacking del dizionario
                 "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
-            })  for d in dati} # from dict è metodo di classe di Accesso
+            })  for d in dati} # from dict è metodo di classe di Ingresso
         except FileNotFoundError:
             self._accessi = {} # al primo avvio
 
@@ -42,7 +42,7 @@ class AccessoRepository: # Repository
             return None
         
     def listPerCliente(self, cliente: Cliente) -> list:
-        return [accesso for accesso in self._accessi if cliente == accesso.get_cliente()]
+        return [ingresso for ingresso in self._accessi.values() if cliente == ingresso.get_cliente()]
     
     def nPerGiorni(self) -> list:
         #Conta il numero di accessi per ogni giorno(Lunedì al posto 0 e Domenica al posto 6) e li mette in lista
@@ -64,9 +64,9 @@ class AccessoRepository: # Repository
         nId = str(int(ultimoId[2:]) + 1)
         return ultimoId[0:2] + (3-len(nId)) * "0" + nId
 
-    def aggiungi(self, accesso: Ingresso) -> None:
-        self._accessi[accesso.get_id()] = accesso # come chiave si usa l'isbn dell'oggetto Accesso, come valore l'oggetto Accesso stesso
+    def aggiungi(self, ingresso: Ingresso) -> None:
+        self._accessi[ingresso.get_id()] = ingresso # come chiave si usa l'isbn dell'oggetto Ingresso, come valore l'oggetto Ingresso stesso
         self.salva() # salva in json self._clienti
 
-    def tutti(self) -> list: # converte self._accessi (dict di oggetti Accesso) in una lista di oggetti Accesso
+    def tutti(self) -> list: # converte self._accessi (dict di oggetti Ingresso) in una lista di oggetti Ingresso
         return list(self._accessi.values())

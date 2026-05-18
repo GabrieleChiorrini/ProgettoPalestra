@@ -1,6 +1,6 @@
 import json
 from Models import Abbonamento, Cliente
-from .clienteRepository import ClienteRepository
+from . import ClienteRepository
 
 class AbbonamentoRepository: # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "abbonamenti.json"):

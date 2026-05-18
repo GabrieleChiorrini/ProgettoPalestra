@@ -1,9 +1,9 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout)
+    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox)
 
 class FormLogin(QWidget):
-    def __init__(self):
+    def __init__(self, stack):
         super().__init__()
 
         self._lineEditUsername = QLineEdit()
@@ -16,6 +16,7 @@ class FormLogin(QWidget):
 
         lblRegistra = QLabel("Non hai un account?")
         btnRegistra = QPushButton("Registrati!")
+        btnRegistra.clicked.connect(lambda: stack.setCurrentIndex(1))
 
         hLayout = QHBoxLayout()
 
@@ -42,6 +43,17 @@ class FormLogin(QWidget):
 
         self.setLayout(gridLayout)
         self.showMaximized()
+    
+    def login(self):
+        username = self._lineEditUsername.text().strip()
+        password = self._lineEditPassword.text().strip()
+
+        if not username or not password:
+            QMessageBox.warning(
+                self, "Attenzione",
+                "Inserisci username e password")
+            return
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app
