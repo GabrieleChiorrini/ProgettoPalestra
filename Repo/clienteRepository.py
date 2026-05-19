@@ -33,13 +33,15 @@ class ClienteRepository: # Repository
     def trovaPerId(self, id: str):
         return self._clienti.get(id) # _clienti è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
+        
 
     def trovaPerCF(self, codiceFiscale: str):
-        # ricerca il cliente con lo stesso codice fiscale, altrimenti ritorna None
-        for a in self._clienti.values():
-            if a["codiceFiscale"] == codiceFiscale:
-                return a
-        else:
+
+            for cliente in self._clienti.values():
+
+                if cliente.get_codiceFiscale() == codiceFiscale:
+                    return cliente
+
             return None
     
     def eliminaPerId(self, id:str)-> None:

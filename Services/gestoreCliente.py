@@ -46,33 +46,33 @@ class GestoreCliente:
     
     def modificaCliente(self,id: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: date = None) -> str:
 
-     cliente = self._clienteRepo.trovaPerId(id)
+          cliente = self._clienteRepo.trovaPerId(id)
 
-     if cliente is None:
-          return "Errore: cliente non trovato"
+          if cliente is None:
+               return "Errore: cliente non trovato"
 
-     try:
-          cliente.set_email(nuovaEmail)
-          cliente.set_telefono(nuovoTelefono)
+          try:
+               cliente.set_email(nuovaEmail)
+               cliente.set_telefono(nuovoTelefono)
 
-     except TypeError as e:
-          return f"Errore nei dati cliente: {e}"
+          except TypeError as e:
+               return f"Errore nei dati cliente: {e}"
 
-     # aggiornamento certificato 
-     if nuovaDataCertificato is not None:
+      # aggiornamento certificato 
+          if nuovaDataCertificato is not None:
 
-          certificato = cliente.get_certificato()
+               certificato = cliente.get_certificato()
 
-     if certificato is None:
-        return "Errore: certificato non trovato"
+               if certificato is None:
+                    return "Errore: certificato non trovato"
 
-     certificato.set_dataEffettuato(nuovaDataCertificato)
-     certificato.set_validità(True)
+               certificato.set_dataEffettuato(nuovaDataCertificato)
+               certificato.set_validità(True)
 
-     self._clienteRepo.salva()
-     self._certificatoRepo.salva()
+          self._clienteRepo.salva()
+          self._certificatoRepo.salva()
 
-     return "Cliente modificato correttamente"
+          return "Cliente modificato correttamente"
      
     def eliminaCliente(self, id: str) -> str:
 
