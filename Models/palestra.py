@@ -1,6 +1,6 @@
 from datetime import time, timedelta, datetime
 from typing import TYPE_CHECKING
-from Enumerazione.giorniSettimana import GiorniSettimana
+from Enumerazione import GiorniSettimana
 from . import SalaPesi, Corso, FasciaOraria
 
 if TYPE_CHECKING:
