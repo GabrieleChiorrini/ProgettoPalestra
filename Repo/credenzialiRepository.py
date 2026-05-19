@@ -57,6 +57,15 @@ class CredenzialiRepository: # Repository
             return "CR000"
         nId = str(int(ultimoId[2:]) + 1)
         return ultimoId[0:2] + (3-len(nId)) * "0" + nId
+    
+    def eliminaPerId(self, Id: str) -> bool:
+
+        for idCredenziali, credenziali in self._credenzialiRepo.items():
+            if credenziali.get_utente().get_id() == Id:
+                del self._credenzialiRepo[idCredenziali]
+                self.salva()
+                return True
+        return False
 
     def aggiungi(self, credenziali: Credenziali) -> None:
         self._credenzialiRepo[credenziali.get_id()] = credenziali # come chiave si usa l'id dell'oggetto Credenziali, come valore l'oggetto Credenziali stesso

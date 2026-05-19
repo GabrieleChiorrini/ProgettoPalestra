@@ -59,6 +59,8 @@ class GestorePersonale:
          
          self._amministratoreRepo.eliminaPerId(id)
 
+         self._credenzialiRepo.eliminaPerClienteId(id)
+
          self._amministratoreRepo.salva()
 
          return "Personale eliminato"
