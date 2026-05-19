@@ -24,9 +24,7 @@ class TestAbbonamento(unittest.TestCase):
 
     def test_dataInizio(self):
         self.assertEqual(
-            self.abbonamento.get_dataInizio(),
-            datetime(2025, 1, 1, 10, 0, 0)
-        )
+            self.abbonamento.get_dataInizio(),datetime(2025, 1, 1, 10, 0, 0))
 
     def test_stato(self):
         self.assertTrue(self.abbonamento.get_stato())

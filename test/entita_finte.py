@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta, date, time
-from Models import Cliente, Abbonamento, Amministratore, Utente, CertificatoMedico, Corso, FasciaOraria
+from Models import *
 from Enumerazione import TipoAbbonamento
 from Enumerazione.giorniSettimana import GiorniSettimana
-from Repo import AbbonamentoRepository, ClienteRepository, CertificatoMedicoRepository, AmministratoreRepository, UtenteRepository, CorsoRepository, FasciaOrariaRepository
+from Repo import *
 
 def certificato_finto():
     cert_repo = CertificatoMedicoRepository()
@@ -68,3 +68,17 @@ def fascia_oraria_finta():
     fascia_repo = FasciaOrariaRepository()
     fascia_id = fascia_repo.newId()
     return FasciaOraria(fascia_id, time(15, 0))
+
+def sala_pesi_finta():
+    fascia_repo = FasciaOrariaRepository()
+    fascia_id_1 = fascia_repo.newId()
+    fascia1 = FasciaOraria(fascia_id_1,time(9, 0))
+    fascia_repo.aggiungi(fascia1)
+    fascia_id_2 = fascia_repo.newId()
+    fascia2 = FasciaOraria(fascia_id_2,time(10, 0))
+    fascia_repo.aggiungi(fascia2)
+    sala_repo = SalaPesiRepository(fascia_repo)
+    sala_id = sala_repo.newId()
+    sala = SalaPesi(sala_id, 15, [fascia1, fascia2])
+
+    return sala

@@ -13,7 +13,7 @@ class GestoreOrario:
     def modificaOrario(self,palestraId: str,nuovoOrarioApertura: time,
         nuovoOrarioChiusura: time,nuoviGiorni: list[GiorniSettimana]):
 
-        palestra = self._palestraRepo.trovaPerId(palestraId)
+        palestra :Palestra = self._palestraRepo.trovaPerId(palestraId)
 
         if palestra is None:
             return "Palestra non trovata"
@@ -28,6 +28,6 @@ class GestoreOrario:
         except TypeError as e:
             return f"Errore nei dati: {e}"
 
-        palestra._fasceOrarie = palestra._genera_fasce_orarie()
+        palestra._fasceOrarie = palestra.genera_fasce_orarie()
 
         return "Orario aggiornato correttamente"

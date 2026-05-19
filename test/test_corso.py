@@ -4,6 +4,7 @@ from datetime import time
 from Enumerazione.giorniSettimana import GiorniSettimana
 from Models import Corso, Amministratore, Cliente
 from Repo import AmministratoreRepository
+from Repo import ClienteRepository, CertificatoMedicoRepository
 
 
 class TestCorso(unittest.TestCase):
@@ -130,7 +131,6 @@ class TestCorso(unittest.TestCase):
         #test setter iscritto
 
         cliente1 = cliente_finto()
-        from Repo import ClienteRepository, CertificatoMedicoRepository
         cert_repo = CertificatoMedicoRepository()
         cliente_repo = ClienteRepository(cert_repo)
         cliente_id = cliente_repo.newId()

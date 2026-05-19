@@ -22,7 +22,7 @@ class Palestra:
         self._fasciaRepo = fasciaRepo
 
         # genera fasce una sola volta
-        self._fasceOrarie = self._genera_fasce_orarie()
+        self._fasceOrarie = self.genera_fasce_orarie()
 
         # assegna le fasce a tutte le sale pesi
         for sala in self._salePesi:
@@ -114,7 +114,7 @@ class Palestra:
             d["fasciaRepo"]
         )
 
-    def _genera_fasce_orarie(self) -> list[FasciaOraria]:
+    def genera_fasce_orarie(self) -> list[FasciaOraria]:
         fasce = []  #creo lista vuota
 
         inizio = datetime.combine(datetime.today(), self._orarioapertura)  #aggiungo a oggi orario inizio 
