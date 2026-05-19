@@ -1,11 +1,19 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox)
+    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox, QStackedWidget)
+from Services import *
 
 class FormLogin(QWidget):
-    def __init__(self, stack):
+    def __init__(self, stack: QStackedWidget, gau: GestoreAutenticazione):
         super().__init__()
+        self._stack = stack
 
+        #Gestori
+        self.gestoreAutenticazione = gau
+
+        self._buildUI()
+
+    def _buildUI(self):
         self._lineEditUsername = QLineEdit()
         self._lineEditUsername.setPlaceholderText("Username")
         self._lineEditPassword = QLineEdit()
@@ -13,10 +21,11 @@ class FormLogin(QWidget):
         self._lineEditPassword.setEchoMode(QLineEdit.EchoMode.Password)
 
         btnLog = QPushButton("Login")
+        btnLog.clicked.connect(self.login)
 
         lblRegistra = QLabel("Non hai un account?")
         btnRegistra = QPushButton("Registrati!")
-        btnRegistra.clicked.connect(lambda: stack.setCurrentIndex(1))
+        btnRegistra.clicked.connect(lambda: self._stack.setCurrentIndex(1))
 
         hLayout = QHBoxLayout()
 
@@ -48,15 +57,21 @@ class FormLogin(QWidget):
         username = self._lineEditUsername.text().strip()
         password = self._lineEditPassword.text().strip()
 
+        print("Ci sonooo")
+
         if not username or not password:
             QMessageBox.warning(
                 self, "Attenzione",
                 "Inserisci username e password")
             return
         
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv) # creo app
-    f = FormLogin() # creo finestra
-    f.show() # mostro finestra
-    sys.exit(app.exec()) # avvio il loop degli eventi
+        risultato = self.gestoreAutenticazione.login(username, password)
+        if "Login Amministratore" in risultato:
+            self.stack.setCurrentIndex(2)
+            return
+        elif "Login Cliente" in risultato:
+            self.stack.setCurrentIndex(3)
+            return
+        else:
+            QMessageBox.warning(self, "Attenzione", risultato)
+            return

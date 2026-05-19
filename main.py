@@ -4,6 +4,8 @@ from Views import MainWindow
 from Repo import *
 from Services import *
 
+from datetime import date
+
 CARTELLA_DATI = "data"
 
 if __name__ == "__main__":
@@ -14,7 +16,7 @@ if __name__ == "__main__":
     acr = IngressoRepository(clr, CARTELLA_DATI + "/accessi.json")
     amr = AmministratoreRepository(CARTELLA_DATI + "/amministratori.json")
     cor = CorsoRepository(amr, clr, CARTELLA_DATI + "/corsi.json")
-    crr = CredenzialiRepository(clr, CARTELLA_DATI + "/credenziali.json")
+    crr = CredenzialiRepository(clr, amr, CARTELLA_DATI + "/credenziali.json")
     far = FasciaOrariaRepository(CARTELLA_DATI + "/fascieOrarie.json")
     par = PagamentoRepository(clr, CARTELLA_DATI + "/pagamenti.json")
     spr = SalaPesiRepository(far, CARTELLA_DATI + "/salePesi.json")
@@ -34,13 +36,15 @@ if __name__ == "__main__":
     gin = GestoreIngressi(acr, clr, abr, cmr)
     gor = GestoreOrario(plr)
     gpa = GestorePagamento(clr, par)
-    gpe = GestorePersonale(amr)
+    gpe = GestorePersonale(amr, crr)
     gpr = GestorePrenotazione(clr, pcr, psr, cor,far, gca)
     gsp = GestoreSalaPesi(spr)
     gsa = GestoreStatistiche(sar, acr, pcr, psr)
     gva = GestoreValidita(abr, cmr)
 
+    gpe.registraPersonale("Mario", "Rossi", date(1997, 7, 15), "RSSMRA97L15E388S", "mariorossi@gmail.com", "3564217465", "admin", "adminPassword")
+
     app = QApplication(sys.argv) # creo app
-    f = MainWindow() # creo finestra
+    f = MainWindow(gab, gau, gca, gce, gcl, gco, gin, gor, gpa, gpe, gpr, gsp, gsa, gva) # creo finestra
     f.show() # mostro finestra
     sys.exit(app.exec()) # avvio il loop degli eventi

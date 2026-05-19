@@ -1,12 +1,13 @@
 import json
 from Models import Credenziali, Cliente
-from . import ClienteRepository
+from . import ClienteRepository, AmministratoreRepository
 
 class CredenzialiRepository: # Repository
-    def __init__(self, clienteRepo: ClienteRepository, path: str = "credenziali.json"):
+    def __init__(self, clienteRepo: ClienteRepository, amministratoreRepo: AmministratoreRepository, path: str = "credenziali.json"):
         self._path  = path # file di persistenza a cui deve puntare la repository
         self._credenzialiRepo: dict = {} # dizionario che contiene gli accessi
         self._clienteRepo = clienteRepo #repo clienti
+        self._amministratoreRepo = amministratoreRepo
         self.carica() # la repo carica immediatamente gli accessi dalla memoria
 
     def carica(self) -> None: # Ricrea gli oggetti dal file di persistenza
@@ -19,7 +20,7 @@ class CredenzialiRepository: # Repository
             self._credenzialiRepo = {
                 d["id"]: Credenziali.fromDict({
                 **d, #Unpacking del dizionario
-                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+                "utente": self._clienteRepo.trovaPerCF(d["utente"]) if not self._clienteRepo.trovaPerCF(d["utente"]) is None else self._amministratoreRepo.trovaPerCF(d["utente"]) # trovo l'utente perché ho salvato solo il codice fiscale
             })  for d in dati} # from dict è metodo di classe di Credenziali
         except FileNotFoundError:
             self._credenzialiRepo = {} # al primo avvio
@@ -43,7 +44,7 @@ class CredenzialiRepository: # Repository
             return None
     
     def trovaPerUsername(self, username:str):
-        return next((c for c in self._credenzialiRepo if c.get_username() == username), None)
+        return next((c for c in self._credenzialiRepo.values() if c.get_username() == username), None)
     
     def lastId(self) -> str:
         # Cerca l'ultimo id

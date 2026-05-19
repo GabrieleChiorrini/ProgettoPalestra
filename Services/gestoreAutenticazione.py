@@ -1,3 +1,4 @@
+import binascii
 from AES_Python import AES
 from Repo import CredenzialiRepository, ClienteRepository
 from Models import Credenziali, Cliente, Amministratore
@@ -6,7 +7,9 @@ class GestoreAutenticazione():
     def __init__(self, credenzialiRepo: CredenzialiRepository, clienteRepo: ClienteRepository):
         self._credenzialiRepo = credenzialiRepo
         self._clienteRepo = clienteRepo
-        self.aes = AES(running_mode="CBC", key="ciaoSonoLaChiave")
+        chiave = "ciaoSonoLaChiaveDellaTuaPalestra"
+        self.ChiaveHex = binascii.hexlify(chiave.encode()).decode()
+        self.aes = AES(running_mode="CBC", key=self.ChiaveHex)
 
     def registrazione(self, username: str, password:str, codiceFiscale:str) -> str:
         if not isinstance(username, str):
@@ -21,12 +24,11 @@ class GestoreAutenticazione():
         if self._credenzialiRepo.trovaPerUsername(username):
             return "Username già esistente!"
     
-        passwordCriptata = self.aes.enc(password)
+        passwordCriptata = self.aes.enc(data_string=password, key=self.ChiaveHex)
         
         cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
         if not cliente:
             return "Cliente non trovato!"
-            #Dovremmo fare registrare il cliente
         
         credenziali = Credenziali(self._credenzialiRepo.newId(), cliente, username, passwordCriptata)
         self._credenzialiRepo.aggiungi(credenziali)
@@ -43,7 +45,12 @@ class GestoreAutenticazione():
         if not credenziali:
             return "Username errato"
         
-        passwordDecriptata = AES.dec(credenziali.get_password())
+        print(credenziali)
+        
+        passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
+
+        print(passwordDecriptata)
+        print(password)
 
         if password != passwordDecriptata:
             return "Password errata"

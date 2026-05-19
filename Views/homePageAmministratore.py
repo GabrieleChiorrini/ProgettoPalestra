@@ -1,12 +1,27 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy)
+    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy, QStackedWidget)
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
+from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
 
 class HomePageAmministratore(QWidget):
-    def __init__(self, stack):
+    def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
         super().__init__()
+
+        self._buildUI(stack)
+
+        #Gestori
+        self.gestoreAbbonamento = gab
+        self.gestoreCapienza = gca
+        self.gestoreCliente = gcl
+        self.gestoreCorso = gco
+        self.gestoreOrario = gor
+        self.gestorePagamento = gpa
+        self.gestorePersonale = gpe
+        self.gestoreSalaPesi = gsp
+
+    def _buildUI(self, stack):
         vLayout = QVBoxLayout()
         vLayout.setContentsMargins(0, 0, 0, 0)
 
@@ -140,7 +155,6 @@ class HomePageAmministratore(QWidget):
         self.setLayout(vLayout)
         self.showMaximized()
 
-
     def slideMenuLeft(self):
         wAttuale = self.frame1.width()
 
@@ -173,9 +187,3 @@ class HomePageAmministratore(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
         self.sender().setText(tDopo)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv) # creo app
-    f = HomePageAmministratore() # creo finestra
-    f.show() # mostro finestra
-    sys.exit(app.exec()) # avvio il loop degli eventi

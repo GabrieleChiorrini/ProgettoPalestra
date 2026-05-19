@@ -1,12 +1,25 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
+from PyQt6.QtWidgets import (QApplication, QStackedWidget, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy)
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
+from Services import (GestoreAbbonamento, GestoreCertificato, GestoreCorso, GestorePagamento, GestorePrenotazione, GestoreStatistiche)
 
 class HomePageCliente(QWidget):
-    def __init__(self, stack):
+    def __init__(self, stack, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche):
         super().__init__()
+
+        self._buildUI(stack)
+
+        #Gestori
+        self.gestoreAbbonamento = gab
+        self.gestoreCertificato = gce
+        self.gestoreCorso = gco
+        self.gestorePagamento = gpa
+        self.gestorePrenotazione = gpr
+        self.gestoreStatistiche = gsa
+    
+    def _buildUI(self, stack):
         vLayout = QVBoxLayout()
         vLayout.setContentsMargins(0, 0, 0, 0)
 
@@ -141,9 +154,3 @@ class HomePageCliente(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
         self.sender().setText(tDopo)
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv) # creo app
-    f = HomePageCliente() # creo finestra
-    f.show() # mostro finestra
-    sys.exit(app.exec()) # avvio il loop degli eventi

@@ -1,11 +1,19 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout)
+    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout, QStackedWidget, QMessageBox)
+from Services import GestoreAutenticazione
 
 class FormRegistrazione(QWidget):
-    def __init__(self, stack):
+    def __init__(self, stack:QStackedWidget, gau: GestoreAutenticazione):
         super().__init__()
+        self.stack = stack
+        
+        #Gestore
+        self.gestoreAutenticazione = gau
 
+        self._buildUI(stack)
+    
+    def _buildUI(self, stack):
         self._listaCampi = ["Codice fiscale", "Username", "Password", "Conferma password"]
         
         vLayout = QVBoxLayout()
@@ -24,6 +32,7 @@ class FormRegistrazione(QWidget):
         vLayout.addLayout(fLayout)
 
         btnReg = QPushButton("Registrati")
+        btnReg.clicked.connect(self.onRegistrati)
         vLayout.addWidget(btnReg)
 
         hLayout = QHBoxLayout()
@@ -48,6 +57,33 @@ class FormRegistrazione(QWidget):
 
         self.setLayout(gridLayout)
         self.showMaximized()
+    
+    def onRegistrati(self):
+        listaValori = []
+        for a in self._listaCampi:
+            testo = a.text().strip()
+            if testo:
+                listaValori.append(testo)
+            else:
+                QMessageBox.warning(
+                    self, "Attenzione",
+                    "il valore inserito in " + a.placeholderText().lower() + " non valido")
+                return
+        
+        if self._listaCampi[2].text().strip() != self._listaCampi[3].text().strip(): #Password e conferma passowrd diverse
+            QMessageBox.warning(
+                self, "Attenzione",
+                "Hai inserito password diverse")
+            return
+        
+        risultato = self.gestoreAutenticazione.registrazione(listaValori[1], listaValori[2], listaValori[0])
+        if "Cliente registrato correttamente!" in risultato:
+            self.stack.setCurrentIndex(0)
+            return
+        else:
+            QMessageBox.warning(self, "Attenzione", risultato)
+            return
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app

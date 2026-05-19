@@ -38,9 +38,3 @@ class FormPersonale(QWidget):
 
         self.setLayout(gridLayout)
         self.showMaximized()
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv) # creo app
-    f = FormPersonale() # creo finestra
-    f.show() # mostro finestra
-    sys.exit(app.exec()) # avvio il loop degli eventi

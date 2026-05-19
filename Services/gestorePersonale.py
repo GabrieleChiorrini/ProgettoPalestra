@@ -1,13 +1,14 @@
-from Repo import AmministratoreRepository
-from Models import Amministratore
+from Repo import AmministratoreRepository, CredenzialiRepository
+from Models import Amministratore, Credenziali
 from datetime import date
 
 class GestorePersonale:
-    def __init__(self, AmministratoreRepo: AmministratoreRepository):
+    def __init__(self, AmministratoreRepo: AmministratoreRepository, credenzialiRepo: CredenzialiRepository):
         self._amministratoreRepo = AmministratoreRepo
+        self._credenzialiRepo = credenzialiRepo
 
     def registraPersonale(self, nome: str, cognome: str, dataNascita: date, 
-                           codiceFiscale: str, email: str, telefono: str) -> str: #non passo id perchè lo genera sistema
+                           codiceFiscale: str, email: str, telefono: str, username: str, password: str) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
@@ -29,7 +30,10 @@ class GestorePersonale:
 
             self._amministratoreRepo.aggiungi(nuovoAmministratore)
 
-            return "Personale creato"
+            credenziali = Credenziali(self._credenzialiRepo.newId(), nuovoAmministratore, username, password)
+            self._credenzialiRepo.aggiungi(credenziali)
+
+            return "personale creato"
 
     def modificaPersonale(self, id:str,nuovaEmail:str, nuovoTelefono:str) -> str:
          personale= self._amministratoreRepo.trovaPerId(id)
