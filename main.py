@@ -36,7 +36,7 @@ if __name__ == "__main__":
     gin = GestoreIngressi(acr, clr, abr, cmr)
     gor = GestoreOrario(plr)
     gpa = GestorePagamento(clr, par)
-    gpe = GestorePersonale(amr, crr)
+    gpe = GestorePersonale(amr, crr, gau)
     gpr = GestorePrenotazione(clr, pcr, psr, cor,far, gca)
     gsp = GestoreSalaPesi(spr)
     gsa = GestoreStatistiche(sar, acr, pcr, psr)

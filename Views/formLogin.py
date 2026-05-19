@@ -67,10 +67,10 @@ class FormLogin(QWidget):
         
         risultato = self.gestoreAutenticazione.login(username, password)
         if "Login Amministratore" in risultato:
-            self.stack.setCurrentIndex(2)
+            self._stack.setCurrentIndex(2)
             return
         elif "Login Cliente" in risultato:
-            self.stack.setCurrentIndex(3)
+            self._stack.setCurrentIndex(3)
             return
         else:
             QMessageBox.warning(self, "Attenzione", risultato)

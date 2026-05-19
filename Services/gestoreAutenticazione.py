@@ -24,7 +24,7 @@ class GestoreAutenticazione():
         if self._credenzialiRepo.trovaPerUsername(username):
             return "Username già esistente!"
     
-        passwordCriptata = self.aes.enc(data_string=password, key=self.ChiaveHex)
+        passwordCriptata = self.criptaPassword(password)
         
         cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
         if not cliente:
@@ -62,4 +62,6 @@ class GestoreAutenticazione():
         elif isinstance(utente, Cliente):
             return "Login Cliente"
         return "Credenziali non collegate a nessuno"
-        
+    
+    def criptaPassword(self, password: str) -> str:
+        return self.aes.enc(data_string=password, key=self.ChiaveHex)

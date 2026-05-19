@@ -1,39 +1,42 @@
 from Repo import AmministratoreRepository, CredenzialiRepository
 from Models import Amministratore, Credenziali
-from datetime import date
+from Services import GestoreAutenticazione
 
 class GestorePersonale:
-    def __init__(self, AmministratoreRepo: AmministratoreRepository, credenzialiRepo: CredenzialiRepository):
+    def __init__(self, AmministratoreRepo: AmministratoreRepository, credenzialiRepo: CredenzialiRepository, gestoreAutenticazione: GestoreAutenticazione):
         self._amministratoreRepo = AmministratoreRepo
         self._credenzialiRepo = credenzialiRepo
+        self._gestoreAutenticazione = gestoreAutenticazione
 
     def registraPersonale(self, nome: str, cognome: str, dataNascita: date, 
                            codiceFiscale: str, email: str, telefono: str, username: str, password: str) -> str: #non passo id perchè lo genera sistema
         #check se esiste
-            personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
+          personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
-            if personaleEsistente is not None:
-                 return "Amministratore già esistente"
-            
-            nuovoId = self._amministratoreRepo.newId()
+          if personaleEsistente is not None:
+               return "Amministratore già esistente"
+          
+          nuovoId = self._amministratoreRepo.newId()
 
-            #creo oggetto
-            nuovoAmministratore = Amministratore (
-                 nome=nome,
-                 cognome= cognome,
-                 dataNascita= dataNascita,
-                 codiceFiscale= codiceFiscale,
-                 email= email,
-                 telefono= telefono,
-                 id= nuovoId
-            )
+          #creo oggetto
+          nuovoAmministratore = Amministratore (
+               nome=nome,
+               cognome= cognome,
+               dataNascita= dataNascita,
+               codiceFiscale= codiceFiscale,
+               email= email,
+               telefono= telefono,
+               id= nuovoId
+          )
 
-            self._amministratoreRepo.aggiungi(nuovoAmministratore)
+          self._amministratoreRepo.aggiungi(nuovoAmministratore)
 
-            credenziali = Credenziali(self._credenzialiRepo.newId(), nuovoAmministratore, username, password)
-            self._credenzialiRepo.aggiungi(credenziali)
+          passCriptata = self._gestoreAutenticazione.criptaPassword(password)
+          print(passCriptata)
+          credenziali = Credenziali(self._credenzialiRepo.newId(), nuovoAmministratore, username, passCriptata)
+          self._credenzialiRepo.aggiungi(credenziali)
 
-            return "personale creato"
+          return "personale creato"
 
     def modificaPersonale(self, id:str,nuovaEmail:str, nuovoTelefono:str) -> str:
          personale= self._amministratoreRepo.trovaPerId(id)
