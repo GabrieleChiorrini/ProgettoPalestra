@@ -93,30 +93,6 @@ class GestoreCliente:
      self._certificatoRepo.salva()
 
      return "cliente eliminato"
-    
-    def visualizzaCertificato(self, idCliente: str) -> str:
-
-     cliente = self._clienteRepo.trovaPerId(idCliente)
-
-     if cliente is None:
-        return "cliente non trovato"
-
-     certificato = cliente.get_certificato()
-
-     if certificato is None:
-        return "nessun certificato trovato"
-
-     scadenza = certificato.get_dataScadenza()
-     validità = certificato.get_validità()
-
-     oggi = date.today()
-
-     giorniAllaScadenza = (scadenza - oggi).days
-     return {
-    "dataScadenza": scadenza,
-    "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto",
-    "validità" : 'Attivo' if validità==True else 'Scaduto'
-}
 
 
          

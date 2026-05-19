@@ -1,7 +1,7 @@
 import unittest
 
 from Models import Credenziali, Utente
-from Repo import CredenzialiRepository, UtenteRepository
+from Repo import CredenzialiRepository, UtenteRepository, ClienteRepository, CertificatoMedicoRepository, AmministratoreRepository
 from test.entita_finte import utente_finto
 
 
@@ -15,7 +15,10 @@ class TestCredenziali(unittest.TestCase):
         self.utente = utente_finto()
 
         utente_repo = UtenteRepository()
-        self.credenzialiRepo = CredenzialiRepository(utente_repo)
+        cert_repo = CertificatoMedicoRepository()
+        cliente_repo = ClienteRepository(cert_repo)
+        amministratore_repo = AmministratoreRepository()
+        self.credenzialiRepo = CredenzialiRepository(cliente_repo, amministratore_repo)
 
         self.idCredenziale = self.credenzialiRepo.newId()
 

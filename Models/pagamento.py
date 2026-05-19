@@ -1,11 +1,11 @@
 from . import Cliente
-from datetime import datetime
+from datetime import date
 
 class Pagamento:
-    def __init__(self, id: str, importo: float, data: datetime, cliente: Cliente):
+    def __init__(self, id: str, importo: float, cliente: Cliente):
         self._id = id
         self._importo = importo
-        self._data = datetime.now()
+        self._data = date.today()
         self._cliente = cliente
 
     def get_id(self) -> str:
@@ -14,7 +14,7 @@ class Pagamento:
     def get_importo(self) -> float:
         return self._importo
 
-    def get_data(self) -> datetime:
+    def get_data(self) -> date:
         return self._data
 
     def get_cliente(self) -> Cliente:
@@ -30,12 +30,14 @@ class Pagamento:
 
     @classmethod
     def fromDict(cls, d: dict) -> "Pagamento":
-        return cls(
+        pagamento = cls(
             d["id"],
             d["importo"],
-            datetime.fromisoformat(d["data"]),
             d["cliente"]
         )
+        pagamento._data = date.fromisoformat(d["data"])
+        return pagamento
+
 
     def __str__(self) -> str:
         return (

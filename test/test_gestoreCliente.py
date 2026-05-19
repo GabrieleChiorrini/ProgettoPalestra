@@ -84,7 +84,7 @@ class TestGestoreCliente(unittest.TestCase):
         risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_id())
         self.assertIn('cliente non trovato', risultato)
 
-    def test_visualizzaCertificato_non_trovato(self):
+    """def test_visualizzaCertificato_non_trovato(self):
         
         risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
         self.assertIn('cliente non trovato', risultato)
@@ -101,7 +101,7 @@ class TestGestoreCliente(unittest.TestCase):
         giorni_attesi = (datetime.combine(cert.get_dataScadenza(), time(23, 59, 59, 9999)) - datetime.today()).days
         self.assertEqual(risultato["giorniAllaScadenza"], giorni_attesi)
 
-        self.assertEqual(risultato["validità"], "Attivo")
+        self.assertEqual(risultato["validità"], "Attivo")"""
 
 
     
