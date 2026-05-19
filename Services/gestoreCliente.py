@@ -114,8 +114,8 @@ class GestoreCliente:
      giorniAllaScadenza = (scadenza - oggi).days
      return {
     "dataScadenza": scadenza,
-    "giorniAllaScadenza": {giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto"},
-    "validità" : {'Attivo' if validità==True else 'Scaduto'}
+    "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto",
+    "validità" : 'Attivo' if validità==True else 'Scaduto'
 }
 
 

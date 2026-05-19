@@ -10,7 +10,7 @@ def certificato_finto():
         cert_id = cert_repo.newId()
     except AttributeError:
         cert_id = "CM000"
-    return CertificatoMedico(date(2025, 1, 15), cert_id, True)
+    return CertificatoMedico(datetime.now().date(), cert_id, True)
 
 def cliente_finto():
     certificato = certificato_finto()

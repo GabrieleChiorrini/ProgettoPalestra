@@ -45,6 +45,6 @@ class CertificatoMedico:
     
     def __str__(self) -> str:
         certificatoMedico = (f"certificato medico :\n"
-                  f"\tdata effettuato: {self._dataEffettuato}\n"
+                  f"\tdata effettuato: self._dataEffettuato\n"
                   f"\tvalidità: {'Attivo' if self._validità else 'Scaduto'}\n")
         return certificatoMedico

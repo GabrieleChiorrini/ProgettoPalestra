@@ -2,7 +2,7 @@ import unittest, os
 from test import entita_finte as ef
 from Services import GestoreCliente
 from Repo import ClienteRepository, CertificatoMedicoRepository
-from datetime import datetime
+from datetime import datetime, time
 
 
 
@@ -69,8 +69,8 @@ class TestGestoreCliente(unittest.TestCase):
     def test_modificaCliente_certificato_non_trovato(self):  #NON FUNIZONA
 
         nuova_data = datetime(2026, 5, 19)
-        self.certificatiRepo.eliminaPerId(self.certificatoMedico.get_id())
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
+        self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale())._certificato = None
         risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(),'nuovaEmail' , 'nuovoTelefono' , nuova_data)
         self.assertIn('Errore: certificato non trovato', risultato)
 
@@ -94,11 +94,11 @@ class TestGestoreCliente(unittest.TestCase):
        
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
         risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
-        cert = self.certificatiRepo.trovaPerId(self.cliente.get_id())
+        cert = self.certificatiRepo.trovaPerId(self.cliente.get_certificato().get_id())
 
         self.assertEqual(risultato["dataScadenza"], cert.get_dataScadenza())
 
-        giorni_attesi = (cert.get_dataFine() - datetime.today()).days
+        giorni_attesi = (datetime.combine(cert.get_dataScadenza(), time(23, 59, 59, 9999)) - datetime.today()).days
         self.assertEqual(risultato["giorniAllaScadenza"], giorni_attesi)
 
         self.assertEqual(risultato["validità"], "Attivo")
