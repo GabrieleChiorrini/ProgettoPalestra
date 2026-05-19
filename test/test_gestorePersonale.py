@@ -15,9 +15,9 @@ class TestGestorePersonale(unittest.TestCase):
 
         # repository
         self.amministratoreRepo = AmministratoreRepository( self.fileAmministratore)
-        self.credenzialiRepo = CredenzialiRepository(self.fileCredenziali,self.amministratoreRepo)
         certificatoRepo = CertificatoMedicoRepository()
         self.clienteRepo = ClienteRepository(certificatoRepo)
+        self.credenzialiRepo = CredenzialiRepository(self.clienteRepo, self.amministratoreRepo, self.fileCredenziali)
 
         # pulizia stato
         self.amministratoreRepo._amministratori = {}
@@ -183,10 +183,11 @@ class TestGestorePersonale(unittest.TestCase):
 
         admin = self.amministratoreRepo.trovaPerCF(self.amministratore.get_codiceFiscale())
 
-        cred = self.credenzialiRepo.trovaPerAmministratoreId(admin.get_id())
+        cred = self.credenzialiRepo.trovaPerUsername("admin")
 
         self.assertIsNotNone(cred)
-        self.assertEqual(cred.get_username(), "admin")
+        # Verifica che l'utente collegato a queste credenziali sia l'amministratore corretto
+        self.assertEqual(cred.get_utente().get_id(), admin.get_id())
 
     def test_credenziali_eliminate_con_personale(self):
 
@@ -204,7 +205,7 @@ class TestGestorePersonale(unittest.TestCase):
         admin = self.amministratoreRepo.trovaPerCF(self.amministratore.get_codiceFiscale())
 
         self.gestorePersonale.eliminaPersonale(admin.get_id())
-        cred = self.credenzialiRepo.trovaPerAmministratoreId(admin.get_id())
+        cred = self.credenzialiRepo.trovaPerUsername("admin")
         self.assertIsNone(cred)
 
 
