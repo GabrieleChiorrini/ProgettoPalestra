@@ -29,7 +29,7 @@ class GestorePersonale:
 
             self._amministratoreRepo.aggiungi(nuovoAmministratore)
 
-            return "personale creato"
+            return "Personale creato"
 
     def modificaPersonale(self, id:str,nuovaEmail:str, nuovoTelefono:str) -> str:
          personale= self._amministratoreRepo.trovaPerId(id)

@@ -32,7 +32,7 @@ class AmministratoreRepository: # Repository
     def trovaPerCF(self, codiceFiscale: str):
     #siccome chiave del dizionario è id devo trovare tra gli oggetti del dizionario i valori
         for admin in self._amministratori.values():
-            if admin["codiceFoscale"] == codiceFiscale: 
+            if admin.get_codiceFiscale() == codiceFiscale: 
                 return admin
             else:
                 return None  

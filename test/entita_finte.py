@@ -35,7 +35,7 @@ def abbonamento_finto(cliente):
         tipo=TipoAbbonamento.CORSI
     )
 
-def personale_finto():
+def personale_finto()-> Amministratore:
     admin_repo = AmministratoreRepository()
     admin_id = admin_repo.newId()
     return Amministratore("Mario", "Rossi", date(1980,1,1), "MRARSS80A01H501U", "mario.rossi@gmail.com", "33450928340", admin_id)
