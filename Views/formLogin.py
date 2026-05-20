@@ -64,13 +64,20 @@ class FormLogin(QWidget):
                 "Inserisci username e password")
             return
         
-        risultato = self.gestoreAutenticazione.login(username, password)
+        (risultato, id) = self.gestoreAutenticazione.login(username, password)
         if "Login Amministratore" in risultato:
             self._stack.setCurrentIndex(2)
+            self.ripulisciCampi()
             return
         elif "Login Cliente" in risultato:
             self._stack.setCurrentIndex(3)
+            self._stack.widget(3).setID(id)
+            self.ripulisciCampi()
             return
         else:
             QMessageBox.warning(self, "Attenzione", risultato)
             return
+    
+    def ripulisciCampi(self):
+        self._lineEditUsername.clear()
+        self._lineEditPassword.clear()

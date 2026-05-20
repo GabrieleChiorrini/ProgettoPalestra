@@ -36,14 +36,14 @@ class GestoreAutenticazione():
     
     def login(self, username:str, password:str) -> str:
         if not isinstance(username, str):
-            return "L'username deve essere una stringa!"
+            return "L'username deve essere una stringa!", None
         
         if not isinstance(password, str):
-            return "La password deve essere una stringa!"
+            return "La password deve essere una stringa!", None
         
         credenziali = self._credenzialiRepo.trovaPerUsername(username)
         if not credenziali:
-            return "Username errato"
+            return "Username errato", None
 
         #passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
         passwordDecriptata = cryptocode.decrypt(credenziali.get_password(), self._chiave)
@@ -52,15 +52,15 @@ class GestoreAutenticazione():
         print(password)
 
         if password != passwordDecriptata:
-            return "Password errata"
+            return "Password errata", None
         
         utente = credenziali.get_utente()
         if isinstance(utente, Amministratore):
-            return "Login Amministratore"
+            return "Login Amministratore", utente.get_id()
 
         elif isinstance(utente, Cliente):
-            return "Login Cliente"
-        return "Credenziali non collegate a nessuno"
+            return "Login Cliente", utente.get_id()
+        return "Credenziali non collegate a nessuno", None
     
     def criptaPassword(self, password: str) -> str:
         return cryptocode.encrypt(password, self._chiave)

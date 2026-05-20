@@ -67,7 +67,7 @@ class GestoreAbbonamento:
          abbonamento = self._abbonamentorepo.trovaPerIdCliente(idCliente)
 
          if abbonamento is None:
-              return "Nessun abbonamento trovato"
+              return {"abbonamento" : "Nessuno trovato"}
          
          scadenza = abbonamento.get_dataFine()
          validità = abbonamento.get_stato()
@@ -76,9 +76,9 @@ class GestoreAbbonamento:
 
          giorniAllaScadenza = (scadenza - oggi).days
 
-         return {"dataScadenza": scadenza,
-                 "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza > 0 else "scaduto",
-                 "validità" : 'Attivo' if validità==True else 'Scaduto'
+         return {"dataScadenza": scadenza.strftime("%d/%m/%Y"),
+                 "giorniAllaScadenza": str(giorniAllaScadenza) if giorniAllaScadenza > 0 else "scaduto",
+                 "validità" : 'Attivo' if validità else 'Scaduto'
                 }
 
         

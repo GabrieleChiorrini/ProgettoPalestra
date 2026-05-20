@@ -4,9 +4,10 @@ from PyQt6.QtWidgets import (QApplication, QStackedWidget, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import (GestoreAbbonamento, GestoreCertificato, GestoreCorso, GestorePagamento, GestorePrenotazione, GestoreStatistiche)
+from Views import FormEliminaPrenotazione, FormPrenotazioneCorso, FormPrenotazioneSalaPesi, ViewAbbonamento, ViewCertificato
 
 class HomePageCliente(QWidget):
-    def __init__(self, stack, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche):
+    def __init__(self, stack: QStackedWidget, clieteId: str, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche):
         super().__init__()
 
         self._buildUI(stack)
@@ -18,6 +19,13 @@ class HomePageCliente(QWidget):
         self.gestorePagamento = gpa
         self.gestorePrenotazione = gpr
         self.gestoreStatistiche = gsa
+
+        #idCliente
+        self._clienteId = clieteId
+
+    def setID(self, nuovoId):
+        if isinstance(nuovoId, str) or nuovoId is None:
+            self._clienteId = nuovoId
     
     def _buildUI(self, stack):
         vLayout = QVBoxLayout()
@@ -49,10 +57,13 @@ class HomePageCliente(QWidget):
         vLayout2.setSpacing(0)
         vLayout2.setContentsMargins(0, 0, 0, 0)
         btnPrenSP = QPushButton("Prenota sala pesi")
+        btnPrenSP.clicked.connect(self._onPrenotazioneSalaPesi)
         vLayout2.addWidget(btnPrenSP)
         btnPrenCorso = QPushButton("Prenota corso ")
+        btnPrenCorso.clicked.connect(self._onPrenotazioneCorso)
         vLayout2.addWidget(btnPrenCorso)
         btnAnnullaPren = QPushButton("Annulla prenotazione")
+        btnAnnullaPren.clicked.connect(self._onEliminaPrenotazione)
         vLayout2.addWidget(btnAnnullaPren)
 
         self.frame2 = QFrame()
@@ -76,16 +87,22 @@ class HomePageCliente(QWidget):
         vLayout3.setSpacing(0)
         vLayout3.setContentsMargins(0, 0, 0, 0)
         btnShowCertificato = QPushButton("Visualizza certificato")
+        btnShowCertificato.clicked.connect(self._onVisualizzaCertificato)
         vLayout3.addWidget(btnShowCertificato)
         btnShowAbbonamento = QPushButton("Visualizza abbonamento")
+        btnShowAbbonamento.clicked.connect(self._onVisualizzaAbbonamento)
         vLayout3.addWidget(btnShowAbbonamento)
         btnShowStatistiche = QPushButton("Visualizza statistiche")
+        btnShowStatistiche.clicked.connect(self._onVisualizzaStatistiche)
         vLayout3.addWidget(btnShowStatistiche)
         btnShowPagamenti = QPushButton("Visualizza pagamenti")
+        btnShowPagamenti.clicked.connect(self._onVisualizzaPagamenti)
         vLayout3.addWidget(btnShowPagamenti)
         btnShowOrari = QPushButton("Visualizza orari corsi")
+        btnShowOrari.clicked.connect(self._onVisualizzaOrariCorsi)
         vLayout3.addWidget(btnShowOrari)
         btnShowIscritti = QPushButton("Visualizza iscritti corsi")
+        btnShowIscritti.clicked.connect(self._onVisualizzaIscrittiCorso)
         vLayout3.addWidget(btnShowIscritti)
 
         self.frame3 = QFrame()
@@ -111,6 +128,10 @@ class HomePageCliente(QWidget):
         vLayoutf.addWidget(lbl3)
         vLayoutf.addStretch(1)
 
+        btnEsci = QPushButton("Esci")
+        btnEsci.clicked.connect(lambda: (stack.setCurrentIndex(0), self.setID(None)))
+        vLayoutf.addWidget(btnEsci)
+
         gridLayout = QGridLayout()
         hLayout.addLayout(gridLayout)
         hLayout.addStretch(1)
@@ -120,7 +141,6 @@ class HomePageCliente(QWidget):
 
         self.setLayout(vLayout)
         self.showMaximized()
-
 
     def slideMenuLeft(self):
         wAttuale = self.frame1.width()
@@ -154,3 +174,45 @@ class HomePageCliente(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
         self.sender().setText(tDopo)
+
+    def _onPrenotazioneSalaPesi(self):
+        self.form = FormPrenotazioneSalaPesi(self.gestorePrenotazione, self._clienteId)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def _onPrenotazioneCorso(self):
+        self.form = FormPrenotazioneCorso(self.gestorePrenotazione, self._clienteId)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def _onEliminaPrenotazione(self):
+        self.form = FormEliminaPrenotazione(self.gestorePrenotazione, self._clienteId)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def _onVisualizzaCertificato(self):
+        self.form = ViewCertificato(self.gestoreCertificato, self._clienteId)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def _onVisualizzaAbbonamento(self):
+        self.form = ViewAbbonamento(self.gestoreAbbonamento, self._clienteId)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def _onVisualizzaStatistiche(self):
+        pass
+
+    def _onVisualizzaPagamenti(self):
+        pass
+
+    def _onVisualizzaOrariCorsi(self):
+        pass
+
+    def _onVisualizzaIscrittiCorso(self):
+        pass

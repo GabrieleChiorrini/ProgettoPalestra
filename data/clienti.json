@@ -1,0 +1,12 @@
+[
+    {
+        "nome": "Luca",
+        "cognome": "Bianchi",
+        "dataNascita": "1979-01-23",
+        "codiceFiscale": "BNCLCU79A23E388S",
+        "email": "lucabianchi@gmail.com",
+        "telefono": "3456789752",
+        "id": "CL000",
+        "certificato": "CM000"
+    }
+]

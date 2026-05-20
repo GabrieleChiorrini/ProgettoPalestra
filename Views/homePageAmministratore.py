@@ -150,6 +150,10 @@ class HomePageAmministratore(QWidget):
         vLayout.addLayout(hLayout, 1)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
+        btnEsci = QPushButton("Esci")
+        btnEsci.clicked.connect(lambda: stack.setCurrentIndex(0))
+        vLayoutf.addWidget(btnEsci)
+
         self.frame1 = QFrame()
         self.frame1.setFixedWidth(0)
         self.frame1.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)

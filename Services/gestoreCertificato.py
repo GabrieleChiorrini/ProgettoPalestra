@@ -12,12 +12,12 @@ class GestoreCertificato:
       cliente = self._clienteRepo.trovaPerId(idCliente)
 
       if cliente is None:
-         return "certificato non trovato"
+         return {"certificato":"non trovato"}
 
       certificato = cliente.get_certificato()
 
       if certificato is None:
-         return "nessun certificato trovato"
+         return {"certificato" : "nessuno trovato"}
 
       scadenza = certificato.get_dataScadenza()
       validità = certificato.get_validità()
@@ -26,7 +26,7 @@ class GestoreCertificato:
 
       giorniAllaScadenza = (scadenza - oggi).days
       return {
-      "dataScadenza": scadenza,
-      "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto",
-      "validità" : 'Attivo' if validità==True else 'Scaduto'
+      "dataScadenza": scadenza.strftime("%d/%m/%Y"),
+      "giorniAllaScadenza": str(giorniAllaScadenza) if giorniAllaScadenza>0 else "scaduto",
+      "validità" : 'Attivo' if validità else 'Scaduto'
 }
