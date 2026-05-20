@@ -1,6 +1,7 @@
 from Views.formAbbonamento import FormAbbonamento
 from Views.formCapienza import FormCapienza
 from Views.formCliente import FormCliente
+from Views.formCorso import FormCorso
 from Views.formEliminaPrenotazione import FormEliminaPrenotazione
 from Views.formLogin import FormLogin
 from Views.formOrario import FormOrario
@@ -11,6 +12,9 @@ from Views.formPrenotazioneSalaPesi import FormPrenotazioneSalaPesi
 from Views.formRegistrazione import FormRegistrazione
 from Views.viewAbbonamento import ViewAbbonamento
 from Views.viewCertificato import ViewCertificato
+from Views.viewIscritti import ViewIscirtti
+from Views.viewOrariCorsi import ViewOrariCorsi
+from Views.viewPagamenti import ViewPagamenti
 from Views.homePageAmministratore import HomePageAmministratore
 from Views.homePageCliente import HomePageCliente
 from Views.mainWindow import MainWindow

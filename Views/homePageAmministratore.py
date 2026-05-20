@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
-from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario
+from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario, FormCorso
 
 class HomePageAmministratore(QWidget):
     def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
@@ -127,6 +127,36 @@ class HomePageAmministratore(QWidget):
         self.frame4.setLayout(vLayout4)
         vLayoutf.addWidget(self.frame4)
 
+        #Corso
+        hLayout5 = QHBoxLayout()
+        lblCorso = QLabel("Corso")
+        hLayout5.addWidget(lblCorso, 1)
+        self.btnCorso = QPushButton(">")
+        self.btnCorso.clicked.connect(lambda: self.dropDownMenu1(self.frame5))
+        hLayout5.addWidget(self.btnCorso)
+        vLayoutf.addLayout(hLayout5)
+
+        vLayout5 = QVBoxLayout()
+        vLayout5.setSpacing(0)
+        vLayout5.setContentsMargins(0, 0, 0, 0)
+        btnCreaCor = QPushButton("Crea corso")
+        btnCreaCor.clicked.connect(self.onCreaCorso)
+        vLayout5.addWidget(btnCreaCor)
+        btnModificaCor = QPushButton("Modifica corso")
+        btnModificaCor.clicked.connect(self.onModificaCorso)
+        vLayout5.addWidget(btnModificaCor)
+        btnElCor = QPushButton("Elimina corso")
+        btnElCor.clicked.connect(self.onEliminaCorso)
+        vLayout5.addWidget(btnElCor)
+
+        self.frame5 = QFrame()
+        self.frame5.setMaximumHeight(0);
+        self.frame5.setMinimumHeight(0);
+        self.frame5.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.frame5.setStyleSheet("background-color: blue;")
+        self.frame5.setLayout(vLayout5)
+        vLayoutf.addWidget(self.frame5)
+
         btnRegPag = QPushButton("Registrare pagamento")
         btnRegPag.clicked.connect(self.onRegistraPagamento)
         vLayoutf.addWidget(btnRegPag)
@@ -248,6 +278,24 @@ class HomePageAmministratore(QWidget):
     
     def onRinnovaAbbonamento(self):
         self.form = FormAbbonamento(self.gestoreAbbonamento, rinnova=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onCreaCorso(self):
+        self.form = FormCorso(self.gestoreCorso)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onModificaCorso(self):
+        self.form = FormCorso(self.gestoreCorso, modifica=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onEliminaCorso(self):
+        self.form = FormCorso(self.gestoreCorso, elimina=True)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()

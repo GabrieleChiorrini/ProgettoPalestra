@@ -28,14 +28,11 @@ class ViewAbbonamento(QWidget):
 
         vLayout.addLayout(fLayout)
 
-        hLayout = QHBoxLayout()
 
         btnAnnulla = QPushButton("Annulla")
         btnAnnulla.clicked.connect(self.close)
-        hLayout.addWidget(btnAnnulla)
+        vLayout.addWidget(btnAnnulla)
         self.setWindowTitle("Abbonamento")
-
-        vLayout.addLayout(hLayout)
 
         self.setLayout(vLayout)
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
