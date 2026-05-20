@@ -8,36 +8,44 @@ class GestoreAbbonamento:
         self._abbonamentorepo = AbbonamentoRepo
         self._clienterepo = ClienteRepo
 
-    def creaAbbonamento (self, idCliente:str, durata: timedelta,  tipo: TipoAbbonamento) -> str:
+    def creaAbbonamento (self, codiceFiscalCliente :str, durata: str,  tipo: TipoAbbonamento) -> str:
+
+        cliente = self._clienterepo.trovaPerCF(codiceFiscalCliente)
+
+        if cliente is None:
+            return "Cliente non trovato"
         
-        abbonamentoEsistente = self._abbonamentorepo.trovaPerCliente(idCliente)
+        abbonamentoEsistente = self._abbonamentorepo.trovaPerIdCliente(cliente.get_id())
 
         if abbonamentoEsistente is not None and abbonamentoEsistente.get_stato():
             return "Esistente"
 
-        nuovoId = self._abbonamentorepo.newId()
-        nuovoCliente = self._clienterepo.trovaPerId(idCliente)
+        nuovoId = self._abbonamentorepo.newId() if abbonamentoEsistente is None else abbonamentoEsistente.get_id()
 
         #creo Abbonamento 
         nuovoAbbonamento= Abbonamento (
-            cliente= nuovoCliente, 
+            cliente= cliente, 
             id=nuovoId, 
-            durata= durata, 
+            durata= timedelta(int(durata)), 
             dataInizio= datetime.now(),
             stato= True,
             tipo= tipo)
         
         self._abbonamentorepo.aggiungi(nuovoAbbonamento)
-        return "Abbonamento Creato"
+        return "Abbonamento creato"
 
-    def rinnovaAbbonamento(self, idCliente: str, nuovaDurata: timedelta,tipo: TipoAbbonamento) -> str:
+    def rinnovaAbbonamento(self, codiceFiscaleCliente: str, nuovaDurata: str,tipo: TipoAbbonamento) -> str:
 
-        #cliente = self._clienterepo.trovaPerId(idCliente)
-        abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
+        cliente = self._clienterepo.trovaPerCF(codiceFiscaleCliente)
+
+        if cliente is None:
+            return "Cliente non trovato"
+
+        abbonamento = self._abbonamentorepo.trovaPerCliente(cliente.get_id())
         if abbonamento is None:
             return self.creaAbbonamento(
-                idCliente=idCliente,
-                durata=nuovaDurata,
+                idCliente=cliente.get_id(),
+                durata=timedelta(int(nuovaDurata)),
                 tipo=tipo
                 )
 
@@ -68,11 +76,10 @@ class GestoreAbbonamento:
 
          giorniAllaScadenza = (scadenza - oggi).days
 
-         return {
-    "dataScadenza": scadenza,
-    "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza > 0 else "scaduto",
-    "validità" : 'Attivo' if validità==True else 'Scaduto'
-    }
+         return {"dataScadenza": scadenza,
+                 "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza > 0 else "scaduto",
+                 "validità" : 'Attivo' if validità==True else 'Scaduto'
+                }
 
         
 

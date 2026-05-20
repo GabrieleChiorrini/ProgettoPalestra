@@ -1,65 +1,103 @@
 import sys
-from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout,
-    QFormLayout, QLineEdit, QPushButton, QGridLayout
-)
+from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
+    QFormLayout, QLineEdit, QPushButton, QHBoxLayout, QComboBox, QMessageBox)
+
+if not __name__ == "__main__":
+    from Services import GestoreAbbonamento
+    from Enumerazione import TipoAbbonamento
 
 class FormAbbonamento(QWidget):
-
-    CREA = "crea"
-    RINNOVA = "rinnova"
-
-    def __init__(self):
+    def __init__(self, gab: GestoreAbbonamento, rinnova: bool = False):
         super().__init__()
 
-        self._campi = {}
-        self._modalita = self.CREA
+        self._gestoreAbbonamento = gab
 
-        self._init_ui()
-        self.set_modalita_crea() #messo come default appena crei il form
+        self.BuildUI(rinnova)
 
-    def _init_ui(self):  #la schermata principale rimane uguale, cambia solo se posso o no compilare i campi
+    def BuildUI(self, rinnova: bool):  #la schermata principale rimane uguale, cambia solo se posso o no compilare i campi
         vLayout = QVBoxLayout()
         fLayout = QFormLayout()
 
-        for nome in ["cliente", "durata", "tipo"]:
-            line_edit = QLineEdit()
-            line_edit.setPlaceholderText(nome)
+        self._lineEditCliente = QLineEdit()
+        self._lineEditCliente.setPlaceholderText("Codice Fiscale Cliente")
+        fLayout.addRow("Codice Fiscale Cliente:", self._lineEditCliente)
 
-            fLayout.addRow(nome + ":", line_edit)
-            self._campi[nome] = line_edit
+        self._lineEditDurata = QLineEdit()
+        self._lineEditDurata.setPlaceholderText("Durata Abbonamento")
+        fLayout.addRow("Durata Abbonamento:", self._lineEditDurata)
+
+        self._comboTipo = QComboBox()
+        self._comboTipo.addItems(["SalaPesi & Corsi", "Corsi", "SalaPesi"])
+        self._comboTipo.setCurrentIndex(0)
+        fLayout.addRow("Tipo Abbonamento:", self._comboTipo)
 
         self._btn = QPushButton()
 
         vLayout.addLayout(fLayout)
-        vLayout.addWidget(self._btn)
 
-        gridLayout = QGridLayout()
-        gridLayout.addLayout(vLayout, 1, 1)
+        hLayout = QHBoxLayout()
 
-        self.setLayout(gridLayout)
-        self.showMaximized()
+        btnAnnulla = QPushButton("Annulla")
+        btnAnnulla.clicked.connect(self.close)
+        hLayout.addWidget(btnAnnulla)
 
-    #modalità per fare crea e rinnova
-    def set_modalita_crea(self):
-        self._modalita = self.CREA
-        self._btn.setText("Crea abbonamento")
+        if rinnova:
+            btnModifica = QPushButton("Salva")
+            btnModifica.clicked.connect(self.onRinnova)
+            hLayout.addWidget(btnModifica)
+            self.setWindowTitle("Modifica Abbonamento")
+        else:
+            btnReg = QPushButton("Crea")
+            btnReg.clicked.connect(self.onCrea)
+            hLayout.addWidget(btnReg)
+            self.setWindowTitle("Crea Abbonamento")
 
-        self._campi["cliente"].setReadOnly(False)
+        vLayout.addLayout(hLayout)
 
-    def set_modalita_rinnova(self, abbonamento):
-        self._modalita = self.RINNOVA
-        self._btn.setText("Rinnova abbonamento")
+        self.setLayout(vLayout)
+        self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
+    
+    def onCrea(self):
+        codiceFiscale = self._lineEditCliente.text().strip()
+        if codiceFiscale is None:
+            self.warning("Inserisci il codice fiscale")
+            return
+        
+        durataAbbonamento = self._lineEditDurata.text().strip()
+        if durataAbbonamento is None:
+            self.warning("Inserisci la durata dell'abbonamento")
+            return
+        
+        tipo = self._comboTipo.currentIndex()
 
-        # precompilazione (esempio)
-        self._campi["cliente"].setText(str(abbonamento.cliente))
-        self._campi["tipo"].setText(str(abbonamento.tipo))
+        risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
+        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
-        self._campi["cliente"].setReadOnly(True)
+    def onRinnova(self):
+        codiceFiscale = self._lineEditCliente.text().strip()
+        if codiceFiscale is None:
+            self.warning("Inserisci il codice fiscale")
+            return
+        
+        durataAbbonamento = self._lineEditDurata.text().strip()
+        if durataAbbonamento is None:
+            self.warning("Inserisci la durata dell'abbonamento")
+            return
+        
+        tipo = self._comboTipo.currentIndex()
 
+        risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
+        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento rinnovato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+
+    def warning(self, testo:str) -> None:
+        QMessageBox.warning(self, "Attenzione", testo)
     
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    f = FormAbbonamento()
-    f.show()
+    f = FormAbbonamento(None)
+    f.show() # mostro finestra
+    f.move((f.pos().x() - f.geometry().width()//2 - 10), f.pos().y())
+    f2 = FormAbbonamento(None, rinnova=True)
+    f2.move((f.pos().x() + f.geometry().width() + 20), f.pos().y())
+    f2.show()
     sys.exit(app.exec())

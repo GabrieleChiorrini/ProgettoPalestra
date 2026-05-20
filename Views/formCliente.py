@@ -6,13 +6,13 @@ if __name__ != "__main__":
     from Services import GestoreCliente
 
 class FormCliente(QWidget):
-    def __init__(self, gcl:GestoreCliente, modifica:bool = None, elimina:bool = None):
+    def __init__(self, gcl:GestoreCliente, modifica:bool = False, elimina:bool = False):
         super().__init__()
         self._gestoreCliente = gcl
 
         self.buildUI(modifica, elimina)
     
-    def buildUI(self, modifica, elimina):
+    def buildUI(self, modifica: bool, elimina: bool):
         if not(modifica or elimina):
             self._listaCampi = ["Nome", "Cognome", "Data di nascita", "Codice Fiscale", "Email", "Telefono"]
 
@@ -96,7 +96,7 @@ class FormCliente(QWidget):
             if not testo is None:
                 break
         else:
-            QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere")
+            QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere inserito")
         
         valori = [a.text().strip() for a in self._listaCampi]
 

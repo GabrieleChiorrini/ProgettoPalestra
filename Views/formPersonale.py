@@ -6,13 +6,13 @@ if __name__ != "__main__":
     from Services import GestorePersonale
 
 class FormPersonale(QWidget):
-    def __init__(self, gpe:GestorePersonale, modifica:bool = None, elimina:bool = None):
+    def __init__(self, gpe:GestorePersonale, modifica:bool = False, elimina:bool = False):
         super().__init__()
         self._gestorePersonale = gpe
 
         self.buildUI(modifica, elimina)
     
-    def buildUI(self, modifica, elimina):
+    def buildUI(self, modifica: bool, elimina: bool):
         if not(modifica or elimina):
             self._listaCampi = ["Nome", "Cognome", "Data di nascita", "Codice Fiscale", "Email", "Telefono", "Username", "Password"]
         

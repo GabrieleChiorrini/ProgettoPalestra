@@ -113,8 +113,10 @@ class HomePageAmministratore(QWidget):
         vLayout4.setSpacing(0)
         vLayout4.setContentsMargins(0, 0, 0, 0)
         btnCreaAbb = QPushButton("Crea abbonamento")
+        btnCreaAbb.clicked.connect(self.onCreaAbbonamento)
         vLayout4.addWidget(btnCreaAbb)
         btnRinnovaAbb = QPushButton("Rinnova abbonamento")
+        btnRinnovaAbb.clicked.connect(self.onRinnovaAbbonamento)
         vLayout4.addWidget(btnRinnovaAbb)
 
         self.frame4 = QFrame()
@@ -227,6 +229,18 @@ class HomePageAmministratore(QWidget):
     
     def onEliminaCliente(self):
         self.form = FormCliente(self.gestoreCliente, elimina=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onCreaAbbonamento(self):
+        self.form = FormAbbonamento(self.gestoreAbbonamento)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onRinnovaAbbonamento(self):
+        self.form = FormAbbonamento(self.gestoreAbbonamento, rinnova=True)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()
