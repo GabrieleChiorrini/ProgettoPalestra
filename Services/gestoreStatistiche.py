@@ -17,8 +17,6 @@ class GestoreStatistiche:
         #SalaPesi x Fascia Oraria
         statisticheSalaPesi = Statistica("prenotazioni_sala", self._prenotazioneSalaPesiRepo.nPerFasciaOraria())
 
-        
-
         return (statisticheCorsi, statisticheSalaPesi, statisticheAccessi)
 
     def visualizzaStatistiche(self) -> list:
