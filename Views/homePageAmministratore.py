@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
-from . import FormPersonale, FormCliente, FormAbbonamento
+from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario
 
 class HomePageAmministratore(QWidget):
     def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
@@ -128,14 +128,17 @@ class HomePageAmministratore(QWidget):
         vLayoutf.addWidget(self.frame4)
 
         btnRegPag = QPushButton("Registrare pagamento")
+        btnRegPag.clicked.connect(self.onRegistraPagamento)
         vLayoutf.addWidget(btnRegPag)
         btnRegPag.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
 
         btnModCapienza = QPushButton("Modifica capienza sala pesi")
+        btnModCapienza.clicked.connect(self.onModificaCapienza)
         vLayoutf.addWidget(btnModCapienza)
         btnModCapienza.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
 
         btnGestOrari = QPushButton("Gestisci orari")
+        btnGestOrari.clicked.connect(self.onGestisciOrari)
         vLayoutf.addWidget(btnGestOrari)
         btnGestOrari.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
 
@@ -241,6 +244,24 @@ class HomePageAmministratore(QWidget):
     
     def onRinnovaAbbonamento(self):
         self.form = FormAbbonamento(self.gestoreAbbonamento, rinnova=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onRegistraPagamento(self):
+        self.form = FormPagamento(self.gestorePagamento)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onModificaCapienza(self):
+        self.form = FormCapienza(self.gestoreSalaPesi)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onGestisciOrari(self):
+        self.form = FormOrario(self.gestoreOrario)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()

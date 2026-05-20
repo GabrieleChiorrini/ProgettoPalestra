@@ -7,8 +7,8 @@ class GestoreCliente:
         self._clienteRepo = ClienteRepo
         self._certificatoRepo = CertificatoRepo
 
-    def registraCliente(self, nome: str, cognome: str, dataNascita: str, 
-                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: str) -> str: #non passo id perchè lo genera sistema
+    def registraCliente(self, nome: str, cognome: str, dataNascita: date, 
+                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: date) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             clienteEsistente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
@@ -19,21 +19,17 @@ class GestoreCliente:
             nuovoIdCert= self._certificatoRepo.newId()
             #creo oggetto
 
-            listaStringheData = dataEffettuato.split("/")
-            listaStringheData.reverse()
             
             nuovoCertificato = CertificatoMedico(
-                 dataEffettuato=date(*map(int, listaStringheData)),
+                 dataEffettuato= dataEffettuato,
                  validità=True,
                  id= nuovoIdCert)
             
-            listaStringheDataNascita = dataNascita.split("/")
-            listaStringheDataNascita.reverse()
 
             nuovoCliente = Cliente (
                  nome=nome,
                  cognome= cognome,
-                 dataNascita= date(*map(int, listaStringheDataNascita)),
+                 dataNascita= dataNascita,
                  codiceFiscale= codiceFiscale,
                  email= email,
                  telefono= telefono,
@@ -75,10 +71,7 @@ class GestoreCliente:
 
                if nuovaDataCertificato:
 
-                    listaStringheDataNascita = nuovaDataCertificato.split("/")
-                    listaStringheDataNascita.reverse()
-
-                    certificato.set_dataEffettuato(date(*map(int, listaStringheDataNascita)))
+                    certificato.set_dataEffettuato(nuovaDataCertificato)
                     certificato.set_validità(True)
 
           self._clienteRepo.salva()

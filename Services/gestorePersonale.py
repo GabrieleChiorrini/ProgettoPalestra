@@ -9,7 +9,7 @@ class GestorePersonale:
           self._credenzialiRepo = credenzialiRepo
           self._gestoreAuth = gestoreAutenticazione
 
-     def registraPersonale(self, nome: str, cognome: str, dataNascita: str, 
+     def registraPersonale(self, nome: str, cognome: str, dataNascita: date, 
                               codiceFiscale: str, email: str, telefono: str, username: str, password: str) -> str: #non passo id perchè lo genera sistema
           #check se esiste
           personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
@@ -19,14 +19,11 @@ class GestorePersonale:
           
           nuovoId = self._amministratoreRepo.newId()
 
-          listaStringheDataNascita = dataNascita.split("/")
-          listaStringheDataNascita.reverse()
-
           #creo oggetto
           nuovoAmministratore = Amministratore (
                nome=nome,
                cognome= cognome,
-               dataNascita= date(*map(int, listaStringheDataNascita)),
+               dataNascita= dataNascita,
                codiceFiscale= codiceFiscale,
                email= email,
                telefono= telefono,

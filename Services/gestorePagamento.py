@@ -8,19 +8,19 @@ class GestorePagamento ():
         self._clienteRepo = clienteRepo
         self._pagamentoRepo = pagamentoRepo
 
-    def registraPagamento (self, clienteId: str, importo: float, data: datetime) -> str:
-        cliente =  self._clienteRepo.trovaPerId(clienteId)
+    def registraPagamento (self, codiceFiscaleCliente: str, importo: float, data: datetime) -> str:
+        cliente =  self._clienteRepo.trovaPerCF(codiceFiscaleCliente)
         if cliente is None:
             return 'Cliente non trovato'
         pagamento = Pagamento(self._pagamentoRepo.newId(), importo, data, cliente)
         self._pagamentoRepo.aggiungi(pagamento)
         return 'Pagamento registrato'
     
-    def visualizzaPagamento (self, clienteId: str) -> list:
-        cliente =  self._clienteRepo.trovaPerId(clienteId)
+    def visualizzaPagamento (self, codiceFiscaleCliente: str) -> list:
+        cliente =  self._clienteRepo.trovaPerCF(codiceFiscaleCliente)
         if cliente is None:
             return 'Cliente non trovato'
-        ricevuta = self._pagamentoRepo.trovaRicevute(clienteId)
+        ricevuta = self._pagamentoRepo.trovaRicevute(cliente.get_id())
         if ricevuta:
             ricevute = []
             for r in ricevuta:

@@ -1,5 +1,5 @@
-import binascii
-from AES_Python import AES
+#import binascii
+import cryptocode
 from Repo import CredenzialiRepository, ClienteRepository
 from Models import Credenziali, Cliente, Amministratore
 
@@ -7,9 +7,9 @@ class GestoreAutenticazione():
     def __init__(self, credenzialiRepo: CredenzialiRepository, clienteRepo: ClienteRepository):
         self._credenzialiRepo = credenzialiRepo
         self._clienteRepo = clienteRepo
-        chiave = "ciaoSonoLaChiaveDellaTuaPalestra"
-        self.ChiaveHex = binascii.hexlify(chiave.encode()).decode()
-        self.aes = AES(running_mode="ECB", key=self.ChiaveHex)
+        self._chiave = "ciaoSonoLaChiaveDellaTuaPalestra"
+        #self.ChiaveHex = binascii.hexlify(self._chiave.encode()).decode()
+        #self.aes = AES(running_mode="ECB", key=self.ChiaveHex)
 
     def registrazione(self, username: str, password:str, codiceFiscale:str) -> str:
         if not isinstance(username, str):
@@ -44,8 +44,9 @@ class GestoreAutenticazione():
         credenziali = self._credenzialiRepo.trovaPerUsername(username)
         if not credenziali:
             return "Username errato"
-        
-        passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
+
+        #passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
+        passwordDecriptata = cryptocode.decrypt(credenziali.get_password(), self._chiave)
 
         print(passwordDecriptata)
         print(password)
@@ -62,4 +63,4 @@ class GestoreAutenticazione():
         return "Credenziali non collegate a nessuno"
     
     def criptaPassword(self, password: str) -> str:
-        return self.aes.enc(data_string=password, key=self.ChiaveHex)
+        return cryptocode.encrypt(password, self._chiave)

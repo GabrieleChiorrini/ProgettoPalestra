@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout)
+    QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout, QDateEdit)
 
 if __name__ != "__main__":
     from Services import GestorePersonale
@@ -28,12 +28,19 @@ class FormPersonale(QWidget):
         fLayout = QFormLayout()
 
         for (i, a) in enumerate(self._listaCampi.copy()):
-            _lineEdit = QLineEdit()
-            _lineEdit.setPlaceholderText("GG/MM/AAAA") if a == "Data di nascita" else _lineEdit.setPlaceholderText(a)
+            if "data" in a.lower():
+                _dateEdit = QDateEdit()
+                _dateEdit.setCalendarPopup(True)
 
-            fLayout.addRow(a + ":", _lineEdit)
+                fLayout.addRow(a + ":", _dateEdit)
+                self._listaCampi[i] = _dateEdit
+            else:
+                _lineEdit = QLineEdit()
+                _lineEdit.setPlaceholderText(a)
 
-            self._listaCampi[i] = _lineEdit
+                fLayout.addRow(a + ":", _lineEdit)
+
+                self._listaCampi[i] = _lineEdit
         vLayout.addLayout(fLayout)
 
         hLayout = QHBoxLayout()
@@ -69,15 +76,16 @@ class FormPersonale(QWidget):
     def onRegistra(self):
         listaValori = []
         for a in self._listaCampi:
-            testo = a.text().strip()
-            if testo:
-                listaValori.append(testo)
+            if isinstance(a, QDateEdit):
+                listaValori.append(a.date().toPyDate())
             else:
-                tipo = "Data di nascita" if a.placeholderText().lower() == "GG/MM/AAAA" else a.placeholderText().lower()
-                QMessageBox.warning(
-                    self, "Attenzione",
-                    "Il valore inserito in " + tipo + " non è valido")
-                return
+                testo = a.text().strip()
+                if testo:
+                    listaValori.append(testo)
+                else:
+                    QMessageBox.warning(self, "Attenzione", "Il valore inserito in " + a.placeholderText().lower() + " non è valido")
+                    return
+        
         risultato = self._gestorePersonale.registraPersonale(*listaValori) #unpacking lista
         QMessageBox.information(self, "Ottimo", risultato) if "Personale creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
@@ -85,6 +93,7 @@ class FormPersonale(QWidget):
         codiceFiscale = self._listaCampi[0].text().strip()
         if not codiceFiscale:
             QMessageBox.warning(self, "Attenzione", "Codice fiscale inserito non valido")
+        
         for a in range(1, 3):
             testo = self._listaCampi[a].text().strip()
             if not testo is None:

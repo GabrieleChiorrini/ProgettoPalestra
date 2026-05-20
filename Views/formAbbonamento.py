@@ -31,8 +31,6 @@ class FormAbbonamento(QWidget):
         self._comboTipo.setCurrentIndex(0)
         fLayout.addRow("Tipo Abbonamento:", self._comboTipo)
 
-        self._btn = QPushButton()
-
         vLayout.addLayout(fLayout)
 
         hLayout = QHBoxLayout()
@@ -71,7 +69,7 @@ class FormAbbonamento(QWidget):
         tipo = self._comboTipo.currentIndex()
 
         risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
-        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento creato" in risultato else self.warning(risultato)
 
     def onRinnova(self):
         codiceFiscale = self._lineEditCliente.text().strip()
@@ -87,7 +85,7 @@ class FormAbbonamento(QWidget):
         tipo = self._comboTipo.currentIndex()
 
         risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
-        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento rinnovato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento rinnovato" in risultato else self.warning(risultato)
 
     def warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
