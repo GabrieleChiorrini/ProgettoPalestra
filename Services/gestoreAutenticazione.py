@@ -45,8 +45,6 @@ class GestoreAutenticazione():
         if not credenziali:
             return "Username errato"
         
-        print(credenziali)
-        
         passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
 
         print(passwordDecriptata)

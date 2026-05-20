@@ -42,11 +42,11 @@ class GestoreAbbonamento:
                 )
 
         validitàAbb = abbonamento.get_stato()
-        scadenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
+        dataPartenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
 
         abbonamento.set_durata(nuovaDurata)
 
-        nuovaFine = scadenza + nuovaDurata
+        nuovaFine = dataPartenza + nuovaDurata
         abbonamento.set_dataFine(nuovaFine)
 
         abbonamento.set_stato(True) #Set per sicurezza che sarebbe necessario solo se è scaduto, ma richiederrebbe un if in più

@@ -12,7 +12,7 @@ class GestoreCertificato:
       cliente = self._clienteRepo.trovaPerId(idCliente)
 
       if cliente is None:
-         return "cliente non trovato"
+         return "certificato non trovato"
 
       certificato = cliente.get_certificato()
 

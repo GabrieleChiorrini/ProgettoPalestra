@@ -18,7 +18,7 @@ class GestoreIngressi():
         if abbonamento is None or not abbonamento.get_stato() :
             return False
         
-        certificatoMedico = self._certificatoMedicoRepo.trovaPerCliente(cliente)
+        certificatoMedico = cliente.get_certifiato()
         if certificatoMedico is None or not certificatoMedico.get_validità():
             return False
         

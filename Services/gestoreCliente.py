@@ -68,9 +68,10 @@ class GestoreCliente:
 
                certificato.set_dataEffettuato(nuovaDataCertificato)
                certificato.set_validità(True)
+               self._certificatoRepo.salva()
+               
 
           self._clienteRepo.salva()
-          self._certificatoRepo.salva()
 
           return "Cliente modificato correttamente"
      
@@ -86,11 +87,12 @@ class GestoreCliente:
 
      if certificato is not None:
           self._certificatoRepo.eliminaPerId(certificato.get_id())
+          self._certificatoRepo.salva()
+
 
      self._clienteRepo.eliminaPerId(id)
-
      self._clienteRepo.salva()
-     self._certificatoRepo.salva()
+     
 
      return "cliente eliminato"
 

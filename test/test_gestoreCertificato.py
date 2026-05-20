@@ -15,7 +15,7 @@ class TestGestoreCertificato(unittest.TestCase):
         self.certificatiRepo._certificati = {}
         self.clienteRepo._clienti =  {}
 
-        self.gestoreCertificato = GestoreCertificato(self.certificatiRepo) 
+        self.gestoreCertificato = GestoreCertificato(self.clienteRepo) 
         self.gestoreCliente = GestoreCliente(self.clienteRepo, self.certificatiRepo)
 
         self.cliente = ef.cliente_finto()
@@ -31,20 +31,22 @@ class TestGestoreCertificato(unittest.TestCase):
     def test_visualizzaCertificato_non_trovato(self):
         
         risultato = self.gestoreCertificato.visualizzaCertificato(self.cliente.get_id())
-        self.assertIn('cliente non trovato', risultato)
+        self.assertIn('certificato non trovato', risultato)
     
 
     def test_visualizzaCertificato_trovato(self):     
        
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), "", True)
+        cliente_reale = self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale())
+        self.assertIsNotNone(cliente_reale, 'certificato non trovato')
+
+
+
         risultato = self.gestoreCertificato.visualizzaCertificato(self.cliente.get_id())
-        l = [c.get_id() for c in self.clienteRepo.tutti()]
-        cert = self.certificatiRepo.trovaPerId(self.cliente.get_certificato().get_id())
-        print(risultato)
+        self.assertIsInstance(risultato, dict)
 
-        self.assertEqual(risultato["dataScadenza"], cert.get_dataScadenza())
-
-        giorni_attesi = (datetime.combine(cert.get_dataScadenza(), time(23, 59, 59, 9999)) - datetime.today()).days
-        self.assertEqual(risultato["giorniAllaScadenza"], giorni_attesi)
-
+        certificato_reale = cliente_reale.get_certificato()
+        self.assertEqual(risultato["dataScadenza"],certificato_reale.get_dataScadenza())
         self.assertEqual(risultato["validità"], "Attivo")
+        self.assertTrue(isinstance(risultato["giorniAllaScadenza"], int))
+

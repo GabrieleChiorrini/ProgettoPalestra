@@ -21,8 +21,6 @@ class GestoreCorso():
         if not corso:    
             return 'Corso non trovato'
         
-        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or []): # controllo se l'istruttore è occupato 
-            return None, 'Istruttore occupato'
         
         # se le precdenti verifiche sono passate allora vado a cambiare i dati del corso 
         corso.set_nome(nome) 
@@ -30,7 +28,13 @@ class GestoreCorso():
         corso.set_maxCapienza(maxCapienza)
         corso.set_istruttore(istruttore)
         corso.set_giorni(giorni)
+        
+        
+        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or []): # controllo se l'istruttore è occupato 
+            return None, 'Istruttore occupato'
+        
         self._corsoRepo.aggiungi(corso)  # la repository salva le modifiche effettuate al corso 
+        
         return 'Corso modificato'
     
 
@@ -62,8 +66,7 @@ class GestoreCorso():
 
         corso = self._corsoRepository.trovaperid(corsoId) #cerco il corso tramite l'id fornito
         if not corso:
-            return None 
-            return 'Nessun Iscritto'        
+            return 'Nessun Corso'        
         iscritti = corso.get_iscritti() #prendo la lista degli iscritti e la salvo nella var iscritti
         if not iscritti:
             return 'Nessun Iscritto'
