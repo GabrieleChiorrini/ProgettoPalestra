@@ -32,44 +32,44 @@ class TestGestoreAbbonamento(unittest.TestCase):
                 os.remove(f)
     
     def test_creaAbbonamento(self):
-        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
+        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
 
-        self.assertIn("Abbonamento Creato",risultato)
+        self.assertIn("Abbonamento creato", risultato)
     
     def test_creaAbbonamento_gia_esistente(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
-        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
+        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
 
-        self.assertIn("Esistente",risultato)
+        self.assertIn("Esistente", risultato)
     
     def test_rinnovaAbbonamento(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
         
-        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_id(), timedelta(90), TipoAbbonamento.CORSI)
+        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
-        self.assertEqual(self.abbRepo.trovaPerCliente(self.cliente.get_id()).get_durata(), timedelta(90))
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(90))
     
     def test_rinnovaAbbonamento_non_eistente(self):
-        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_id(), timedelta(90), TipoAbbonamento.CORSI)
-        self.assertIn("Abbonamento Creato",risultato)
-        self.assertEqual(self.abbRepo.trovaPerCliente(self.cliente.get_id()).get_durata(), timedelta(90))
+        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(90), TipoAbbonamento.CORSI)
+        self.assertIn("Abbonamento creato", risultato)
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(90))
 
     def test_rinnovaAbbonamento_scaduto(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
-        abb = self.abbRepo.trovaPerCliente(self.cliente.get_id())
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
+        abb = self.abbRepo.trovaPerIdCliente(self.cliente.get_id())
         abb.set_stato(False)
         
         self.abbRepo.aggiungi(abb)
 
-        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_id(), timedelta(90), TipoAbbonamento.CORSI)
+        risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
-        self.assertEqual(self.abbRepo.trovaPerCliente(self.cliente.get_id()).get_durata(), timedelta(90))
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(90))
 
     def test_visualizzaAbbonamento(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_id(), timedelta(30), TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(30), TipoAbbonamento.CORSI)
 
         risultato = self.gestoreAbbonamento.visualizzaAbbonamento(self.cliente.get_id())
-        abb = self.abbRepo.trovaPerCliente(self.cliente.get_id())
+        abb = self.abbRepo.trovaPerIdCliente(self.cliente.get_id())
         
         # Verifica che la scadenza corrisponda a quella dell'abbonamento
         self.assertEqual(risultato["dataScadenza"], abb.get_dataFine())

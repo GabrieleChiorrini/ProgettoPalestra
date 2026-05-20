@@ -17,20 +17,20 @@ class GestoreCorso():
     
 
     def modificaCorso(self, corsoId: str, nome: str, orari: time, maxCapienza:int, istruttore: Amministratore, giorni)-> str: #inizializzo i parametri da modificare del corso
-        corso = self._corsoRepo.trovaperId(corsoId) #verifico che il corso da modificare esista
+        corso = self._corsoRepo.trovaPerId(corsoId) #verifico che il corso da modificare esista
         if not corso:    
             return 'Corso non trovato'
         
         
         # se le precdenti verifiche sono passate allora vado a cambiare i dati del corso 
         corso.set_nome(nome) 
-        corso.set_orari(orari)
+        corso.set_orario(orari)
         corso.set_maxCapienza(maxCapienza)
         corso.set_istruttore(istruttore)
         corso.set_giorni(giorni)
         
         
-        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or []): # controllo se l'istruttore è occupato 
+        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or [], exclude_id=corsoId): # controllo se l'istruttore è occupato 
             return None, 'Istruttore occupato'
         
         self._corsoRepo.aggiungi(corso)  # la repository salva le modifiche effettuate al corso 
@@ -39,7 +39,7 @@ class GestoreCorso():
     
 
     def eliminaCorso(self, corsoId: str)-> str:
-        corso = self._corsoRepo.trovaperId(corsoId) #verifico che il corso da cancellare esista
+        corso = self._corsoRepo.trovaPerId(corsoId) #verifico che il corso da cancellare esista
         if not corso:
             return 'Corso non trovato' 
         self._corsoRepo.cancella(corsoId) # se il corso esiste allora lo cancello  
@@ -64,7 +64,7 @@ class GestoreCorso():
 
     def visualizzaIscritti(self, corsoId: str) -> list[dict[str, str]] | str: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche oppure una stringa nel caso di lista vuota 
 
-        corso = self._corsoRepository.trovaperid(corsoId) #cerco il corso tramite l'id fornito
+        corso = self._corsoRepo.trovaPerId(corsoId) #cerco il corso tramite l'id fornito
         if not corso:
             return 'Nessun Corso'        
         iscritti = corso.get_iscritti() #prendo la lista degli iscritti e la salvo nella var iscritti
@@ -76,6 +76,7 @@ class GestoreCorso():
             lista_iscritti.append({ #compilo la lista iscritti con i vari dati formiti successivamente 
                 "nome": iscritto.get_nome(),
                 "cognome": iscritto.get_cognome(),
+                "codiceFiscale": iscritto.get_codiceFiscale(),
             })
 
         return lista_iscritti

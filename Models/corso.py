@@ -18,7 +18,7 @@ class Corso:
     
     def get_nome(self) -> str:
         return self._nome
-    
+
     def get_maxCapienza(self) -> int:
         return self._maxCapienza
     
@@ -33,6 +33,12 @@ class Corso:
     
     def get_iscritti(self) -> list:
         return self._iscritti
+    
+    def set_nome(self, nome: str) -> None:
+        if not isinstance(nome, str):
+            raise TypeError("Il nome del corso deve essere una stringa.")
+        self._nome = nome
+    
     
     def set_maxCapienza(self, maxCapienza: int) -> None:
         if not isinstance(maxCapienza, int):

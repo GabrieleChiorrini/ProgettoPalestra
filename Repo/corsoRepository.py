@@ -20,7 +20,7 @@ class CorsoRepository: # Repository
             self._corsi = {
                 d["id"]: Corso.fromDict({
                 **d, #Unpacking del dizionario
-                "istruttore": self.istruttore.trovaPerId(d["istruttore"]), # trovo l'istruttore perché ho salvato solo l'id
+                "istruttore": self._amministratoreRepo.trovaPerId(d["istruttore"]), # trovo l'istruttore perché ho salvato solo l'id
                 "iscritti": [self._clienteRepo.trovaPerId(c) for c in d["iscritti"]] # trovo gli iscritti perché ho salvato solo gli id
             })  for d in dati} # from dict è metodo di classe di Corso
         except FileNotFoundError:
@@ -42,7 +42,7 @@ class CorsoRepository: # Repository
                 return corso
         return None
 
-    def istruttoreOccupato(self, istruttore: str, orari, giorni) -> bool:
+    def istruttoreOccupato(self, istruttore: str, orari, giorni, exclude_id: str = None) -> bool:
         if isinstance(istruttore, str):
             istruttore_id = istruttore
         else:
@@ -52,6 +52,8 @@ class CorsoRepository: # Repository
                 return False
 
         for corso in self._corsi.values():
+            if exclude_id is not None and corso.get_id() == exclude_id:
+                continue
             insegnante = corso.get_istruttore()
             try:
                 insegnante_id = insegnante.get_id()

@@ -41,12 +41,12 @@ class GestoreAbbonamento:
         if cliente is None:
             return "Cliente non trovato"
 
-        abbonamento = self._abbonamentorepo.trovaPerCliente(cliente.get_id())
+        abbonamento = self._abbonamentorepo.trovaPerIdCliente(cliente.get_id())
         if abbonamento is None:
             return self.creaAbbonamento(
-                idCliente=cliente.get_id(),
-                durata=timedelta(int(nuovaDurata)),
-                tipo=tipo
+                cliente.get_codiceFiscale(),
+                timedelta(int(nuovaDurata)),
+                tipo
                 )
 
         validitàAbb = abbonamento.get_stato()
@@ -64,7 +64,7 @@ class GestoreAbbonamento:
         return "Abbonamento rinnovato"
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
-         abbonamento = self._abbonamentorepo.trovaPerCliente(idCliente)
+         abbonamento = self._abbonamentorepo.trovaPerIdCliente(idCliente)
 
          if abbonamento is None:
               return "Nessun abbonamento trovato"
