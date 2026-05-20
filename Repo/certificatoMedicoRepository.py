@@ -25,7 +25,7 @@ class CertificatoMedicoRepository:
 
     def salva(self) -> None:
         with open(self._path, "w") as f:
-            json.dump( [c.toDict() for c in self._certificati.values()], f)
+            json.dump( [c.toDict() for c in self._certificati.values()], f, indent = 4)
 
     def trovaPerId(self, id: str):
         return self._certificati.get(id)

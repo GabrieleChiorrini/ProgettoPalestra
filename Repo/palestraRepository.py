@@ -29,7 +29,7 @@ class PalestraRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [a.toDict() for a in self._palestre.values()], f)# list comprehension. 
+                [a.toDict() for a in self._palestre.values()], f, indent = 4)# list comprehension. 
                 #cicla sulle palestre nella repo e li salva nel file .json
 
     def trovaPerId(self, id: str):

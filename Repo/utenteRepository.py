@@ -22,7 +22,7 @@ class UtenteRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [l.toDict() for l in self._utenti.values()], f)# list comprehension. 
+                [l.toDict() for l in self._utenti.values()], f, indent = 4)# list comprehension. 
                 #cicla sugli amministratori nella repo e li salva nel file .json
 
     def trovaPerId(self, codice: str):

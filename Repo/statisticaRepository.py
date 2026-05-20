@@ -21,7 +21,7 @@ class StatisticaRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [l.toDict() for l in self._statistiche.values()], f)# list comprehension. 
+                [l.toDict() for l in self._statistiche.values()], f, indent = 4)# list comprehension. 
                 #cicla sulle statistiche nella repo e li salva nel file .json
 
     def trovaPerId(self, codice: str):

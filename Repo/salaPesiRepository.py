@@ -27,7 +27,7 @@ class SalaPesiRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [a.toDict() for a in self._salePesi.values()], f)# list comprehension. 
+                [a.toDict() for a in self._salePesi.values()], f, indent = 4)# list comprehension. 
                 #cicla sui Corsi nella repo e li salva nel file .json
 
     def trovaPerId(self, id: str):

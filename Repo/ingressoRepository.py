@@ -26,7 +26,7 @@ class IngressoRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [a.toDict() for a in self._accessi.values()], f)# list comprehension. 
+                [a.toDict() for a in self._accessi.values()], f, indent = 4)# list comprehension. 
                 #cicla sugli Accessi nella repo e li salva nel file .json
 
     def trovaPerId(self, id: str):
