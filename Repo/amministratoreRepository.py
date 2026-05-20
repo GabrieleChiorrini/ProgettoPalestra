@@ -33,9 +33,7 @@ class AmministratoreRepository: # Repository
     #siccome chiave del dizionario è id devo trovare tra gli oggetti del dizionario i valori
         for admin in self._amministratori.values():
             if admin.get_codiceFiscale() == codiceFiscale: 
-                return admin
-            else:
-                return None  
+                return admin 
         return None 
     
     def eliminaPerId(self, id:str)-> None:

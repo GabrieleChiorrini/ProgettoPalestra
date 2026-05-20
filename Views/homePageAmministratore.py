@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
+from . import FormPersonale, FormCliente, FormAbbonamento
 
 class HomePageAmministratore(QWidget):
     def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
@@ -51,10 +52,13 @@ class HomePageAmministratore(QWidget):
         vLayout2.setSpacing(0)
         vLayout2.setContentsMargins(0, 0, 0, 0)
         btnRegPers = QPushButton("Registra personale")
+        btnRegPers.clicked.connect(self.onRegistraPersonale)
         vLayout2.addWidget(btnRegPers)
         btnModPers = QPushButton("Modifca personale")
+        btnModPers.clicked.connect(self.onModificaPersonale)
         vLayout2.addWidget(btnModPers)
         btnElPers = QPushButton("Elimina personale")
+        btnElPers.clicked.connect(self.onEliminaPersonale)
         vLayout2.addWidget(btnElPers)
 
         self.frame2 = QFrame()
@@ -78,10 +82,13 @@ class HomePageAmministratore(QWidget):
         vLayout3.setSpacing(0)
         vLayout3.setContentsMargins(0, 0, 0, 0)
         btnRegCli = QPushButton("Registra cliente")
+        btnRegCli.clicked.connect(self.onRegistraCliente)
         vLayout3.addWidget(btnRegCli)
         btnModCli = QPushButton("Modifica cliente")
+        btnModCli.clicked.connect(self.onModificaCliente)
         vLayout3.addWidget(btnModCli)
         btnElCli = QPushButton("Elimina cliente")
+        btnElCli.clicked.connect(self.onEliminaCliente)
         vLayout3.addWidget(btnElCli)
 
         self.frame3 = QFrame()
@@ -187,3 +194,39 @@ class HomePageAmministratore(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
         self.sender().setText(tDopo)
+    
+    def onRegistraPersonale(self):
+        self.form = FormPersonale(self.gestorePersonale)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onModificaPersonale(self):
+        self.form = FormPersonale(self.gestorePersonale, modifica=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onEliminaPersonale(self):
+        self.form = FormPersonale(self.gestorePersonale, elimina=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onRegistraCliente(self):
+        self.form = FormCliente(self.gestoreCliente)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+
+    def onModificaCliente(self):
+        self.form = FormCliente(self.gestoreCliente, modifica=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onEliminaCliente(self):
+        self.form = FormCliente(self.gestoreCliente, elimina=True)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()

@@ -33,6 +33,7 @@ class FormRegistrazione(QWidget):
 
         btnReg = QPushButton("Registrati")
         btnReg.clicked.connect(self.onRegistrati)
+        btnReg.setDefault(True)
         vLayout.addWidget(btnReg)
 
         hLayout = QHBoxLayout()
@@ -67,7 +68,7 @@ class FormRegistrazione(QWidget):
             else:
                 QMessageBox.warning(
                     self, "Attenzione",
-                    "il valore inserito in " + a.placeholderText().lower() + " non valido")
+                    "Il valore inserito in " + a.placeholderText().lower() + " non è valido")
                 return
         
         if self._listaCampi[2].text().strip() != self._listaCampi[3].text().strip(): #Password e conferma passowrd diverse

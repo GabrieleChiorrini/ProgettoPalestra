@@ -42,7 +42,7 @@ if __name__ == "__main__":
     gsa = GestoreStatistiche(sar, acr, pcr, psr)
     gva = GestoreValidita(abr, cmr)
 
-    gpe.registraPersonale("Mario", "Rossi", date(1997, 7, 15), "RSSMRA97L15E388S", "mariorossi@gmail.com", "3564217465", "admin", "adminPassword")
+    gpe.registraPersonale("Mario", "Rossi", date(1997, 7, 15), "RSSMRA97L15E388S", "mariorossi@gmail.com", "3564217465", "admin", "admin")
 
     app = QApplication(sys.argv) # creo app
     f = MainWindow(gab, gau, gca, gce, gcl, gco, gin, gor, gpa, gpe, gpr, gsp, gsa, gva) # creo finestra

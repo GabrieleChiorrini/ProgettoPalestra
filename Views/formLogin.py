@@ -22,6 +22,7 @@ class FormLogin(QWidget):
 
         btnLog = QPushButton("Login")
         btnLog.clicked.connect(self.login)
+        self._lineEditPassword.returnPressed.connect(btnLog.click)
 
         lblRegistra = QLabel("Non hai un account?")
         btnRegistra = QPushButton("Registrati!")
@@ -56,8 +57,6 @@ class FormLogin(QWidget):
     def login(self):
         username = self._lineEditUsername.text().strip()
         password = self._lineEditPassword.text().strip()
-
-        print("Ci sonooo")
 
         if not username or not password:
             QMessageBox.warning(

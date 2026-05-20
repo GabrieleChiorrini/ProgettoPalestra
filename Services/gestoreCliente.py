@@ -8,8 +8,7 @@ class GestoreCliente:
         self._certificatoRepo = CertificatoRepo
 
     def registraCliente(self, nome: str, cognome: str, dataNascita: date, 
-                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: date,
-                           certificato: str, validità: bool) -> str: #non passo id perchè lo genera sistema
+                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: date) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             clienteEsistente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
@@ -39,7 +38,7 @@ class GestoreCliente:
             self._clienteRepo.aggiungi(nuovoCliente)
             self._certificatoRepo.aggiungi(nuovoCertificato)
 
-            return "cliente e certificato creato"
+            return "Cliente e certificato creati"
 
     #def TrovaCliente(self, id:str):
      #    return self._clienteRepo.trovaPerId(id)
@@ -52,8 +51,10 @@ class GestoreCliente:
                return "Errore: cliente non trovato"
 
           try:
-               cliente.set_email(nuovaEmail)
-               cliente.set_telefono(nuovoTelefono)
+               if nuovaEmail:
+                    cliente.set_email(nuovaEmail)
+               if nuovoTelefono:
+                    cliente.set_telefono(nuovoTelefono)
 
           except TypeError as e:
                return f"Errore nei dati cliente: {e}"
@@ -66,10 +67,9 @@ class GestoreCliente:
                if certificato is None:
                     return "Errore: certificato non trovato"
 
-               certificato.set_dataEffettuato(nuovaDataCertificato)
-               certificato.set_validità(True)
-               self._certificatoRepo.salva()
-               
+               if nuovaDataCertificato:
+                    certificato.set_dataEffettuato(nuovaDataCertificato)
+                    certificato.set_validità(True)
 
           self._clienteRepo.salva()
 
@@ -80,7 +80,7 @@ class GestoreCliente:
      cliente = self._clienteRepo.trovaPerId(id)
 
      if cliente is None:
-          return "cliente non trovato"
+          return "Cliente non trovato"
 
      # elimina certificato associato
      certificato = cliente.get_certificato()
@@ -94,7 +94,7 @@ class GestoreCliente:
      self._clienteRepo.salva()
      
 
-     return "cliente eliminato"
+     return "Cliente eliminato"
 
 
          

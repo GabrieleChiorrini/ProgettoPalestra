@@ -9,7 +9,7 @@ class GestoreAutenticazione():
         self._clienteRepo = clienteRepo
         chiave = "ciaoSonoLaChiaveDellaTuaPalestra"
         self.ChiaveHex = binascii.hexlify(chiave.encode()).decode()
-        self.aes = AES(running_mode="CBC", key=self.ChiaveHex)
+        self.aes = AES(running_mode="ECB", key=self.ChiaveHex)
 
     def registrazione(self, username: str, password:str, codiceFiscale:str) -> str:
         if not isinstance(username, str):
