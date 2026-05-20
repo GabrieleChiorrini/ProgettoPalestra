@@ -66,7 +66,7 @@ class TestGestoreCliente(unittest.TestCase):
         risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(), None , None , nuova_data)
         self.assertIn('Errore nei dati cliente', risultato)
 
-    def test_modificaCliente_certificato_non_trovato(self):  #NON FUNIZONA
+    def test_modificaCliente_certificato_non_trovato(self):  
 
         nuova_data = datetime(2026, 5, 19)
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
@@ -84,13 +84,13 @@ class TestGestoreCliente(unittest.TestCase):
         risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_id())
         self.assertIn('cliente non trovato', risultato)
 
-    """def test_visualizzaCertificato_non_trovato(self):
+    def test_visualizzaCertificato_non_trovato(self):
         
         risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
         self.assertIn('cliente non trovato', risultato)
     
 
-    def test_visualizzaCertificato_trovato(self):     #Non funziona
+    def test_visualizzaCertificato_trovato(self):     
        
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
         risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
@@ -101,7 +101,7 @@ class TestGestoreCliente(unittest.TestCase):
         giorni_attesi = (datetime.combine(cert.get_dataScadenza(), time(23, 59, 59, 9999)) - datetime.today()).days
         self.assertEqual(risultato["giorniAllaScadenza"], giorni_attesi)
 
-        self.assertEqual(risultato["validità"], "Attivo")"""
+        self.assertEqual(risultato["validità"], "Attivo")
 
 
     

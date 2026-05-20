@@ -4,29 +4,29 @@ from datetime import date
 
 
 class GestoreCertificato:
-    def __init__(self, ClienteRepo: ClienteRepository):
-        self._clienteRepo = ClienteRepo
+   def __init__(self, ClienteRepo: ClienteRepository):
+      self._clienteRepo = ClienteRepo
 
-def VisualizzaCertificato(self, idCliente: str):
+   def visualizzaCertificato(self, idCliente: str):
 
-     cliente = self._clienteRepo.trovaPerId(idCliente)
+      cliente = self._clienteRepo.trovaPerId(idCliente)
 
-     if cliente is None:
-        return "cliente non trovato"
+      if cliente is None:
+         return "cliente non trovato"
 
-     certificato = cliente.get_certificato()
+      certificato = cliente.get_certificato()
 
-     if certificato is None:
-        return "nessun certificato trovato"
+      if certificato is None:
+         return "nessun certificato trovato"
 
-     scadenza = certificato.get_dataScadenza()
-     validità = certificato.get_validità()
+      scadenza = certificato.get_dataScadenza()
+      validità = certificato.get_validità()
 
-     oggi = date.today()
+      oggi = date.today()
 
-     giorniAllaScadenza = (scadenza - oggi).days
-     return {
-    "dataScadenza": scadenza,
-    "giorniAllaScadenza": {giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto"},
-    "validità" : {'Attivo' if validità==True else 'Scaduto'}
+      giorniAllaScadenza = (scadenza - oggi).days
+      return {
+      "dataScadenza": scadenza,
+      "giorniAllaScadenza": giorniAllaScadenza if giorniAllaScadenza>0 else "scaduto",
+      "validità" : 'Attivo' if validità==True else 'Scaduto'
 }
