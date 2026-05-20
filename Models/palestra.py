@@ -131,7 +131,10 @@ class Palestra:
             fasce.append(fascia)
 
             inizio += DURATA_FASCIA #ho usato datetime e non time perchè non posso fare le somme con time
-
+        
+        #new_fascia = FasciaOraria(self._fasciaRepo.newId(), time(23, 0))
+        #self._fasciaRepo.aggiungi(new_fascia)
+        #fasce.append(new_fascia)
         return fasce
     
     def __str__(self) -> str:
