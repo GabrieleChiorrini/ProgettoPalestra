@@ -23,7 +23,7 @@ class FasciaOrariaRepository: # Repository
     def salva(self) -> None:
         with open(self._path, "w") as f:
             json.dump( #
-                [l.toDict() for l in self._fasceOrarie.values()], f)# list comprehension. 
+                [l.toDict() for l in self._fasceOrarie.values()], f, indent = 4)# list comprehension. 
                 #cicla suglle fasceOrarie nella repo e li salva nel file .json
 
     def trovaPerId(self, codice: str):
