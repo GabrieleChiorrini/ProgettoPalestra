@@ -29,7 +29,7 @@ class FormPersonale(QWidget):
 
         for (i, a) in enumerate(self._listaCampi.copy()):
             _lineEdit = QLineEdit()
-            _lineEdit.setPlaceholderText(a)
+            _lineEdit.setPlaceholderText("GG/MM/AAAA") if a == "Data di nascita" else _lineEdit.setPlaceholderText(a)
 
             fLayout.addRow(a + ":", _lineEdit)
 
@@ -73,12 +73,12 @@ class FormPersonale(QWidget):
             if testo:
                 listaValori.append(testo)
             else:
-                tipo = "Data certificato" if a.placeholderText().lower() == "GG/MM/AAAA" else a.placeholderText().lower()
+                tipo = "Data di nascita" if a.placeholderText().lower() == "GG/MM/AAAA" else a.placeholderText().lower()
                 QMessageBox.warning(
                     self, "Attenzione",
                     "Il valore inserito in " + tipo + " non è valido")
                 return
-        risultato = self._gestorePersonale.registraPersonale(**listaValori) #unpacking lista
+        risultato = self._gestorePersonale.registraPersonale(*listaValori) #unpacking lista
         QMessageBox.information(self, "Ottimo", risultato) if "Personale creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onModifica(self):
@@ -93,7 +93,7 @@ class FormPersonale(QWidget):
             QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere")
         
         valori = [a.text().strip() for a in self._listaCampi]
-        risultato = self._gestorePersonale.modificaPersonale(**valori) #unpacking lista
+        risultato = self._gestorePersonale.modificaPersonale(*valori) #unpacking lista
         QMessageBox.information(self, "Ottimo", risultato) if "Personale modificato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onElimina(self):
@@ -105,19 +105,6 @@ class FormPersonale(QWidget):
             return
         risultato = self._gestorePersonale.eliminaPersonale(testo) #unpacking lista
         QMessageBox.information(self, "Ottimo", risultato) if "Personale eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
-    
-    def checkValori(self):
-        listaValori = []
-        for a in self._listaCampi:
-            testo = a.text().strip()
-            if testo:
-                listaValori.append(testo)
-            else:
-                QMessageBox.warning(
-                    self, "Attenzione",
-                    "Il valore inserito in " + a.placeholderText().lower() + " non è valido")
-                return
-        return listaValori
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app

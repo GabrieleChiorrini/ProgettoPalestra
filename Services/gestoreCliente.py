@@ -7,8 +7,8 @@ class GestoreCliente:
         self._clienteRepo = ClienteRepo
         self._certificatoRepo = CertificatoRepo
 
-    def registraCliente(self, nome: str, cognome: str, dataNascita: date, 
-                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: date) -> str: #non passo id perchè lo genera sistema
+    def registraCliente(self, nome: str, cognome: str, dataNascita: str, 
+                           codiceFiscale: str, email: str, telefono: str, dataEffettuato: str) -> str: #non passo id perchè lo genera sistema
         #check se esiste
             clienteEsistente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
@@ -20,14 +20,14 @@ class GestoreCliente:
             #creo oggetto
             
             nuovoCertificato = CertificatoMedico(
-                 dataEffettuato=dataEffettuato,
+                 dataEffettuato=date(*dataEffettuato.split("/").reverse()),
                  validità=True,
                  id= nuovoIdCert)
 
             nuovoCliente = Cliente (
                  nome=nome,
                  cognome= cognome,
-                 dataNascita= dataNascita,
+                 dataNascita= date(*dataNascita.split("/").reverse()),
                  codiceFiscale= codiceFiscale,
                  email= email,
                  telefono= telefono,
@@ -43,9 +43,9 @@ class GestoreCliente:
     #def TrovaCliente(self, id:str):
      #    return self._clienteRepo.trovaPerId(id)
     
-    def modificaCliente(self,id: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: date = None) -> str:
+    def modificaCliente(self,codiceFiscale: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: str = None) -> str:
 
-          cliente = self._clienteRepo.trovaPerId(id)
+          cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
           if cliente is None:
                return "Errore: cliente non trovato"
@@ -68,16 +68,16 @@ class GestoreCliente:
                     return "Errore: certificato non trovato"
 
                if nuovaDataCertificato:
-                    certificato.set_dataEffettuato(nuovaDataCertificato)
+                    certificato.set_dataEffettuato(date(*nuovaDataCertificato.split("/").reverse()))
                     certificato.set_validità(True)
 
           self._clienteRepo.salva()
 
           return "Cliente modificato correttamente"
      
-    def eliminaCliente(self, id: str) -> str:
+    def eliminaCliente(self, codiceFiscale: str) -> str:
 
-     cliente = self._clienteRepo.trovaPerId(id)
+     cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
      if cliente is None:
           return "Cliente non trovato"
@@ -95,8 +95,3 @@ class GestoreCliente:
      
 
      return "Cliente eliminato"
-
-
-         
-
-
