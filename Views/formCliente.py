@@ -40,6 +40,7 @@ class FormCliente(QWidget):
             _lineEdit.setPlaceholderText("GG/MM/AAAA")
 
             fLayout.addRow("Data certificato:", _lineEdit)
+            self._listaCampi.append(_lineEdit)
 
         vLayout.addLayout(fLayout)
 

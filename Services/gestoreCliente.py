@@ -18,16 +18,22 @@ class GestoreCliente:
             nuovoId = self._clienteRepo.newId()
             nuovoIdCert= self._certificatoRepo.newId()
             #creo oggetto
+
+            listaStringheData = dataEffettuato.split("/")
+            listaStringheData.reverse()
             
             nuovoCertificato = CertificatoMedico(
-                 dataEffettuato=date(*dataEffettuato.split("/").reverse()),
+                 dataEffettuato=date(*map(int, listaStringheData)),
                  validità=True,
                  id= nuovoIdCert)
+            
+            listaStringheDataNascita = dataNascita.split("/")
+            listaStringheDataNascita.reverse()
 
             nuovoCliente = Cliente (
                  nome=nome,
                  cognome= cognome,
-                 dataNascita= date(*dataNascita.split("/").reverse()),
+                 dataNascita= date(*map(int, listaStringheDataNascita)),
                  codiceFiscale= codiceFiscale,
                  email= email,
                  telefono= telefono,
@@ -68,7 +74,11 @@ class GestoreCliente:
                     return "Errore: certificato non trovato"
 
                if nuovaDataCertificato:
-                    certificato.set_dataEffettuato(date(*nuovaDataCertificato.split("/").reverse()))
+
+                    listaStringheDataNascita = nuovaDataCertificato.split("/")
+                    listaStringheDataNascita.reverse()
+
+                    certificato.set_dataEffettuato(date(*map(int, listaStringheDataNascita)))
                     certificato.set_validità(True)
 
           self._clienteRepo.salva()
