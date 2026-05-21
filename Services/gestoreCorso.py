@@ -23,27 +23,65 @@ class GestoreCorso():
     
 
     def modificaCorso(self, corsoId: str, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list):
-        istruttore = self._adminRepo.trovaPerCF(istruttoreCF)
+        try:
+            # 1. CONTROLLO SUL NOME
+            if nome is not None:
+                if isinstance(nome, str):
+                    if not nome.strip():
+                        raise ValueError("Il nome del corso non può essere vuoto")
+                else:
+                    raise TypeError("Il nome del corso deve essere una stringa")
+            else:
+                raise ValueError("Il nome del corso è obbligatorio")
 
-        if istruttore is None:
-            return None, "Istruttore non trovato"
-        
-        corso = self._corsoRepo.trovaPerId(corsoId) 
-        if not corso:    
-            return None, 'Corso non trovato'
-        
-        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or [], exclude_id=corsoId): 
-            return None, 'Istruttore occupato'
-        
-        corso.set_nome(nome) 
-        corso.set_orario(orari)
-        corso.set_maxCapienza(maxCapienza)
-        corso.set_istruttore(istruttore)
-        corso.set_giorni(giorni)
-        
-        self._corsoRepo.aggiungi(corso)  
-        
-        return corsoId, 'Corso modificato'
+            # 2. CONTROLLO SULLA CAPIENZAMAX
+            if maxCapienza is not None:
+                if isinstance(maxCapienza, int) and not isinstance(maxCapienza, bool): # in Python i bool sono sottoclassi di int
+                    if maxCapienza <= 0:
+                        raise ValueError("La capienza massima deve essere maggiore di 0")
+                else:
+                    raise TypeError("La capienza massima deve essere un numero intero")
+            else:
+                raise ValueError("La capienza massima è obbligatoria")
+
+            # 3. CONTROLLO SUI GIORNI
+            if giorni is not None:
+                if not isinstance(giorni, list):
+                    raise TypeError("I giorni devono essere forniti sotto forma di lista")
+                if len(giorni) == 0:
+                    raise ValueError("Il corso deve essere pianificato almeno in un giorno")
+            else:
+                raise ValueError("La lista dei giorni è obbligatoria")
+
+            # 4. CONTROLLO SULL'ORARIO
+            if orari is None:
+                raise ValueError("L'orario del corso è obbligatorio")
+
+            #logica di business
+            istruttore = self._adminRepo.trovaPerCF(istruttoreCF)
+            if istruttore is None:
+                return None, "Istruttore non trovato"
+            
+            corso = self._corsoRepo.trovaPerId(corsoId) 
+            if not corso:    
+                return None, 'Corso non trovato'
+            
+            if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni, exclude_id=corsoId): 
+                return None, 'Istruttore occupato'
+            
+            # Applicazione delle modifiche se la parte sopra va bene
+            corso.set_nome(nome) 
+            corso.set_orario(orari)
+            corso.set_maxCapienza(maxCapienza)
+            corso.set_istruttore(istruttore)
+            corso.set_giorni(giorni)
+            
+            self._corsoRepo.aggiungi(corso)  
+            return corsoId, 'Corso modificato'
+
+        except (TypeError, ValueError) as e:
+            # Restituisce l'errore intercettato mantenendo la tupla a 2 elementi coerente con il test
+            return None, f"Errore nei dati corso: {e}"
     
 
     def eliminaCorso(self, corsoId: str)-> str:
@@ -92,7 +130,7 @@ class GestoreCorso():
         return lista_iscritti, 'Iscritti trovati'
     
     def idCorsi(self) -> list:
-        return self._prenotazioneCorsoRepo.id()
+        return self._prenotazioneCorsoRepo.ids()
 
 
         

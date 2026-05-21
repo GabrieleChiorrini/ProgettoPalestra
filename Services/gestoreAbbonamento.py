@@ -34,32 +34,51 @@ class GestoreAbbonamento:
         self._abbonamentorepo.aggiungi(nuovoAbbonamento)
         return "Abbonamento creato"
 
-    def rinnovaAbbonamento(self, codiceFiscaleCliente: str, nuovaDurata: str,tipo: TipoAbbonamento) -> str:
-
+    def rinnovaAbbonamento(self, codiceFiscaleCliente: str, nuovaDurata: timedelta, tipo: TipoAbbonamento) -> str:
         cliente = self._clienterepo.trovaPerCF(codiceFiscaleCliente)
 
         if cliente is None:
             return "Cliente non trovato"
 
-        abbonamento = self._abbonamentorepo.trovaPerIdCliente(cliente.get_id())
-        if abbonamento is None:
-            return self.creaAbbonamento(
-                cliente.get_codiceFiscale(),
-                str(nuovaDurata.days),
-                tipo
-            )
-        validitàAbb = abbonamento.get_stato()
-        dataPartenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
+        try:
+            # CONTROLLO VALIDITÀ DELLA DURATA
+            if nuovaDurata is None:
+                raise ValueError("La nuova durata non può essere nulla")
+            
+            # Verifichiamo che sia effettivamente un oggetto timedelta
+            if not isinstance(nuovaDurata, timedelta):
+                raise TypeError("La nuova durata deve essere un oggetto di tipo timedelta")
+            
+            # Verifichiamo che non sia una durata vuota o negativa (es. 0 giorni o meno)
+            if nuovaDurata.days <= 0:
+                raise ValueError("La durata del rinnovo deve essere maggiore di 0 giorni")
 
-        abbonamento.set_durata(nuovaDurata)
+            abbonamento = self._abbonamentorepo.trovaPerIdCliente(cliente.get_id())
+            
+            if abbonamento is None:
+                return self.creaAbbonamento(
+                    cliente.get_codiceFiscale(),
+                    str(nuovaDurata.days),
+                    tipo
+                )
+                
+            validitàAbb = abbonamento.get_stato()
+            dataPartenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
 
-        nuovaFine = dataPartenza + nuovaDurata
-        abbonamento.set_dataFine(nuovaFine)
+            # Aggiorniamo la durata complessiva (sommandola a quella vecchia se necessario)
+            durataTotale = abbonamento.get_durata() + nuovaDurata
+            abbonamento.set_durata(durataTotale)
 
-        abbonamento.set_stato(True) #Set per sicurezza che sarebbe necessario solo se è scaduto, ma richiederrebbe un if in più
+            # Calcoliamo la nuova data di scadenza
+            nuovaFine = dataPartenza + nuovaDurata
+            abbonamento.set_dataFine(nuovaFine)
+            abbonamento.set_stato(True)
+
+        except (TypeError, ValueError) as e:
+            # Cattura qualsiasi anomalia nei parametri passati dal test
+            return f"Errore nei dati abbonamento: {e}"
 
         self._abbonamentorepo.salva()
-
         return "Abbonamento rinnovato"
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
