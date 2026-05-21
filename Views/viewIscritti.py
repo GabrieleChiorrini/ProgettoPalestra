@@ -52,7 +52,6 @@ class ViewIscirtti(QWidget):
             lbl = QLabel(a)
             self._vLayout.addWidget(lbl)
         
-        
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
         self._centerWindow()
         

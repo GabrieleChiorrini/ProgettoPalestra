@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QApplication, QStackedWidget, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import (GestoreAbbonamento, GestoreCertificato, GestoreCorso, GestorePagamento, GestorePrenotazione, GestoreStatistiche)
-from Views import FormEliminaPrenotazione, FormPrenotazioneCorso, FormPrenotazioneSalaPesi, ViewAbbonamento, ViewCertificato, ViewOrariCorsi, ViewIscirtti, ViewPagamenti
+from Views import FormEliminaPrenotazione, FormPrenotazioneCorso, FormPrenotazioneSalaPesi, ViewAbbonamento, ViewCertificato, ViewOrariCorsi, ViewIscirtti, ViewPagamenti, ViewStatistiche
 
 class HomePageCliente(QWidget):
     def __init__(self, stack: QStackedWidget, clieteId: str, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche):
@@ -206,7 +206,10 @@ class HomePageCliente(QWidget):
         self.form.activateWindow()
 
     def _onVisualizzaStatistiche(self):
-        pass
+        self.form = ViewStatistiche(self.gestoreStatistiche)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
 
     def _onVisualizzaPagamenti(self):
         self.form = ViewPagamenti(self.gestorePagamento, self._clienteId)

@@ -15,6 +15,7 @@ from Views.viewCertificato import ViewCertificato
 from Views.viewIscritti import ViewIscirtti
 from Views.viewOrariCorsi import ViewOrariCorsi
 from Views.viewPagamenti import ViewPagamenti
+from Views.viewStatistiche import ViewStatistiche
 from Views.homePageAmministratore import HomePageAmministratore
 from Views.homePageCliente import HomePageCliente
 from Views.mainWindow import MainWindow

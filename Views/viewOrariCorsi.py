@@ -18,7 +18,7 @@ class ViewOrariCorsi(QWidget):
     def _buildUI(self):
         vLayout = QVBoxLayout()
 
-        corsi = self._gestoreCorso.visualizzaOrari()
+        #corsi = self._gestoreCorso.visualizzaOrari()
         corsi = [[[(giorno * 12) + (ora + 1)] for ora in range(12)] for giorno in range(7)]
 
         gLayout = QGridLayout()
@@ -26,6 +26,12 @@ class ViewOrariCorsi(QWidget):
             lbl = QLabel(a)
             gLayout.addWidget(lbl, 0, i +2)
 
+        orarioInizio = datetime.combine(datetime.today(), time(8))
+        vLabel = []
+        for a in range(12):
+            vLabel.append(orarioInizio.strftime("%H:%M"))
+            orarioInizio += timedelta(0, 0, 0, 0, 0, 1)
+        
         for (i,a) in enumerate(vLabel):
             lbl = QLabel(a)
             gLayout.addWidget(lbl, i + 2, 0)
@@ -36,28 +42,6 @@ class ViewOrariCorsi(QWidget):
                 gLayout.addWidget(lbl, iOra +2 , iGiorno + 2)
         
         vLayout.addLayout(gLayout)
-
-        #tabella
-        # table = QTableView()
-        # modello = QStandardItemModel(12, 7)
-        # modello.setHorizontalHeaderLabels([a.name.capitalize() for a in GiorniSettimana])
-        # orarioInizio = datetime.combine(datetime.today(), time(8))
-        # vLabel = []
-        # for a in range(12):
-        #     vLabel.append(orarioInizio.strftime("%H:%M"))
-        #     orarioInizio += timedelta(0, 0, 0, 0, 0, 1)
-        # modello.setVerticalHeaderLabels(vLabel)
-        # for (iGiorno, giorno) in enumerate(corsi):
-        #     for (iOra, ora) in enumerate(giorno):
-        #         modello.setItem(iOra, iGiorno, QStandardItem(str(corsi[iGiorno][iOra])))
-        
-        # table.setModel(modello)
-        # table.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)
-        # table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        # table.resizeColumnsToContents()
-        # table.resizeRowsToContents()
-
-        #vLayout.addWidget(table)
 
         btnAnnulla = QPushButton("Annulla")
         btnAnnulla.clicked.connect(self.close)
