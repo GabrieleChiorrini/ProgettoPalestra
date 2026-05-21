@@ -1,6 +1,7 @@
 import json
 from Models import Ingresso, Cliente
 from . import ClienteRepository
+from Enumerazione import GiorniSettimana
 
 class IngressoRepository: # Repository
     def __init__(self, clienteRepo: ClienteRepository, path: str = "accessi.json"):
@@ -44,13 +45,17 @@ class IngressoRepository: # Repository
     def listPerCliente(self, cliente: Cliente) -> list:
         return [ingresso for ingresso in self._accessi.values() if cliente == ingresso.get_cliente()]
     
-    def nPerGiorni(self) -> list:
+    def nPerGiorni(self) -> dict:
         #Conta il numero di accessi per ogni giorno(Lunedì al posto 0 e Domenica al posto 6) e li mette in lista
         lista = [0, 0, 0, 0, 0, 0, 0]
         for a in self._accessi:
             giorno = a.get_orario().weekday
             lista[giorno] += 1
-        return lista
+        
+        dizionario = {}
+        for a in GiorniSettimana:
+            dizionario[a.name.capitalize()] = lista[a.value -1]
+        return dizionario
         
     def lastId(self) -> str:
         # Cerca l'ultimo id
