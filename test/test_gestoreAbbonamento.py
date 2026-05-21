@@ -43,11 +43,11 @@ class TestGestoreAbbonamento(unittest.TestCase):
         self.assertIn("Esistente", risultato)
     
     def test_rinnovaAbbonamento(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), 30, TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
         
         risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
-        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(90))
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(days=120))
     
     def test_rinnovaAbbonamento_non_eistente(self):
         risultato = self.gestoreAbbonamento.rinnovaAbbonamento(
@@ -59,7 +59,7 @@ class TestGestoreAbbonamento(unittest.TestCase):
         self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(days=90))
 
     def test_rinnovaAbbonamento_scaduto(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), 30, TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
         abb = self.abbRepo.trovaPerIdCliente(self.cliente.get_id())
         abb.set_stato(False)
         
@@ -67,7 +67,7 @@ class TestGestoreAbbonamento(unittest.TestCase):
 
         risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(days=90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
-        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(90))
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(days=120))
 
     def test_visualizzaAbbonamento(self):
         self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)

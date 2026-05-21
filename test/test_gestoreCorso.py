@@ -129,7 +129,7 @@ class TestGestoreCorso(unittest.TestCase):
             orari=time(15, 0),
             maxCapienza=10,
             istruttoreCF=self.istruttore.get_codiceFiscale(),
-            giorni=[]
+            giorni=[GiorniSettimana.LUNEDI]
         )
         self.assertEqual(messaggio, "Corso non trovato")
 
@@ -138,7 +138,7 @@ class TestGestoreCorso(unittest.TestCase):
         id_corso, _ = self.gestoreCorso.creaCorso("Zumba", time(17, 0), 25, self.istruttore.get_codiceFiscale(), [GiorniSettimana.VENERDI])
         
         risultato = self.gestoreCorso.eliminaCorso(id_corso)
-        self.assertEqual(risultato, "Corso eliminato")
+        self.assertEqual(risultato, ("CO000", "Corso eliminato"))
         
         # Controlliamo che non sia più presente all'interno della memoria della repository
         self.assertIsNone(self.corsoRepo.trovaPerId(id_corso))
