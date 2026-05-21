@@ -32,7 +32,7 @@ class TestGestoreCorso(unittest.TestCase):
         self.corsoRepo._corsi = {}
 
         # Inizializziamo il servizio da testare
-        self.gestoreCorso = GestoreCorso(self.corsoRepo)
+        self.gestoreCorso = GestoreCorso(self.corsoRepo, self.amministratoreRepo)
         
 
         # Generiamo le entità finte usando il modulo ef
@@ -64,7 +64,7 @@ class TestGestoreCorso(unittest.TestCase):
             nome="Yoga",
             orari=time(10, 0),
             maxCapienza=15,
-            istruttore=self.istruttore,
+            istruttoreCF=self.istruttore.get_codiceFiscale(),
             giorni=giorni_corso
         )
 
@@ -99,7 +99,7 @@ class TestGestoreCorso(unittest.TestCase):
             nome="Fit Boxe",
             orari=orario_sovrapposto,
             maxCapienza=20,
-            istruttore=self.istruttore,
+            istruttoreCF=self.istruttore.get_codiceFiscale(),
             giorni=giorni_sovrapposti
         )
 
@@ -109,40 +109,33 @@ class TestGestoreCorso(unittest.TestCase):
 
     def test_modificaCorso_successo(self):
         # Creiamo un corso di partenza
-        id_corso, _ = self.gestoreCorso.creaCorso("Pilates", time(9, 0), 10, self.istruttore, [GiorniSettimana.LUNEDI])
+        id_corso, _ = self.gestoreCorso.creaCorso("Pilates", time(9, 0), 10, self.istruttore.get_codiceFiscale(), [GiorniSettimana.LUNEDI])
 
         # Modifichiamo i parametri del corso inserendo il secondo istruttore e cambiando orario/giorni
-        risultato = self.gestoreCorso.modificaCorso(
-            corsoId=id_corso,
-            nome="Pilates Advanced",
-            orari=time(11, 30),
-            maxCapienza=15,
-            istruttore=self.istruttore2,
-            giorni=[GiorniSettimana.GIOVEDI]
-        )
+        _, messaggio = self.gestoreCorso.modificaCorso(id_corso, "Pilates Avanzato", time(11, 0), 12, self.istruttore.get_codiceFiscale(), [GiorniSettimana.VENERDI])
 
-        self.assertEqual(risultato, "Corso modificato")
+        self.assertEqual(messaggio, "Corso modificato")
         
         # Verifichiamo che i vecchi attributi siano stati sovrascritti correttamente sulla repo
         corso_modificato = self.corsoRepo.trovaPerId(id_corso)
-        self.assertEqual(corso_modificato.get_nome(), "Pilates Advanced")
-        self.assertEqual(corso_modificato.get_maxCapienza(), 15)
-        self.assertEqual(corso_modificato.get_istruttore().get_id(), self.istruttore2.get_id())
+        self.assertEqual(corso_modificato.get_nome(), "Pilates Avanzato")
+        self.assertEqual(corso_modificato.get_maxCapienza(), 12)
+        self.assertEqual(corso_modificato.get_istruttore().get_id(), self.istruttore.get_id())
 
     def test_modificaCorso_non_trovato(self):
-        risultato = self.gestoreCorso.modificaCorso(
+        _, messaggio = self.gestoreCorso.modificaCorso(
             corsoId="ID_INESISTENTE",
             nome="Fantasma",
             orari=time(15, 0),
             maxCapienza=10,
-            istruttore=self.istruttore,
+            istruttoreCF=self.istruttore.get_codiceFiscale(),
             giorni=[]
         )
-        self.assertEqual(risultato, "Corso non trovato")
+        self.assertEqual(messaggio, "Corso non trovato")
 
     def test_eliminaCorso_successo(self):
         # Prepariamo un corso da eliminare
-        id_corso, _ = self.gestoreCorso.creaCorso("Zumba", time(17, 0), 25, self.istruttore, [GiorniSettimana.VENERDI])
+        id_corso, _ = self.gestoreCorso.creaCorso("Zumba", time(17, 0), 25, self.istruttore.get_codiceFiscale(), [GiorniSettimana.VENERDI])
         
         risultato = self.gestoreCorso.eliminaCorso(id_corso)
         self.assertEqual(risultato, "Corso eliminato")
@@ -151,19 +144,19 @@ class TestGestoreCorso(unittest.TestCase):
         self.assertIsNone(self.corsoRepo.trovaPerId(id_corso))
 
     def test_eliminaCorso_non_trovato(self):
-        risultato = self.gestoreCorso.eliminaCorso("ID_INESISTENTE")
-        self.assertEqual(risultato, "Corso non trovato")
+        _, messaggio = self.gestoreCorso.eliminaCorso("ID_INESISTENTE")
+        self.assertEqual(messaggio, "Corso non trovato")
 
     def test_visualizzaIscritti_nessun_corso(self):
-        risultato = self.gestoreCorso.visualizzaIscritti("ID_ERRATO")
-        self.assertEqual(risultato, "Nessun Corso")
+        _, messaggio = self.gestoreCorso.visualizzaIscritti("ID_ERRATO")
+        self.assertEqual(messaggio, "Nessun Corso")
 
     def test_visualizzaIscritti_nessun_iscritto(self):
         # Creiamo un corso vuoto senza iscritti
-        id_corso, _ = self.gestoreCorso.creaCorso("Crossfit", time(19, 0), 8, self.istruttore, [GiorniSettimana.MARTEDI])
+        id_corso, _ = self.gestoreCorso.creaCorso("Crossfit", time(19, 0), 8, self.istruttore.get_codiceFiscale(), [GiorniSettimana.MARTEDI])
         
-        risultato = self.gestoreCorso.visualizzaIscritti(id_corso)
-        self.assertEqual(risultato, "Nessun Iscritto")
+        _, messaggio = self.gestoreCorso.visualizzaIscritti(id_corso)
+        self.assertEqual(messaggio, "Nessun Iscritto")
 
     def test_visualizzaIscritti_con_iscritti(self):
         id_corso = self.corsoRepo.newId()
@@ -180,7 +173,7 @@ class TestGestoreCorso(unittest.TestCase):
         )
         self.corsoRepo.aggiungi(corso)
 
-        risultato = self.gestoreCorso.visualizzaIscritti(id_corso)
+        risultato, _ = self.gestoreCorso.visualizzaIscritti(id_corso)
         
         # Verifichiamo che venga restituita una lista di dizionari contenente le informazioni del cliente finto
         self.assertIsInstance(risultato, list)

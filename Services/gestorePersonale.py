@@ -51,10 +51,25 @@ class GestorePersonale:
               return "Errore: Personale non trovato"
 
           try:
-               if nuovaEmail:
-                    personale.set_email(nuovaEmail)
-               if nuovoTelefono:
-                    personale.set_telefono(nuovoTelefono)
+            # CONTROLLO EMAIL
+            if nuovaEmail is not None:  # Se l'utente vuole modificare l'email
+                if isinstance(nuovaEmail, str):
+                    if nuovaEmail.strip():  # Se non è vuota, la aggiorna
+                        personale.set_email(nuovaEmail)
+                    else:  # Se è una stringa vuota "" o "   "
+                        raise ValueError("L'email non può essere vuota")
+                else:
+                    raise TypeError("L'email deve essere una stringa")
+
+            # CONTROLLO TELEFONO
+            if nuovoTelefono is not None:  # Se l'utente vuole modificare il telefono
+                if isinstance(nuovoTelefono, str):
+                    if nuovoTelefono.strip():  # Se non è vuota, la aggiorna
+                        personale.set_telefono(nuovoTelefono)
+                    else:  # Se è una stringa vuota "" o "   "
+                        raise ValueError("Il telefono non può essere vuota")
+                else:
+                    raise TypeError("Il telefono deve essere una stringa")
           except TypeError as e:
                return f"Errore nei dati: {e}"
          

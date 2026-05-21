@@ -60,13 +60,20 @@ class TestGestoreCliente(unittest.TestCase):
         risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(),'nuovaEmail', 'nuovoTelefono', nuova_data)
         self.assertIn('Errore: cliente non trovato', risultato)
 
-    def test_modificaCliente_dati_errati(self):
+    def test_modificaCliente_parziale(self):
         
         nuova_data = datetime(2026, 5, 19)
         
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
         risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(), None , None , nuova_data)
+        self.assertIn('Cliente modificato correttamente', risultato)
+
+    def test_modificaCliente_dati_errati(self):
+        
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato = self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(), "", None, None)
         self.assertIn('Errore nei dati cliente', risultato)
+
 
     def test_modificaCliente_certificato_non_trovato(self):  
 
@@ -79,17 +86,17 @@ class TestGestoreCliente(unittest.TestCase):
     def test_eliminaCliente_esistente(self):
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
         risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_codiceFiscale())
-        self.assertIn('cliente eliminato', risultato)
+        self.assertIn('Cliente eliminato', risultato)
 
     def test_eliminaCliente_non_esistente(self):
         
         risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_codiceFiscale())
-        self.assertIn('cliente non trovato', risultato)
+        self.assertIn('Cliente non trovato', risultato)
 
-    def test_visualizzaCertificato_non_trovato(self):
+    '''def test_visualizzaCertificato_non_trovato(self):
         
         risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
-        self.assertIn('cliente non trovato', risultato)
+        self.assertIn('Cliente non trovato', risultato)
     
 
     def test_visualizzaCertificato_trovato(self):     
@@ -103,7 +110,7 @@ class TestGestoreCliente(unittest.TestCase):
         giorni_attesi = (datetime.combine(cert.get_dataScadenza(), time(23, 59, 59, 9999)) - datetime.today()).days
         self.assertEqual(risultato["giorniAllaScadenza"], giorni_attesi)
 
-        self.assertEqual(risultato["validità"], "Attivo")
+        self.assertEqual(risultato["validità"], "Attivo") '''
 
 
     

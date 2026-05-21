@@ -45,56 +45,64 @@ class GestoreCliente:
     #def TrovaCliente(self, id:str):
      #    return self._clienteRepo.trovaPerId(id)
     
-    def modificaCliente(self,codiceFiscale: str,nuovaEmail: str,nuovoTelefono: str,nuovaDataCertificato: str = None) -> str:
+    def modificaCliente(self, codiceFiscale: str, nuovaEmail: str, nuovoTelefono: str, nuovaDataCertificato: str = None) -> str:
+        cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
-          cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
+        if cliente is None:
+            return "Errore: cliente non trovato"
 
-          if cliente is None:
-               return "Errore: cliente non trovato"
+        try:
+            # CONTROLLO EMAIL
+            if nuovaEmail is not None:  # Se l'utente vuole modificare l'email
+                if isinstance(nuovaEmail, str):
+                    if nuovaEmail.strip():  # Se non è vuota, la aggiorna
+                        cliente.set_email(nuovaEmail)
+                    else:  # Se è una stringa vuota "" o "   "
+                        raise ValueError("L'email non può essere vuota")
+                else:
+                    raise TypeError("L'email deve essere una stringa")
 
-          try:
-               if nuovaEmail:
-                    cliente.set_email(nuovaEmail)
-               if nuovoTelefono:
-                    cliente.set_telefono(nuovoTelefono)
+            # CONTROLLO TELEFONO
+            if nuovoTelefono is not None:  # Se l'utente vuole modificare il telefono
+                if isinstance(nuovoTelefono, str):
+                    if nuovoTelefono.strip():  # Se non è vuota, la aggiorna
+                        cliente.set_telefono(nuovoTelefono)
+                    else:  # Se è una stringa vuota "" o "   "
+                        raise ValueError("Il telefono non può essere vuota")
+                else:
+                    raise TypeError("Il telefono deve essere una stringa")
 
-          except TypeError as e:
-               return f"Errore nei dati cliente: {e}"
+            # Aggiornamento certificato
+            if nuovaDataCertificato is not None:
+                certificato = cliente.get_certificato()
 
-      # aggiornamento certificato 
-          if nuovaDataCertificato is not None:
-
-               certificato = cliente.get_certificato()
-
-               if certificato is None:
+                if certificato is None:
                     return "Errore: certificato non trovato"
 
-               if nuovaDataCertificato:
-
+                if nuovaDataCertificato:
                     certificato.set_dataEffettuato(nuovaDataCertificato)
                     certificato.set_validità(True)
 
-          self._clienteRepo.salva()
+        except (TypeError, ValueError) as e:
+            return f"Errore nei dati cliente: {e}"
 
-          return "Cliente modificato correttamente"
+        self._clienteRepo.salva()
+        return "Cliente modificato correttamente"
      
     def eliminaCliente(self, codiceFiscale: str) -> str:
+        cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
-     cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
+        if cliente is None:
+            return "Cliente non trovato"
 
-     if cliente is None:
-          return "Cliente non trovato"
+        # elimina certificato associato
+        certificato = cliente.get_certificato()
 
-     # elimina certificato associato
-     certificato = cliente.get_certificato()
+        if certificato is not None:
+            self._certificatoRepo.eliminaPerId(certificato.get_id())
+            self._certificatoRepo.salva()
 
-     if certificato is not None:
-          self._certificatoRepo.eliminaPerId(certificato.get_id())
-          self._certificatoRepo.salva()
+        self._clienteRepo.eliminaPerId(cliente.get_id())
+        self._clienteRepo.salva()
 
-
-     self._clienteRepo.eliminaPerId(id)
-     self._clienteRepo.salva()
-     
-
-     return "Cliente eliminato"
+        return "Cliente eliminato"
