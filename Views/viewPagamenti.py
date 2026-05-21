@@ -1,8 +1,6 @@
 import sys, math
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QComboBox, QGridLayout
-from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
 from PyQt6.QtCore import Qt
-from datetime import time, datetime, timedelta
 if not __name__ == "__main__":
     from Services import GestorePagamento
 

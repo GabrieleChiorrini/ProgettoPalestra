@@ -57,3 +57,6 @@ class PalestraRepository: # Repository
     
     def aggiornaOrario(self) -> None:
         self.salva()
+
+    def ids(self) -> list:
+        return [(a.get_nome(), a.get_id()) for a in list(self._palestre.values())]

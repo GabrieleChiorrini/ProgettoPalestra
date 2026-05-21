@@ -4,13 +4,14 @@ from PyQt6.QtCore import QDateTime
 from datetime import datetime
 
 if not __name__ == "__main__":
-    from Services import GestorePrenotazione
+    from Services import GestorePrenotazione, GestoreSalaPesi
 
 class FormPrenotazioneSalaPesi(QWidget):
-    def __init__(self, gpr: GestorePrenotazione, clienteId: str):
+    def __init__(self, gpr: GestorePrenotazione, gsp : GestoreSalaPesi,clienteId: str):
         super().__init__()
 
         self._gestorePrenotazione = gpr
+        self._gestoreSalaPesi = gsp
         self._clienteId = clienteId
     
         self._buildUI()
@@ -21,7 +22,7 @@ class FormPrenotazioneSalaPesi(QWidget):
         fLayout = QFormLayout()
 
         self._comboSalaPesi = QComboBox()
-        self._comboSalaPesi.addItems([])
+        self._comboSalaPesi.addItems(self._gestoreSalaPesi.get_ids())
         self._comboSalaPesi.setCurrentIndex(0)
         fLayout.addRow("Sala Pesi:", self._comboSalaPesi)
 
@@ -61,19 +62,29 @@ class FormPrenotazioneSalaPesi(QWidget):
     
     def onPrenota(self):
         salaPesiId = self._comboSalaPesi.currentText()
+
+        if not salaPesiId:
+            self._warning("Seleziona una sala pesi valida")
+            return
+
         selezionato = self._gruppo.checkedButton()
         if not selezionato:
-            self.warning("Seleziona una fascia oraria")
+            self._warning("Seleziona una fascia oraria")
             return
         
         fasciaOraria = selezionato.text()
 
-        #Trova Fascia oraria ID
+        idFasciaOraria = self._gestoreSalaPesi.idFasciaOraria(salaPesiId, fasciaOraria)
 
-        risultato = self._gestorePrenotazione(None, self._clienteId)
-        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self.warning(risultato)
+        if not idFasciaOraria:
+            self._warning("Fascia oraria non trovata")
+            return
 
-    def warning(self, testo:str) -> None:
+
+        risultato = self._gestorePrenotazione.prenotareSalaPesi(idFasciaOraria, self._clienteId)
+        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
+
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
         
 if __name__ == "__main__":

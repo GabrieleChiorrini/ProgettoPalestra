@@ -92,7 +92,9 @@ class GestoreCorso():
             })
 
         return lista_iscritti
-        
+    
+    def idCorsi(self) -> list:
+        return self._prenotazioneCorsoRepo.ids()
 
 
         

@@ -21,7 +21,7 @@ class FormEliminaPrenotazione(QWidget):
         fLayout = QFormLayout()
 
         self._comboCorso = QComboBox()
-        self._comboCorso.addItems([])
+        [self._comboCorso.addItem(a[0], a[1]) for a in self._gestorePrenotazione.idPrenotazioni(self._clienteId)]
         self._comboCorso.setCurrentIndex(0)
         fLayout.addRow("Prenotazione:", self._comboCorso)
 
@@ -44,15 +44,19 @@ class FormEliminaPrenotazione(QWidget):
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
     
     def onElimina(self):
-        prenotazioneId = self._comboCorso.currentText()
+        prenotazioneId = self._comboCorso.currentData()
+
+        if not prenotazioneId:
+            self._warning("Seleziona una prenotazione valida")
+            return
 
         if "PC" in prenotazioneId:
             risultato = self._gestorePrenotazione.eliminaPrenotazioneCorso(prenotazioneId, self._clienteId)
         elif "PS" in prenotazioneId:
             risultato = self._gestorePrenotazione.eliminaPrenotazioneSalaPesi(prenotazioneId, self._clienteId)
-        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self.warning(risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 
-    def warning(self, testo:str) -> None:
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
         
 if __name__ == "__main__":

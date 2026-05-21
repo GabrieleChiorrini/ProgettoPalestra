@@ -19,7 +19,7 @@ class FormCapienza(QWidget):
         fLayout = QFormLayout()
 
         self._comboSalaPesi = QComboBox()
-        self._comboSalaPesi.addItems([])
+        self._comboSalaPesi.addItems(self._gestoreSalaPesi.get_ids())
         self._comboSalaPesi.setCurrentIndex(0)
         fLayout.addRow("Sala Pesi:", self._comboSalaPesi)
 
@@ -46,16 +46,20 @@ class FormCapienza(QWidget):
     
     def onModifica(self):
         salaPesiId = self._comboSalaPesi.currentText()
+
+        if not salaPesiId:
+            self._warning("Seleziona una Sala Pesi valida")
+            return
         
         capienza = self._spinBoxCapienza.value()
         if capienza <= 0:
-            self.warning("Nuova capienza non valida")
+            self._warning("Nuova capienza non valida")
             return
 
         risultato = self._gestoreSalaPesi.modificaCapienza(salaPesiId, capienza)
-        QMessageBox.information(self, "Ottimo", risultato) if "Capienza aggiornata" in risultato else self.warning(risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Capienza aggiornata" in risultato else self._warning(risultato)
 
-    def warning(self, testo:str) -> None:
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
 
 if __name__ == "__main__":

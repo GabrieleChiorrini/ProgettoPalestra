@@ -79,3 +79,6 @@ class GestorePrenotazione:
         self._prenotazioneRepo.salva()
         
         return "Prenotazione effettuata"
+    
+    def idPrenotazioni(self, idCliente:str) -> list:
+        return self._prenotazioneCorsoRepo.idsPerCliente(idCliente) + self._prenotazioneSalaPesiRepo.idsPerCliente(idCliente)

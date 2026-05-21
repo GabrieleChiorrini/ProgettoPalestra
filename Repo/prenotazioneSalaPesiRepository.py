@@ -45,5 +45,9 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
             return "PS000"
         return self.incrementaId(ultimoId)
 
-
+    def idsPerCliente(self, clienteId: str) -> list:
+        return [(a.get_fasciaOraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values()) if a.get_cliente().get_id() == clienteId]
+    
+    def ids(self) -> list:
+        return [(a.get_fasciaOraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values())]
     

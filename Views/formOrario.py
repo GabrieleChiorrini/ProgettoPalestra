@@ -21,7 +21,7 @@ class FormOrario(QWidget):
         fLayout = QFormLayout()
 
         self._comboPalestra = QComboBox()
-        self._comboPalestra.addItems([])
+        [self._comboPalestra.addItem(a[0], a[1]) for a in self._gestoreOrario.get_ids()]
         self._comboPalestra.setCurrentIndex(0)
         fLayout.addRow("Sala Pesi:", self._comboPalestra)
 
@@ -57,26 +57,30 @@ class FormOrario(QWidget):
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
     
     def onModifica(self):
-        palestraId = self._comboPalestra.currentText()
+        palestraId = self._comboPalestra.currentData()
+
+        if not palestraId:
+            self._warning("Seleziona un'id palestra valido")
+            return
 
         orarioApertura = self._timeEditApertura.time().toPyTime()
         orarioChiusura= self._timeEditChiusura.time().toPyTime()
 
         if orarioChiusura <= orarioApertura:
-            self.warning("L'orario di apertura deve precedere quello di chiusura")
+            self._warning("L'orario di apertura deve precedere quello di chiusura")
             return
         
         valori = [a.isChecked() for a in self._listaCheck]
         if not any(valori): #any() verifica se almeno un valore è True
-            self.warning("Devi selezionare almeno un giorno")
+            self._warning("Devi selezionare almeno un giorno")
             return
         
         listaGiorni = [GiorniSettimana(i + 1) for (i, a) in enumerate(valori) if valori]
 
         risultato = self._gestoreOrario.modificaOrario(palestraId, orarioApertura, orarioChiusura, listaGiorni)
-        QMessageBox.information(self, "Ottimo", risultato) if "Orario aggiornato correttamente" in risultato else self.warning(risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Orario aggiornato correttamente" in risultato else self._warning(risultato)
 
-    def warning(self, testo:str) -> None:
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
 
 if __name__ == "__main__":

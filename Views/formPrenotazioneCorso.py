@@ -4,13 +4,14 @@ from PyQt6.QtCore import QDateTime
 from datetime import datetime
 
 if not __name__ == "__main__":
-    from Services import GestorePrenotazione
+    from Services import GestorePrenotazione, GestoreCorso
 
 class FormPrenotazioneCorso(QWidget):
-    def __init__(self, gpr: GestorePrenotazione, clienteId: str):
+    def __init__(self, gpr: GestorePrenotazione, gco: GestoreCorso, clienteId: str):
         super().__init__()
 
         self._gestorePrenotazione = gpr
+        self._gestoreCorso = gco
         self._clienteId = clienteId
     
         self._buildUI()
@@ -21,7 +22,7 @@ class FormPrenotazioneCorso(QWidget):
         fLayout = QFormLayout()
 
         self._comboCorso = QComboBox()
-        self._comboCorso.addItems([])
+        [self._comboCorso.addItem(a[0], a[1]) for a in self._gestoreCorso.idCorsi()]
         self._comboCorso.setCurrentIndex(0)
         fLayout.addRow("Corso:", self._comboCorso)
 
@@ -44,12 +45,16 @@ class FormPrenotazioneCorso(QWidget):
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
     
     def onPrenota(self):
-        corsoId = self._comboCorso.currentText()
+        corsoId = self._comboCorso.currentData()
+
+        if not corsoId:
+            self._warning("Seleziona un corso valido")
+            return
 
         risultato = self._gestorePrenotazione(corsoId, self._clienteId)
-        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self.warning(risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 
-    def warning(self, testo:str) -> None:
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
         
 if __name__ == "__main__":

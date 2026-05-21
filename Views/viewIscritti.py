@@ -1,5 +1,5 @@
 import sys, math
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QFormLayout, QComboBox
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QFormLayout, QComboBox, QMessageBox
 from PyQt6.QtGui import QGuiApplication
 if not __name__ == "__main__":
     from Services import GestoreCorso
@@ -19,7 +19,7 @@ class ViewIscirtti(QWidget):
         fLayout = QFormLayout()
 
         self._comboCorso = QComboBox()
-        self._comboCorso.addItems(["0", "1"])
+        [self._comboCorso.addItem(a[0], a[1]) for a in self._gestoreCorso.idCorsi()]
         self._comboCorso.setCurrentIndex(0)
         self._comboCorso.currentIndexChanged.connect(self._onIndiceCambia)
 
@@ -45,7 +45,12 @@ class ViewIscirtti(QWidget):
         self.move(window_geometry.topLeft()) #Sposta la finestra al centro
 
     def _onIndiceCambia(self):
-        corsoId = self._comboCorso.currentText()
+        corsoId = self._comboCorso.currentData()
+
+        if not corsoId:
+            QMessageBox.warning("Attenzione", "Seleziona un corso valido")
+            return
+
         iscritti = self._gestoreCorso.visualizzaIscritti(corsoId)
 
         for a in iscritti:

@@ -31,3 +31,6 @@ class GestoreOrario:
         palestra._fasceOrarie = palestra.genera_fasce_orarie()
 
         return "Orario aggiornato correttamente"
+    
+    def get_ids(self) -> list:
+        return self._palestraRepo.ids()
