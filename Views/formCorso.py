@@ -121,7 +121,7 @@ class FormCorso(QWidget):
         
         valori.append([GiorniSettimana(i + 1) for (i, a) in enumerate(valori) if valori])
 
-        if not any([x is not None for x in valori]):
+        if not any(valori):
             self._warning("Almeno un valore deve essere valido")
         
         (id, risultato) = self._gestoreCorso.modificaCorso(idCorso, *valori)
@@ -139,4 +139,3 @@ class FormCorso(QWidget):
 
     def _warning(self, testo):
         QMessageBox.warning("Attenzione", testo)
-

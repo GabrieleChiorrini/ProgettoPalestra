@@ -111,7 +111,7 @@ class FormCliente(QWidget):
 
         for a in range(1, 3):
             testo = self._listaCampi[a].text().strip()
-            if not testo is None:
+            if testo:
                 break
         else:
             QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere inserito")
@@ -123,12 +123,12 @@ class FormCliente(QWidget):
 
     def onElimina(self):
         testo = self._listaCampi[0].text().strip()
-        if  not testo:
+        if not testo:
             QMessageBox.warning(
                 self, "Attenzione",
                 "Il valore inserito in " + self._listaCampi[0].placeholderText().lower() + " non è valido")
             return
-        risultato = self._gestoreCliente.eliminaCliente(testo) #unpacking lista
+        risultato = self._gestoreCliente.eliminaCliente(testo)
         QMessageBox.information(self, "Ottimo", risultato) if "Cliente eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
 if __name__ == "__main__":

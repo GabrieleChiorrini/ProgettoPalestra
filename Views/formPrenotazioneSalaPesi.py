@@ -80,7 +80,6 @@ class FormPrenotazioneSalaPesi(QWidget):
             self._warning("Fascia oraria non trovata")
             return
 
-
         risultato = self._gestorePrenotazione.prenotareSalaPesi(idFasciaOraria, self._clienteId)
         QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 

@@ -52,22 +52,22 @@ class FormPagamento(QWidget):
     def onRegistra(self):
         codiceFiscale = self._lineEditCliente.text().strip()
         if not codiceFiscale:
-            self.warning("Inserisci il codice fiscale")
+            self._warning("Inserisci il codice fiscale")
             return
         
         importo = self._lineEditDurata.text().strip()
         if not importo:
-            self.warning("Inserisci l'importo del pagamento")
+            self._warning("Inserisci l'importo del pagamento")
             return
         
         dataPagamento = self._dateTimeEdit.dateTime().toPyDateTime()
         if dataPagamento > datetime.today():
-            self.warning("La data non può essere nel futuro!")
+            self._warning("La data non può essere nel futuro!")
 
         risultato = self._gestorePagamento.registraPagamento(codiceFiscale, float(importo), dataPagamento)
-        QMessageBox.information(self, "Ottimo", risultato) if "Pagamento registrato" in risultato else self.warning(risultato)
+        QMessageBox.information(self, "Ottimo", risultato) if "Pagamento registrato" in risultato else self._warning(risultato)
 
-    def warning(self, testo:str) -> None:
+    def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
 
 if __name__ == "__main__":
