@@ -96,7 +96,7 @@ class FormPersonale(QWidget):
         
         for a in range(1, 3):
             testo = self._listaCampi[a].text().strip()
-            if not testo is None:
+            if testo:
                 break
         else:
             QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere")
@@ -107,7 +107,7 @@ class FormPersonale(QWidget):
 
     def onElimina(self):
         testo = self._listaCampi[0].text().strip()
-        if  not testo:
+        if not testo:
             QMessageBox.warning(
                 self, "Attenzione",
                 "Il valore inserito in " + self._listaCampi[0].placeholderText().lower() + " non è valido")

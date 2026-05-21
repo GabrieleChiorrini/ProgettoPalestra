@@ -57,12 +57,12 @@ class FormAbbonamento(QWidget):
     
     def onCrea(self):
         codiceFiscale = self._lineEditCliente.text().strip()
-        if codiceFiscale is None:
+        if not codiceFiscale:
             self.warning("Inserisci il codice fiscale")
             return
         
         durataAbbonamento = self._lineEditDurata.text().strip()
-        if durataAbbonamento is None:
+        if not durataAbbonamento:
             self.warning("Inserisci la durata dell'abbonamento")
             return
         
@@ -73,12 +73,12 @@ class FormAbbonamento(QWidget):
 
     def onRinnova(self):
         codiceFiscale = self._lineEditCliente.text().strip()
-        if codiceFiscale is None:
+        if not codiceFiscale:
             self.warning("Inserisci il codice fiscale")
             return
         
         durataAbbonamento = self._lineEditDurata.text().strip()
-        if durataAbbonamento is None:
+        if not durataAbbonamento:
             self.warning("Inserisci la durata dell'abbonamento")
             return
         
