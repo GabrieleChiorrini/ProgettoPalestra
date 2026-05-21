@@ -51,6 +51,18 @@ class FormLogin(QWidget):
 
         gridLayout.addLayout(vLayout, 1, 1)
 
+
+        gridLayout2 = QGridLayout()
+
+        btnIngresso = QPushButton("Ingresso")
+        btnIngresso.clicked.connect(lambda: self._stack.setCurrentIndex(4))
+        gridLayout2.addWidget(btnIngresso, 1, 1)
+
+        gridLayout2.setColumnStretch(0, 1)
+        gridLayout2.setRowStretch(0, 1)
+
+        gridLayout.addLayout(gridLayout2, 2, 2)
+
         self.setLayout(gridLayout)
         self.showMaximized()
     

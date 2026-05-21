@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget
-from . import FormLogin, FormRegistrazione, HomePageAmministratore, HomePageCliente
+from . import FormLogin, FormRegistrazione, HomePageAmministratore, HomePageCliente, FormIngresso
 from Services import *
 
 class MainWindow(QMainWindow):
@@ -13,11 +13,13 @@ class MainWindow(QMainWindow):
         self.page2 = FormRegistrazione(self.stack, gau)
         self.page3 = HomePageAmministratore(self.stack, gab, gca, gcl, gco, gor, gpa, gpe, gsp)
         self.page4 = HomePageCliente(self.stack, None, gab, gce, gco, gpa, gpr, gsa)
+        self.page5 = FormIngresso(self.stack, gin, gva)
 
         self.stack.addWidget(self.page1)
         self.stack.addWidget(self.page2)
         self.stack.addWidget(self.page3)
         self.stack.addWidget(self.page4)
+        self.stack.addWidget(self.page5)
 
         self.setCentralWidget(self.stack)
         self.showMaximized()
