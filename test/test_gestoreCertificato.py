@@ -29,14 +29,14 @@ class TestGestoreCertificato(unittest.TestCase):
                 os.remove(f)
 
     def test_visualizzaCertificato_non_trovato(self):
-        
         risultato = self.gestoreCertificato.visualizzaCertificato(self.cliente.get_id())
-        self.assertIn('certificato non trovato', risultato)
+        self.assertIsInstance(risultato, dict)
+        self.assertEqual(risultato.get('certificato'), 'non trovato')
     
 
     def test_visualizzaCertificato_trovato(self):     
        
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), "", True)
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
         cliente_reale = self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale())
         self.assertIsNotNone(cliente_reale, 'certificato non trovato')
 
@@ -46,7 +46,7 @@ class TestGestoreCertificato(unittest.TestCase):
         self.assertIsInstance(risultato, dict)
 
         certificato_reale = cliente_reale.get_certificato()
-        self.assertEqual(risultato["dataScadenza"],certificato_reale.get_dataScadenza())
+        self.assertEqual(risultato["dataScadenza"], certificato_reale.get_dataScadenza().strftime("%d/%m/%Y"))
         self.assertEqual(risultato["validità"], "Attivo")
-        self.assertTrue(isinstance(risultato["giorniAllaScadenza"], int))
+        self.assertTrue(isinstance(risultato["giorniAllaScadenza"], str))
 

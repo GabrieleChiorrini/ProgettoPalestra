@@ -97,7 +97,8 @@ class TestGestoreAutenticazione(unittest.TestCase):
         
         # Eseguiamo il login
         risultato = self.gestoreAutenticazione.login("mario_rossi", password_in_chiaro)
-        self.assertEqual(risultato, "Login Cliente")
+        self.assertEqual(risultato[0], "Login Cliente")
+        self.assertIsNotNone(risultato[1])
 
     def test_login_successo_amministratore(self):
         # Aggiungiamo l'amministratore finto alla sua repository
@@ -120,11 +121,12 @@ class TestGestoreAutenticazione(unittest.TestCase):
         
         # Eseguiamo il login
         risultato = self.gestoreAutenticazione.login("admin_user", password_in_chiaro)
-        self.assertEqual(risultato, "Login Amministratore")
+        self.assertEqual(risultato[0], "Login Amministratore")
+        self.assertIsNotNone(risultato[1])
 
     def test_login_username_errato(self):
         risultato = self.gestoreAutenticazione.login("utente_fantasma", "qualunque_password")
-        self.assertEqual(risultato, "Username errato")
+        self.assertEqual(risultato[0], "Username errato")
 
     def test_login_password_errata(self):
         self.clienteRepo.aggiungi(self.cliente)
@@ -135,12 +137,13 @@ class TestGestoreAutenticazione(unittest.TestCase):
         )
         
         risultato = self.gestoreAutenticazione.login("test_user", "password_sbagliata")
-        self.assertEqual(risultato, "Password errata")
+        self.assertEqual(risultato[0], "Password errata")
 
     def test_input_non_stringa(self):
         # Verifica i controlli preventivi del tipo di dato (isinstance check)
         self.assertEqual(self.gestoreAutenticazione.registrazione(123, "pass", "CF"), "L'username deve essere una stringa!")
-        self.assertEqual(self.gestoreAutenticazione.login("user", 456), "La password deve essere una stringa!")
+        risultato = self.gestoreAutenticazione.login("user", 456)
+        self.assertEqual(risultato[0], "La password deve essere una stringa!")
 
 
 if __name__ == "__main__":

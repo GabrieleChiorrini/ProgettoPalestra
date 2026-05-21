@@ -45,10 +45,9 @@ class GestoreAbbonamento:
         if abbonamento is None:
             return self.creaAbbonamento(
                 cliente.get_codiceFiscale(),
-                timedelta(int(nuovaDurata)),
+                str(nuovaDurata.days),
                 tipo
-                )
-
+            )
         validitàAbb = abbonamento.get_stato()
         dataPartenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
 

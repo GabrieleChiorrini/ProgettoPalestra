@@ -31,24 +31,26 @@ class TestGestoreCliente(unittest.TestCase):
 
     def test_registraCliente_non_esistente(self):
         
-        risultato = self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        self.assertIn('cliente e certificato creato', risultato)
+        risultato = self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),
+                                                        self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), 
+                                                        self.certificatoMedico.get_dataEffettuato(),)
+        self.assertIn('Cliente e certificato creati', risultato)
 
     def test_registraCliente_esistente(self):
 
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        risultato =  self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato =  self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
         self.assertIn('Cliente già esistente', risultato)
 
     def test_modificaCliente_trovato(self):
         
         nuova_data = datetime(2026, 5, 19)
 
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(),'nuovaEmail', 'nuovoTelefono', nuova_data)
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(),'nuovaEmail', 'nuovoTelefono', nuova_data)
         self.assertIn('Cliente modificato correttamente', risultato)
-        self.assertEqual(self.clienteRepo.trovaPerId(self.cliente.get_id()).get_email(), 'nuovaEmail')
-        self.assertEqual(self.clienteRepo.trovaPerId(self.cliente.get_id()).get_telefono(), 'nuovoTelefono') 
+        self.assertEqual(self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale()).get_email(), 'nuovaEmail')
+        self.assertEqual(self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale()).get_telefono(), 'nuovoTelefono') 
         self.assertEqual(self.certificatiRepo.trovaPerId(self.certificatoMedico.get_id()).get_dataEffettuato(), nuova_data)
 
     def test_modificaCliente_nontrovato(self):
@@ -62,26 +64,26 @@ class TestGestoreCliente(unittest.TestCase):
         
         nuova_data = datetime(2026, 5, 19)
         
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(), None , None , nuova_data)
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(), None , None , nuova_data)
         self.assertIn('Errore nei dati cliente', risultato)
 
     def test_modificaCliente_certificato_non_trovato(self):  
 
         nuova_data = datetime(2026, 5, 19)
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
         self.clienteRepo.trovaPerCF(self.cliente.get_codiceFiscale())._certificato = None
-        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_id(),'nuovaEmail' , 'nuovoTelefono' , nuova_data)
+        risultato =  self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(),'nuovaEmail' , 'nuovoTelefono' , nuova_data)
         self.assertIn('Errore: certificato non trovato', risultato)
 
     def test_eliminaCliente_esistente(self):
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_id())
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_codiceFiscale())
         self.assertIn('cliente eliminato', risultato)
 
     def test_eliminaCliente_non_esistente(self):
         
-        risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_id())
+        risultato = self.gestoreCliente.eliminaCliente(self.cliente.get_codiceFiscale())
         self.assertIn('cliente non trovato', risultato)
 
     def test_visualizzaCertificato_non_trovato(self):
@@ -92,8 +94,8 @@ class TestGestoreCliente(unittest.TestCase):
 
     def test_visualizzaCertificato_trovato(self):     
        
-        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato(), self.cliente.get_certificato(), self.certificatoMedico.get_validità())
-        risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_id())
+        self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
+        risultato = self.gestoreCliente.visualizzaCertificato(self.cliente.get_codiceFiscale())
         cert = self.certificatiRepo.trovaPerId(self.cliente.get_certificato().get_id())
 
         self.assertEqual(risultato["dataScadenza"], cert.get_dataScadenza())

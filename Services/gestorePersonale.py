@@ -68,6 +68,8 @@ class GestorePersonale:
           if personale is None:
                return "Personale non trovato"
           
+          id = personale.get_id()
+
           self._amministratoreRepo.eliminaPerId(id)
 
           self._credenzialiRepo.eliminaPerId(id)

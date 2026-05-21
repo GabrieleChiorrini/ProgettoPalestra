@@ -55,7 +55,7 @@ class TestGestorePersonale(unittest.TestCase):
             "password123"
         )
 
-        self.assertIn("personale creato", risultato)
+        self.assertIn("Personale creato", risultato)
 
     def test_registraPersonale_esistente(self):
 
@@ -99,20 +99,20 @@ class TestGestorePersonale(unittest.TestCase):
         )
 
         risultato = self.gestorePersonale.modificaPersonale(
-            self.amministratore.get_id(),
+            self.amministratore.get_codiceFiscale(),
             "nuovaemail@gmail.com",
             "3331234567"
         )
 
         self.assertIn("Personale modificato", risultato)
 
-        amministratore_modificato = (self.amministratoreRepo.trovaPerId( self.amministratore.get_id()))
+        amministratore_modificato = (self.amministratoreRepo.trovaPerCF( self.amministratore.get_codiceFiscale()))
 
         self.assertEqual(amministratore_modificato.get_email(),"nuovaemail@gmail.com")
 
     def test_modificaPersonale_non_esistente(self):
 
-        risultato = self.gestorePersonale.modificaPersonale(self.amministratore.get_id(),
+        risultato = self.gestorePersonale.modificaPersonale(self.amministratore.get_codiceFiscale(),
             "nuovaemail@gmail.com","3331234567")
 
         self.assertIn("Errore: Personale non trovato", risultato)
@@ -157,14 +157,14 @@ class TestGestorePersonale(unittest.TestCase):
             "password123"
         )
 
-        risultato = self.gestorePersonale.eliminaPersonale(self.amministratore.get_id())
+        risultato = self.gestorePersonale.eliminaPersonale(self.amministratore.get_codiceFiscale())
         self.assertIn("Personale eliminato", risultato)
-        amministratore = self.amministratoreRepo.trovaPerId(self.amministratore.get_id())
+        amministratore = self.amministratoreRepo.trovaPerCF(self.amministratore.get_codiceFiscale())
         self.assertIsNone(amministratore)
 
     def test_eliminaPersonale_non_esistente(self):
 
-        risultato = self.gestorePersonale.eliminaPersonale(self.amministratore.get_id())
+        risultato = self.gestorePersonale.eliminaPersonale(self.amministratore.get_codiceFiscale())
 
         self.assertIn("Personale non trovato",risultato)
 
@@ -204,7 +204,7 @@ class TestGestorePersonale(unittest.TestCase):
 
         admin = self.amministratoreRepo.trovaPerCF(self.amministratore.get_codiceFiscale())
 
-        self.gestorePersonale.eliminaPersonale(admin.get_id())
+        self.gestorePersonale.eliminaPersonale(admin.get_codiceFiscale())
         cred = self.credenzialiRepo.trovaPerUsername("admin")
         self.assertIsNone(cred)
 
