@@ -182,9 +182,9 @@ class HomePageAmministratore(QWidget):
         vLayout.addLayout(hLayout, 1)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
-        btnEsci = QPushButton("Times")
-        btnEsci.clicked.connect(lambda: self.onTimers)
-        vLayoutf.addWidget(btnEsci)
+        btnTimers = QPushButton("Timers")
+        btnTimers.clicked.connect(self.onTimers)
+        vLayoutf.addWidget(btnTimers)
 
         btnEsci = QPushButton("Esci")
         btnEsci.clicked.connect(lambda: self._stack.setCurrentIndex(0))
@@ -325,6 +325,7 @@ class HomePageAmministratore(QWidget):
         self.form.activateWindow()
     
     def onTimers(self):
+        print("ciaoo")
         self.form = FormImpostazioniTimer(self._stack)
         self.form.show()
         self.form.raise_()
