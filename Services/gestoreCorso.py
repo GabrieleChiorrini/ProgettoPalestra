@@ -1,12 +1,14 @@
 from Models import Corso, Amministratore
-from Repo import CorsoRepository, AmministratoreRepository, PrenotazioneCorsoRepository
+from Repo import CorsoRepository, AmministratoreRepository, PrenotazioneCorsoRepository, PalestraRepository
 from datetime import time
 
 class GestoreCorso():
-    def __init__(self, corsoRepo: CorsoRepository, adminRepo: AmministratoreRepository, prenotazioneCorsoRepo: PrenotazioneCorsoRepository): # salvo la repository del corso in una variabile da usare nei vari metodi
+    def __init__(self, corsoRepo: CorsoRepository, adminRepo: AmministratoreRepository, prenotazioneCorsoRepo: PrenotazioneCorsoRepository, palestraRepo: PalestraRepository): # salvo la repository del corso in una variabile da usare nei vari metodi
         self._corsoRepo = corsoRepo
         self._adminRepo = adminRepo
         self._prenotazioneCorsoRepo = prenotazioneCorsoRepo
+        self._palestraRepo = palestraRepo
+
     def creaCorso(self, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list)-> tuple[str | None, str]:
         istruttore = self._adminRepo.trovaPerCF(istruttoreCF)
         exclude_id = ""  # Non esiste un corso da escludere quando si crea un nuovo corso
@@ -20,6 +22,11 @@ class GestoreCorso():
         idCorso = self._corsoRepo.newId()  # assegno un nuvo id al corso creandolo con newId() dalla corsoRepository
         corso = Corso(idCorso, nome, maxCapienza, istruttore, orari, giorni or [], [])
         self._corsoRepo.aggiungi(corso) #salvo i dati del corso
+        palestra = self._palestraRepo.trovaPerId(self._palestraRepo.lastId())
+        corsi = palestra.get_corsi()
+        corsi.append(corso)
+        palestra.set_corsi(corsi)
+        self._palestraRepo.salva()
         return idCorso, "Corso creato" #ritorno l'id del corso creato e la stringa con scritto "Corso Creato"
     
 
@@ -82,7 +89,14 @@ class GestoreCorso():
     def eliminaCorso(self, corsoId: str)-> tuple[str | None, str]:
         corso = self._corsoRepo.trovaPerId(corsoId) #verifico che il corso da cancellare esista
         if not corso:
-            return None, 'Corso non trovato' 
+            return None, 'Corso non trovato'
+        
+        palestra = self._palestraRepo.trovaPerId(self._palestraRepo.lastId())
+        corsi = palestra.get_corsi()
+        if corso in corsi:
+            corsi.remove(corso)
+        palestra.set_corsi(corsi)
+        self._palestraRepo.salva()
         self._corsoRepo.cancella(corsoId) # se il corso esiste allora lo cancello  
         return corsoId, 'Corso eliminato'
     

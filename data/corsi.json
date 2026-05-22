@@ -24,5 +24,18 @@
             6
         ],
         "iscritti": []
+    },
+    {
+        "id": "CO003",
+        "nome": "Yoga",
+        "maxCapienza": 7,
+        "istruttore": "AD000",
+        "orario": "09:00:00",
+        "giorni": [
+            1,
+            2,
+            4
+        ],
+        "iscritti": []
     }
 ]

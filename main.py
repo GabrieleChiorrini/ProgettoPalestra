@@ -32,7 +32,7 @@ if __name__ == "__main__":
     gca = GestoreCapienza(psr, cor, spr, far)
     gce = GestoreCertificato(clr)
     gcl = GestoreCliente(clr, cmr)
-    gco = GestoreCorso(cor, amr, pcr)
+    gco = GestoreCorso(cor, amr, pcr, plr)
     gin = GestoreIngressi(acr, clr, abr, cmr)
     gor = GestoreOrario(plr, far, spr)
     gpa = GestorePagamento(clr, par)

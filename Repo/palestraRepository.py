@@ -20,8 +20,8 @@ class PalestraRepository: # Repository
             self._palestre = {
                 d["id"]: Palestra.fromDict({
                 **d, #Unpacking del dizionario
-                "salePesi": [self._salaPesiRepo.trovaPerId(c) for c in dati["salePesi"]], # trovo le sale pesi perché ho salvato solo l'id
-                "corsi" : [self._corsoRepo.trovaPerId(dati["corsi"]) for c in dati["corsi"]] # trovo i corsi perché ho salvato solo l'id
+                "salePesi": [self._salaPesiRepo.trovaPerId(c) for c in d["salePesi"]], # trovo le sale pesi perché ho salvato solo l'id
+                "corsi" : [self._corsoRepo.trovaPerId(c) for c in d["corsi"]] # trovo i corsi perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di Palestra
         except FileNotFoundError:
             self._palestre = {} # al primo avvio
