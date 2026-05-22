@@ -6,11 +6,10 @@ from . import SalaPesi, Corso, FasciaOraria
 if TYPE_CHECKING:
     from Repo import FasciaOrariaRepository
 
-DURATA_FASCIA = timedelta(hours=1)
 
 class Palestra:
     def __init__(self,id: str,nome: str,indirizzo: str,orarioapertura: time,orariochiusura: time,
-        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi],fasciaRepo:FasciaOrariaRepository):
+        giorniApertura: list[GiorniSettimana],corsi: list[Corso],salePesi: list[SalaPesi]):
         self._id = id
         self._nome = nome
         self._indirizzo = indirizzo
@@ -19,14 +18,6 @@ class Palestra:
         self._giorniApertura = giorniApertura
         self._corsi = corsi
         self._salePesi = salePesi
-        self._fasciaRepo = fasciaRepo
-
-        # genera fasce una sola volta
-        self._fasceOrarie = self.genera_fasce_orarie()
-
-        # assegna le fasce a tutte le sale pesi
-        for sala in self._salePesi:
-            sala.set_fasciaOraria(self._fasceOrarie.copy()) #crea una nuova lista che contiene gli stessi elementi della lista originale.
 
 
     def get_id(self) -> str:
@@ -52,9 +43,6 @@ class Palestra:
 
     def get_salePesi(self) -> list[SalaPesi]:
         return self._salePesi
-
-    def get_fasceOrarie(self) -> list[FasciaOraria]:
-        return self._fasceOrarie
 
 
     def set_orarioapertura(self, orarioapertura: time) -> None:
@@ -110,32 +98,9 @@ class Palestra:
             time.fromisoformat(d["orariochiusura"]),
             giorni,
             d["corsi"],
-            d["salePesi"],
-            d["fasciaRepo"]
+            d["salePesi"]
         )
 
-    def genera_fasce_orarie(self) -> list[FasciaOraria]:
-        fasce = []  #creo lista vuota
-
-        inizio = datetime.combine(datetime.today(), self._orarioapertura)  #aggiungo a oggi orario inizio 
-        fine = datetime.combine(datetime.today(), self._orariochiusura)
-
-        while inizio < fine:
-
-            nuovo_id = self._fasciaRepo.newId()
-
-            fascia = FasciaOraria(nuovo_id,inizio.time()) #.time prende solo l'orario
-
-            self._fasciaRepo.aggiungi(fascia)
-
-            fasce.append(fascia)
-
-            inizio += DURATA_FASCIA #ho usato datetime e non time perchè non posso fare le somme con time
-        
-        #new_fascia = FasciaOraria(self._fasciaRepo.newId(), time(23, 0))
-        #self._fasciaRepo.aggiungi(new_fascia)
-        #fasce.append(new_fascia)
-        return fasce
     
     def __str__(self) -> str:
         return (

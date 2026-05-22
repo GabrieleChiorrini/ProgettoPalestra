@@ -52,3 +52,16 @@ class FasciaOrariaRepository: # Repository
 
     def tutti(self) -> list: # converte self._fasceOrarie (dict di oggetti FasciaOraria) in una lista di oggetti FasciaOraria
         return list(self._fasceOrarie.values())
+    
+    def fascePerSala(self, salaId: str) -> list:
+
+        fasce = list(self._fasceOrarie.values())
+        fascia_sala = []
+        numero = int(salaId[2:])
+        inizio_id = 24 * int(numero)
+        fine_id = int(inizio_id) + 23
+        for fascia in fasce:
+            if int(fascia.get_id()[2:]) >= inizio_id and int(fascia.get_id()[2:]) <= fine_id:
+                fascia_sala.append(fascia) 
+        
+        return fascia_sala

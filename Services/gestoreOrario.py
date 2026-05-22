@@ -1,13 +1,18 @@
 from Models import Palestra
-from Repo import PalestraRepository
-from datetime import time
+from Models.fasciaOraria import FasciaOraria
+from Repo import PalestraRepository, FasciaOrariaRepository,  SalaPesiRepository
+from datetime import time, timedelta, datetime
 from Enumerazione.giorniSettimana import GiorniSettimana
 
 
+DURATA_FASCIA = timedelta(hours=1)
+
 class GestoreOrario:
 
-    def __init__(self, palestraRepo: PalestraRepository):
+    def __init__(self, palestraRepo: PalestraRepository, fasciaRepo: FasciaOrariaRepository, salaPesiRepo: SalaPesiRepository):
         self._palestraRepo = palestraRepo
+        self._fasciaRepo = fasciaRepo
+        self._salaPesiRepo = salaPesiRepo
 
 
     def modificaOrario(self, palestraId: str, nuovoOrarioApertura: time, nuovoOrarioChiusura: time, nuoviGiorni: list):
@@ -43,9 +48,18 @@ class GestoreOrario:
             palestra.set_orariochiusura(nuovoOrarioChiusura)
             palestra.set_giorniApertura(nuoviGiorni)
 
-            # Rigenerazione delle fasce orarie della struttura
-            palestra._fasceOrarie = palestra.genera_fasce_orarie()
-            
+            sale_pesi = palestra.get_salePesi()
+
+            for sala in sale_pesi:
+                fasce_orarie = []
+                fasce_esistenti = self._fasciaRepo.fascePerSala(sala.get_id())
+                for fascia in fasce_esistenti:
+                    orario_fascia = fascia.get_orarioInizio()
+                    if orario_fascia >= nuovoOrarioApertura and (orario_fascia + DURATA_FASCIA) <= nuovoOrarioChiusura:
+                        fasce_orarie.append(fascia)
+                sala.set_fasceOrarie(fasce_orarie)
+                self._salaPesiRepo.salva() # per persistenza
+
             self._palestraRepo.salva() # per persistenza
             return "Orario modificato correttamente"
 
@@ -53,7 +67,5 @@ class GestoreOrario:
             # Cattura le anomalie e restituisce il messaggio di errore
             return f"Errore nei dati palestra: {e}"
 
-        return "Orario aggiornato correttamente"
-    
     def get_ids(self) -> list:
         return self._palestraRepo.ids()

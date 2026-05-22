@@ -32,6 +32,15 @@ class FasciaOraria:
             )
 
         self._orarioInizio = orarioInizio
+
+    #def set_id(self, id: str) -> None:
+
+        #if not isinstance(id, str):
+         #   raise TypeError(
+          #      "l'id deve essere una stringa"
+           # )
+
+        #self._id = id
         
     # SERIALIZZAZIONE
 
