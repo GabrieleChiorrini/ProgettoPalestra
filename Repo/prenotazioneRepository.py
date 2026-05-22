@@ -26,7 +26,7 @@ class PrenotazioneRepository(ABC): # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._prenotazioni)[-1] if self._prenotazioni else None
+        return list(self._prenotazioni)[-1] if self._prenotazioni else ""
     
     @abstractmethod
     def newId(self) -> str:

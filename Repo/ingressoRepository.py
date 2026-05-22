@@ -59,7 +59,7 @@ class IngressoRepository: # Repository
         
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._accessi)[-1] if self._accessi else None
+        return list(self._accessi)[-1] if self._accessi else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

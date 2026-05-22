@@ -38,7 +38,7 @@ class PalestraRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._palestre)[-1] if self._palestre else None
+        return list(self._palestre)[-1] if self._palestre else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

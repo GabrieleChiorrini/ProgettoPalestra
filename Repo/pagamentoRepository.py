@@ -51,7 +51,7 @@ class PagamentoRepository: # Repository
         
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._pagamenti)[-1] if self._pagamenti else None
+        return list(self._pagamenti)[-1] if self._pagamenti else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

@@ -32,7 +32,7 @@ class CertificatoMedicoRepository:
     
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._certificati)[-1] if self._certificati else None
+        return list(self._certificati)[-1] if self._certificati else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

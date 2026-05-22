@@ -50,7 +50,7 @@ class ClienteRepository: # Repository
     
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._clienti)[-1] if self._clienti else None
+        return list(self._clienti)[-1] if self._clienti else ""
 
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

@@ -30,7 +30,7 @@ class StatisticaRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._statistiche)[-1] if self._statistiche else None
+        return list(self._statistiche)[-1] if self._statistiche else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

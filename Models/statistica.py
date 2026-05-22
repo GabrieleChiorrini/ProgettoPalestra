@@ -52,18 +52,6 @@ class Statistica:
         x = list(self._dati.keys())
         y = list(self._dati.values())
 
-        # plt.figure(figsize=(8, 5))
-        # plt.bar(x, y)
-
-        # plt.title(titolo)
-        # plt.xlabel(xlabel)
-        # plt.ylabel(ylabel)
-
-        # plt.xticks(rotation=45)
-        # plt.tight_layout()
-
-        # return plt
-
         fig = Figure(figsize=(8, 5))
         ax = fig.add_subplot(111)
 
