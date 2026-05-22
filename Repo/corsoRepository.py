@@ -92,5 +92,8 @@ class CorsoRepository: # Repository
     def cancella(self, id: str):
         if id in self._corsi:
             del self._corsi[id]  # cancella il corso con l'id specificato
-            self.salva() 
+            self.salva()
+    
+    def ids(self) -> list:
+        return [(a.get_nome() + " - " + a.get_orario().strftime("%H:%M"), a.get_id()) for a in list(self._corsi.values())]
  

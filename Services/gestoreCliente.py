@@ -57,8 +57,6 @@ class GestoreCliente:
                 if isinstance(nuovaEmail, str):
                     if nuovaEmail.strip():  # Se non è vuota, la aggiorna
                         cliente.set_email(nuovaEmail)
-                    else:  # Se è una stringa vuota "" o "   "
-                        raise ValueError("L'email non può essere vuota")
                 else:
                     raise TypeError("L'email deve essere una stringa")
 
@@ -67,8 +65,6 @@ class GestoreCliente:
                 if isinstance(nuovoTelefono, str):
                     if nuovoTelefono.strip():  # Se non è vuota, la aggiorna
                         cliente.set_telefono(nuovoTelefono)
-                    else:  # Se è una stringa vuota "" o "   "
-                        raise ValueError("Il telefono non può essere vuota")
                 else:
                     raise TypeError("Il telefono deve essere una stringa")
 

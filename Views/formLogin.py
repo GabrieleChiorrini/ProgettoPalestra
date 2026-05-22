@@ -55,7 +55,7 @@ class FormLogin(QWidget):
         gridLayout2 = QGridLayout()
 
         btnIngresso = QPushButton("Ingresso")
-        btnIngresso.clicked.connect(lambda: self._stack.setCurrentIndex(4))
+        btnIngresso.clicked.connect(lambda: (self._stack.setCurrentIndex(4), self._stack.widget(4).timer.start(30)))
         gridLayout2.addWidget(btnIngresso, 1, 1)
 
         gridLayout2.setColumnStretch(0, 1)
@@ -64,7 +64,7 @@ class FormLogin(QWidget):
         gridLayout.addLayout(gridLayout2, 2, 2)
 
         self.setLayout(gridLayout)
-        self.showMaximized()
+        #self.showMaximized()
     
     def login(self):
         username = self._lineEditUsername.text().strip()

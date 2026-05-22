@@ -19,20 +19,28 @@ class GestorePagamento ():
     def visualizzaPagamento (self, clienteId: str) -> list:
         cliente =  self._clienteRepo.trovaPerId(clienteId)
         if cliente is None:
-            return ['Cliente non trovato']
+            return [{
+                    "Importo": "Null",
+                    "Data": "Null",
+                    "Cliente": "Non trovato"
+                }]
         ricevuta = self._pagamentoRepo.trovaRicevute(cliente.get_id())
         if ricevuta:
             ricevute = []
             for r in ricevuta:
                 r1 = {
-                    "importo": r.get_importo(),
-                    "data": r.get_data().strftime("%H:%M del %D %B %Y"),
-                    "cliente": r.get_cliente().get_nome() + r.get_cliente().get_cognome()
+                    "Importo": r.get_importo(),
+                    "Data": r.get_data().strftime("%H:%M del %D %B %Y"),
+                    "Cliente": r.get_cliente().get_nome() + r.get_cliente().get_cognome()
                 }
                 ricevute.append(r1)
             return ricevuta
         else:
-            return ['Nessuna ricevuta']
+            return [{
+                    "Importo": "pagamento",
+                    "Data": "Nessun",
+                    "Cliente": cliente.get_nome() + cliente.get_cognome()
+                }]
         
     
         

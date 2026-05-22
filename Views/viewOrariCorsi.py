@@ -18,8 +18,7 @@ class ViewOrariCorsi(QWidget):
     def _buildUI(self):
         vLayout = QVBoxLayout()
 
-        #corsi = self._gestoreCorso.visualizzaOrari()
-        corsi = [[[(giorno * 12) + (ora + 1)] for ora in range(12)] for giorno in range(7)]
+        corsi = self._gestoreCorso.visualizzaOrari()
 
         gLayout = QGridLayout()
         for (i,a) in enumerate([a.name.capitalize() for a in GiorniSettimana]):
@@ -38,7 +37,7 @@ class ViewOrariCorsi(QWidget):
 
         for (iGiorno, giorno) in enumerate(corsi):
             for (iOra, ora) in enumerate(giorno):
-                lbl = QLabel(str(corsi[iGiorno][iOra]))
+                lbl = QLabel("".join(corsi[iGiorno][iOra]))
                 gLayout.addWidget(lbl, iOra +2 , iGiorno + 2)
         
         vLayout.addLayout(gLayout)

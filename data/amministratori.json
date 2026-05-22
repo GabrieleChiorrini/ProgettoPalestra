@@ -7,5 +7,14 @@
         "email": "mariorossi@gmail.com",
         "telefono": "3564217465",
         "id": "AD000"
+    },
+    {
+        "nome": "Giovanni",
+        "cognome": "Rossi",
+        "dataNascita": "2007-01-01",
+        "codiceFiscale": "RSSGVN07A01E399C",
+        "email": "gr@gmail.com",
+        "telefono": "3807510947",
+        "id": "AD001"
     }
 ]

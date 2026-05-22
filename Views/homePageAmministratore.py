@@ -205,7 +205,7 @@ class HomePageAmministratore(QWidget):
         gridLayout.addWidget(lbl3, 0, 0)
 
         self.setLayout(vLayout)
-        self.showMaximized()
+        #self.showMaximized()
 
     def slideMenuLeft(self):
         wAttuale = self.frame1.width()

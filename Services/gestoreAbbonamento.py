@@ -26,7 +26,7 @@ class GestoreAbbonamento:
         nuovoAbbonamento= Abbonamento (
             cliente= cliente, 
             id=nuovoId, 
-            durata= timedelta(int(durata)), 
+            durata= timedelta(int(durata)* 30), 
             dataInizio= datetime.now(),
             stato= True,
             tipo= tipo)
@@ -61,16 +61,22 @@ class GestoreAbbonamento:
                     str(nuovaDurata.days),
                     tipo
                 )
-                
+            
             validitàAbb = abbonamento.get_stato()
-            dataPartenza = abbonamento.get_dataFine() if validitàAbb else datetime.now()
+            if validitàAbb:
+                dataPartenza = abbonamento.get_dataFine()
+                # Aggiorniamo la durata complessiva (sommandola a quella vecchia se necessario)
+                durataTotale = abbonamento.get_durata() + nuovaDurata
+                # Calcoliamo la nuova data di scadenza
+                nuovaFine = dataPartenza + nuovaDurata
+            
+            else:
+                dataPartenza = datetime.now()
+                durataTotale = nuovaDurata
+                nuovaFine = dataPartenza + nuovaDurata
+                abbonamento.set_dataInizio(dataPartenza)
 
-            # Aggiorniamo la durata complessiva (sommandola a quella vecchia se necessario)
-            durataTotale = abbonamento.get_durata() + nuovaDurata
             abbonamento.set_durata(durataTotale)
-
-            # Calcoliamo la nuova data di scadenza
-            nuovaFine = dataPartenza + nuovaDurata
             abbonamento.set_dataFine(nuovaFine)
             abbonamento.set_stato(True)
 
@@ -94,9 +100,9 @@ class GestoreAbbonamento:
 
          giorniAllaScadenza = (scadenza - oggi).days
 
-         return {"dataScadenza": scadenza.strftime("%d/%m/%Y"),
-                 "giorniAllaScadenza": str(giorniAllaScadenza) if giorniAllaScadenza > 0 else "scaduto",
-                 "validità" : 'Attivo' if validità else 'Scaduto'
+         return {"Data scadenza": scadenza.strftime("%d/%m/%Y"),
+                 "Mesi alla scadenza": str(giorniAllaScadenza) if giorniAllaScadenza > 0 else "scaduto",
+                 "Validità" : 'Attivo' if validità else 'Scaduto'
                 }
 
         

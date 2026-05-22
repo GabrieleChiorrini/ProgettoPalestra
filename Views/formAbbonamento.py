@@ -2,6 +2,8 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
     QFormLayout, QLineEdit, QPushButton, QHBoxLayout, QComboBox, QMessageBox)
 
+from datetime import timedelta
+
 if not __name__ == "__main__":
     from Services import GestoreAbbonamento
     from Enumerazione import TipoAbbonamento
@@ -69,7 +71,7 @@ class FormAbbonamento(QWidget):
         tipo = self._comboTipo.currentIndex()
 
         risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
-        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento creato" in risultato else self.warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Abbonamento creato" in risultato else self.warning(risultato)
 
     def onRinnova(self):
         codiceFiscale = self._lineEditCliente.text().strip()
@@ -82,10 +84,14 @@ class FormAbbonamento(QWidget):
             self.warning("Inserisci la durata dell'abbonamento")
             return
         
+        if not durataAbbonamento.isnumeric():
+            self.warning("La durata deve essere un numero")
+            return
+        
         tipo = self._comboTipo.currentIndex()
 
-        risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
-        QMessageBox.information(self, "Ottimo", risultato) if "Abbonamento rinnovato" in risultato else self.warning(risultato)
+        risultato = self._gestoreAbbonamento.rinnovaAbbonamento(codiceFiscale, timedelta(int(durataAbbonamento)* 30), TipoAbbonamento(tipo))
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Abbonamento rinnovato" in risultato else self.warning(risultato)
 
     def warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
