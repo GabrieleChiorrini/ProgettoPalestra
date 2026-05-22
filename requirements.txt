@@ -2,4 +2,5 @@ matplotlib
 PyQt6
 cryptocode
 opencv-python
+qtawesome
 qrcode #Per Generare QrCode

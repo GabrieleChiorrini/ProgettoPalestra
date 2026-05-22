@@ -1,13 +1,14 @@
-import sys
+import sys, qtawesome
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy, QStackedWidget)
+from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
 from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario, FormCorso, FormImpostazioniTimer
 
 class HomePageAmministratore(QWidget):
-    def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
+    def __init__(self, stack: QStackedWidget, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
         super().__init__()
 
         self._buildUI()
@@ -30,12 +31,14 @@ class HomePageAmministratore(QWidget):
 
         hLayout1 = QHBoxLayout()
 
-        btn1 = QPushButton("")
+        btn1 = QPushButton()
+        btn1.setIcon(qtawesome.icon('fa5s.bars'))
+        btn1.setFixedSize(40, 40)
         btn1.clicked.connect(self.slideMenuLeft)
         hLayout1.addWidget(btn1, 1)
 
         lbl1 = QLabel()
-        lbl1.setStyleSheet("background-color: green;")
+        #lbl1.setStyleSheet("background-color: green;")
         hLayout1.addWidget(lbl1, 10)
         vLayout.addLayout(hLayout1)
 
@@ -67,7 +70,7 @@ class HomePageAmministratore(QWidget):
         self.frame2.setMaximumHeight(0)
         self.frame2.setMinimumHeight(0)
         self.frame2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame2.setStyleSheet("background-color: blue;")
+        #self.frame2.setStyleSheet("background-color: blue;")
         self.frame2.setLayout(vLayout2)
         vLayoutf.addWidget(self.frame2)
 
@@ -98,7 +101,7 @@ class HomePageAmministratore(QWidget):
         self.frame3.setMaximumHeight(0)
         self.frame3.setMinimumHeight(0)
         self.frame3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame3.setStyleSheet("background-color: blue;")
+        #self.frame3.setStyleSheet("background-color: blue;")
         self.frame3.setLayout(vLayout3)
         vLayoutf.addWidget(self.frame3)
 
@@ -125,7 +128,7 @@ class HomePageAmministratore(QWidget):
         self.frame4.setMaximumHeight(0);
         self.frame4.setMinimumHeight(0);
         self.frame4.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame4.setStyleSheet("background-color: blue;")
+        #self.frame4.setStyleSheet("background-color: blue;")
         self.frame4.setLayout(vLayout4)
         vLayoutf.addWidget(self.frame4)
 
@@ -155,24 +158,24 @@ class HomePageAmministratore(QWidget):
         self.frame5.setMaximumHeight(0);
         self.frame5.setMinimumHeight(0);
         self.frame5.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame5.setStyleSheet("background-color: blue;")
+        #self.frame5.setStyleSheet("background-color: blue;")
         self.frame5.setLayout(vLayout5)
         vLayoutf.addWidget(self.frame5)
 
         btnRegPag = QPushButton("Registrare pagamento")
         btnRegPag.clicked.connect(self.onRegistraPagamento)
         vLayoutf.addWidget(btnRegPag)
-        btnRegPag.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
+        btnRegPag.setStyleSheet("""QPushButton {text-align: left;}""")
 
         btnModCapienza = QPushButton("Modifica capienza sala pesi")
         btnModCapienza.clicked.connect(self.onModificaCapienza)
         vLayoutf.addWidget(btnModCapienza)
-        btnModCapienza.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
+        btnModCapienza.setStyleSheet("""QPushButton {text-align: left;}""")
 
         btnGestOrari = QPushButton("Gestisci orari")
         btnGestOrari.clicked.connect(self.onGestisciOrari)
         vLayoutf.addWidget(btnGestOrari)
-        btnGestOrari.setStyleSheet("""QPushButton {text-align: left;padding-left: 0px;}""")
+        #btnGestOrari.setStyleSheet("""QPushButton {text-align: left;}""")
 
         lbl3 = QLabel()
         vLayoutf.addWidget(lbl3)
@@ -193,7 +196,7 @@ class HomePageAmministratore(QWidget):
         self.frame1 = QFrame()
         self.frame1.setFixedWidth(0)
         self.frame1.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
-        self.frame1.setStyleSheet("background-color: red;")
+        #self.frame1.setStyleSheet("background-color: red;")
         self.frame1.setLayout(vLayoutf)
         hLayout.addWidget(self.frame1, 1)
 
@@ -212,8 +215,10 @@ class HomePageAmministratore(QWidget):
 
         if wAttuale == 0:
             wDopo = 200
+            iconaDopo = qtawesome.icon('fa5s.times')
         else:
             wDopo = 0
+            iconaDopo = qtawesome.icon('fa5s.bars')
 
         self.animation = QPropertyAnimation(self.frame1, b"minimumWidth")
         self.animation.setDuration(250)
@@ -221,6 +226,7 @@ class HomePageAmministratore(QWidget):
         self.animation.setEndValue(wDopo)
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
+        self.sender().setIcon(iconaDopo)
 
     def dropDownMenu1(self, frame: QFrame):
         hAttuale = frame.height()

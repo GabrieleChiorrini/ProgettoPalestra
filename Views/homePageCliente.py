@@ -1,4 +1,4 @@
-import sys
+import sys, qtawesome
 from PyQt6.QtWidgets import (QApplication, QStackedWidget, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy)
 from PyQt6.QtCore import QPropertyAnimation
@@ -33,12 +33,14 @@ class HomePageCliente(QWidget):
 
         hLayout1 = QHBoxLayout()
 
-        btn1 = QPushButton("")
+        btn1 = QPushButton()
+        btn1.setIcon(qtawesome.icon('fa5s.bars'))
+        btn1.setFixedSize(40, 40)
         btn1.clicked.connect(self.slideMenuLeft)
         hLayout1.addWidget(btn1, 1)
 
         lbl1 = QLabel()
-        lbl1.setStyleSheet("background-color: green;")
+        #lbl1.setStyleSheet("background-color: green;")
         hLayout1.addWidget(lbl1, 10)
         vLayout.addLayout(hLayout1)
 
@@ -70,7 +72,7 @@ class HomePageCliente(QWidget):
         self.frame2.setMaximumHeight(0);
         self.frame2.setMinimumHeight(0);
         self.frame2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame2.setStyleSheet("background-color: blue;")
+        #self.frame2.setStyleSheet("background-color: blue;")
         self.frame2.setLayout(vLayout2)
         vLayoutf.addWidget(self.frame2)
 
@@ -109,7 +111,7 @@ class HomePageCliente(QWidget):
         self.frame3.setMaximumHeight(0)
         self.frame3.setMinimumHeight(0)
         self.frame3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.frame3.setStyleSheet("background-color: blue;")
+        #self.frame3.setStyleSheet("background-color: blue;")
         self.frame3.setLayout(vLayout3)
         vLayoutf.addWidget(self.frame3)
 
@@ -120,7 +122,7 @@ class HomePageCliente(QWidget):
         self.frame1 = QFrame()
         self.frame1.setFixedWidth(0)
         self.frame1.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
-        self.frame1.setStyleSheet("background-color: red;")
+        #self.frame1.setStyleSheet("background-color: red;")
         self.frame1.setLayout(vLayoutf)
         hLayout.addWidget(self.frame1, 1)
 
@@ -147,8 +149,10 @@ class HomePageCliente(QWidget):
 
         if wAttuale == 0:
             wDopo = 200
+            iconaDopo = qtawesome.icon('fa5s.times')
         else:
             wDopo = 0
+            iconaDopo = qtawesome.icon('fa5s.bars')
 
         self.animation = QPropertyAnimation(self.frame1, b"minimumWidth")
         self.animation.setDuration(250)
@@ -156,6 +160,7 @@ class HomePageCliente(QWidget):
         self.animation.setEndValue(wDopo)
         self.animation.setEasingCurve(QtCore.QEasingCurve.Type.InOutQuart)
         self.animation.start()
+        self.sender().setIcon(iconaDopo)
 
     def dropDownMenu1(self, frame: QFrame):
         hAttuale = frame.height()
