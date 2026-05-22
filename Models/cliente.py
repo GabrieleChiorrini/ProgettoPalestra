@@ -40,6 +40,7 @@ class Cliente(Utente):
     def __str__(self) -> str:
 
         cliente = super().__str__()
+        cliente + f"\tCertificato: {self._certificato}\n"
 
         return cliente
     

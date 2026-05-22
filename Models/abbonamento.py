@@ -54,9 +54,9 @@ class Abbonamento():
         #self._aggiorna_data_fine()
             # durata > 12mesi -> tipo annuales
     
-    # def setDataInizio(self, nuovaData: datetime) -> None:
-    #     if isinstance(nuovaData, datetime):
-    #         self._dataInizio = nuovaData
+    def set_dataInizio(self, nuovaData: datetime) -> None:
+        if isinstance(nuovaData, datetime):
+            self._dataInizio = nuovaData
     
     def set_dataFine(self, nuovaFine: datetime) -> None:
         if not isinstance(nuovaFine, datetime):

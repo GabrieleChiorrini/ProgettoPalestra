@@ -48,8 +48,8 @@ class IngressoRepository: # Repository
     def nPerGiorni(self) -> dict:
         #Conta il numero di accessi per ogni giorno(Lunedì al posto 0 e Domenica al posto 6) e li mette in lista
         lista = [0, 0, 0, 0, 0, 0, 0]
-        for a in self._accessi:
-            giorno = a.get_orario().weekday
+        for a in list(self._accessi.values()):
+            giorno = a.get_orario().weekday()
             lista[giorno] += 1
         
         dizionario = {}

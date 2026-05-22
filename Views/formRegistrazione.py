@@ -57,7 +57,7 @@ class FormRegistrazione(QWidget):
         gridLayout.addLayout(vLayout, 1, 1)
 
         self.setLayout(gridLayout)
-        self.showMaximized()
+        #self.showMaximized()
     
     def onRegistrati(self):
         listaValori = []

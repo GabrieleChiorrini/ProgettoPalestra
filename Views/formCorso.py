@@ -20,33 +20,37 @@ class FormCorso(QWidget):
 
         if modifica or elimina:
             self._cbCorso = QComboBox()
-            self._cbCorso.addItems([])
+            [self._cbCorso.addItem(a[0], a[1]) for a in self._gestoreCorso.idCorsi()]
             self._cbCorso.setCurrentIndex(0)
             fLayout.addRow("Corso:", self._cbCorso)
 
-        self._leNome = QLineEdit()
-        self._leNome.setPlaceholderText("Nome")
-        fLayout.addRow("Nome: ", self._leNome)
+        if not elimina:
+            self._leNome = QLineEdit()
+            self._leNome.setPlaceholderText("Nome")
+            fLayout.addRow("Nome: ", self._leNome)
 
-        self._teOrari = QTimeEdit()
-        fLayout.addRow("Orario inizio:", self._teOrari)
+            self._teOrari = QTimeEdit()
+            fLayout.addRow("Orario inizio:", self._teOrari)
 
-        self._sbCapienza = QSpinBox()
-        fLayout.addRow("Capienza massima:", self._sbCapienza)
+            self._sbCapienza = QSpinBox()
+            fLayout.addRow("Capienza massima:", self._sbCapienza)
 
-        self._leIstruttore = QLineEdit()
-        self._leIstruttore.setPlaceholderText("Codice Fiscale istruttore")
-        fLayout.addRow("Codice Fiscale istruttore", self._leIstruttore)
+            self._leIstruttore = QLineEdit()
+            self._leIstruttore.setPlaceholderText("Codice Fiscale istruttore")
+            fLayout.addRow("Codice Fiscale istruttore", self._leIstruttore)
 
-        vLayout.addLayout(fLayout)
+            vLayout.addLayout(fLayout)
 
-        self._listaCheck = []
-        for a in GiorniSettimana:
-            check = QCheckBox(a.name.capitalize())
-            check.setTristate(False)
-            vLayout.addWidget(check)
-            self._listaCheck.append(check)
+            self._listaCheck = []
+            for a in GiorniSettimana:
+                check = QCheckBox(a.name.capitalize())
+                check.setTristate(False)
+                vLayout.addWidget(check)
+                self._listaCheck.append(check)
         
+        else:
+            vLayout.addLayout(fLayout)
+            
 
         hLayout = QHBoxLayout()
 
@@ -86,25 +90,29 @@ class FormCorso(QWidget):
         orari = self._teOrari.time().toPyTime()
         capienzaMax = self._sbCapienza.value()
 
+        if capienzaMax == 0:
+            self._warning("La capienza non può essere nulla")
+            return
+
         codiceFiscaleIstruttore = self._leIstruttore.text().strip()
         if not codiceFiscaleIstruttore:
             self._warning("Inserisci l'istruttore")
             return
 
-        valori = [a.isChecked() for a in self._listaCheck]
-        if not any(valori): #any() verifica se almeno un valore è True
-            self.warning("Devi selezionare almeno un giorno")
+        valoriGiorni = [a.isChecked() for a in self._listaCheck]
+        if not any(valoriGiorni): #any() verifica se almeno un valore è True
+            self._warning("Devi selezionare almeno un giorno")
             return
         
-        listaGiorni = [GiorniSettimana(i + 1) for (i, a) in enumerate(valori) if valori]
+        listaGiorni = [GiorniSettimana(i + 1) for (i, a) in enumerate(valoriGiorni) if a]
         
         (id, risultato) = self._gestoreCorso.creaCorso(nomeCorso, orari, capienzaMax, codiceFiscaleIstruttore, listaGiorni)
-        QMessageBox.information(self, "Ottimo", risultato) if "Corso creato" in risultato else self.warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Corso creato" in risultato else self._warning(risultato)
 
     def _onModifica(self):
-        idCorso = self._cbCorso.currentText()
-        if not idCorso:
-            self._warning("Inserisci l'id del corso")
+        corsoId = self._cbCorso.currentData()
+        if not corsoId:
+            self._warning("Seleziona un corso valido")
             return
         
         valori = [self._leNome.text().strip()]
@@ -112,30 +120,31 @@ class FormCorso(QWidget):
         valori.append(self._teOrari.time().toPyTime())
         valori.append(self._sbCapienza.value())
 
+        if valori[-1] == 0:
+            self._warning("La capienza non può essere nulla")
+            return
+
         valori.append(self._leIstruttore.text().strip())
 
-        valori = [a.isChecked() for a in self._listaCheck]
-        if not any(valori): #any() verifica se almeno un valore è True
-            self.warning("Devi selezionare almeno un giorno")
-            return
+        valoriGiorni = [a.isChecked() for a in self._listaCheck]
         
-        valori.append([GiorniSettimana(i + 1) for (i, a) in enumerate(valori) if valori])
+        valori.append([GiorniSettimana(i + 1) for (i, a) in enumerate(valoriGiorni) if a])
 
         if not any(valori):
             self._warning("Almeno un valore deve essere valido")
         
-        (id, risultato) = self._gestoreCorso.modificaCorso(idCorso, *valori)
-        QMessageBox.information(self, "Ottimo", risultato) if "Corso modificato" in risultato else self.warning(risultato)
+        (id, risultato) = self._gestoreCorso.modificaCorso(corsoId, *valori)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Corso modificato" in risultato else self._warning(risultato)
 
 
     def _onElimina(self):
-        idCorso = self._cbCorso.currentText()
-        if not idCorso:
-            self._warning("Inserisci l'id del corso")
+        corsoId = self._cbCorso.currentData()
+        if not corsoId:
+            self._warning("Seleziona un corso valido")
             return
         
-        (id, risultato) = self._gestoreCorso.eliminaCorso(idCorso)
-        QMessageBox.information(self, "Ottimo", risultato) if "Corso eliminato" in risultato else self.warning(risultato)
+        (id, risultato) = self._gestoreCorso.eliminaCorso(corsoId)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Corso eliminato" in risultato else self._warning(risultato)
 
     def _warning(self, testo):
-        QMessageBox.warning("Attenzione", testo)
+        QMessageBox.warning(self, "Attenzione", testo)

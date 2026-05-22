@@ -8,5 +8,15 @@
         "telefono": "3456789752",
         "id": "CL000",
         "certificato": "CM000"
+    },
+    {
+        "nome": "Franco",
+        "cognome": "Chiaraluce",
+        "dataNascita": "1888-07-03",
+        "codiceFiscale": "CHRFRN88L03E387B",
+        "email": "ciao@libero.it",
+        "telefono": "65473975187",
+        "id": "CL001",
+        "certificato": "CM001"
     }
 ]

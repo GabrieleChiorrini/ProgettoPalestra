@@ -87,23 +87,25 @@ class FormPersonale(QWidget):
                     return
         
         risultato = self._gestorePersonale.registraPersonale(*listaValori) #unpacking lista
-        QMessageBox.information(self, "Ottimo", risultato) if "Personale creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Personale creato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onModifica(self):
         codiceFiscale = self._listaCampi[0].text().strip()
         if not codiceFiscale:
             QMessageBox.warning(self, "Attenzione", "Codice fiscale inserito non valido")
+            return
         
         for a in range(1, 3):
             testo = self._listaCampi[a].text().strip()
             if testo:
                 break
         else:
-            QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere")
+            QMessageBox.warning(self, "Attenzione", "Inserire almeno un valore")
+            return
         
         valori = [a.text().strip() for a in self._listaCampi]
         risultato = self._gestorePersonale.modificaPersonale(*valori) #unpacking lista
-        QMessageBox.information(self, "Ottimo", risultato) if "Personale modificato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Personale modificato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onElimina(self):
         testo = self._listaCampi[0].text().strip()

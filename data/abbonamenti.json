@@ -1,0 +1,18 @@
+[
+    {
+        "cliente": "CL000",
+        "id": "AB000",
+        "durata": 17280,
+        "dataInizio": "2026-05-22T15:20:36.124357",
+        "stato": 1,
+        "tipo": 0
+    },
+    {
+        "cliente": "CL001",
+        "id": "AB001",
+        "durata": 129600,
+        "dataInizio": "2026-05-22T17:46:58.486792",
+        "stato": 1,
+        "tipo": 0
+    }
+]

@@ -19,6 +19,8 @@ class ViewStatistiche(QWidget):
 
         statistiche = self._gestoreStatistiche.visualizzaStatistiche()
 
+        if not statistiche:
+            _vLayout.addWidget(QLabel("Nessuna statistica"))
         _hLayout = QHBoxLayout()
         for a in statistiche:
             _hLayout.addWidget(a)

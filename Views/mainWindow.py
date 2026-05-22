@@ -20,6 +20,8 @@ class MainWindow(QMainWindow):
         self.stack.addWidget(self.page3)
         self.stack.addWidget(self.page4)
         self.stack.addWidget(self.page5)
+        
+        self.stack.setCurrentIndex(0)  # Imposta FormLogin come schermata iniziale
 
         self.setCentralWidget(self.stack)
         self.showMaximized()

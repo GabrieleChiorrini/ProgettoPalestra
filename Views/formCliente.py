@@ -93,7 +93,7 @@ class FormCliente(QWidget):
                 if testo:
                     listaValori.append(testo)
                 else:
-                    QMessageBox.warning(self, "Attenzione", "Il valore inserito in " + a.placeholderText().lower() + " non è valido")
+                    QMessageBox.warning(self, "Attenzione", "Il valore inserito in " + a.placeholderText().lower().capitalize() + " non è valido")
                     return
         
         if len(listaValori) == 6:
@@ -102,12 +102,13 @@ class FormCliente(QWidget):
                 return
                 
         risultato = self._gestoreCliente.registraCliente(*listaValori) #unpacking lista
-        QMessageBox.information(self, "Ottimo", risultato) if "Cliente e certificato creati" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Cliente e certificato creati" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onModifica(self):
         codiceFiscale = self._listaCampi[0].text().strip()
         if not codiceFiscale:
             QMessageBox.warning(self, "Attenzione", "Codice fiscale inserito non valido")
+            return
 
         for a in range(1, 3):
             testo = self._listaCampi[a].text().strip()
@@ -115,11 +116,12 @@ class FormCliente(QWidget):
                 break
         else:
             QMessageBox.warning(self, "Attenzione", "Almeno un valore deve essere inserito")
+            return
         
         valori = [a.text().strip() if isinstance(a, QLineEdit) else a.date().toPyDate() for a in self._listaCampi]
 
         risultato = self._gestoreCliente.modificaCliente(*valori) #unpacking lista
-        QMessageBox.information(self, "Ottimo", risultato) if "Cliente modificato correttamente" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Cliente modificato correttamente" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
     def onElimina(self):
         testo = self._listaCampi[0].text().strip()
@@ -129,7 +131,7 @@ class FormCliente(QWidget):
                 "Il valore inserito in " + self._listaCampi[0].placeholderText().lower() + " non è valido")
             return
         risultato = self._gestoreCliente.eliminaCliente(testo)
-        QMessageBox.information(self, "Ottimo", risultato) if "Cliente eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Cliente eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app

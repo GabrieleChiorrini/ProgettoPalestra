@@ -25,15 +25,15 @@ class ViewPagamenti(QWidget):
 
             hLayout2 = QHBoxLayout()
 
-            lblNome = QLabel(a["cliente"])
+            lblNome = QLabel(a["Cliente"])
             hLayout2.addWidget(lblNome)
-            lblData = QLabel(a["data"])
+            lblData = QLabel(a["Data"])
             lblData.setAlignment(Qt.AlignmentFlag.AlignRight)
             hLayout2.addWidget(lblData)
 
             vLayout2.addLayout(hLayout2)
             
-            lblImporto = QLabel("€ " + f"{a["importo"]:.2f}" + "\n") # A capo per spaziatura
+            lblImporto = QLabel("€ " + f"{a["Importo"]:.2f}" + "\n") if a["Importo"].isnumeric() else QLabel(f"{a["Importo"]}" + "\n")# A capo per spaziatura
             lblImporto.setAlignment(Qt.AlignmentFlag.AlignRight)
             vLayout2.addWidget(lblImporto)
 

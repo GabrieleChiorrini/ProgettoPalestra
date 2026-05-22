@@ -36,7 +36,7 @@ class AbbonamentoRepository: # Repository
 
     def trovaPerIdCliente(self, idCliente: str):
         #Ricerca l'abbonamento associato al cliente fornito, altrimenti ritorna None
-        for a in self._abbonamenti.values():
+        for a in list(self._abbonamenti.values()):
             if a.get_cliente().get_id() == idCliente:
                 return a
         else:
