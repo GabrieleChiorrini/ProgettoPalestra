@@ -4,15 +4,11 @@
         "nome": "Spinning",
         "maxCapienza": 0,
         "istruttore": "AD001",
-        "orario": "13:00:00",
+        "orario": "13:30:00",
         "giorni": [
             1,
-            2,
             3,
-            4,
-            5,
-            6,
-            7
+            5
         ],
         "iscritti": []
     },
@@ -21,15 +17,11 @@
         "nome": "Ciao",
         "maxCapienza": 7,
         "istruttore": "AD001",
-        "orario": "17:00:00",
+        "orario": "17:45:00",
         "giorni": [
-            1,
             2,
-            3,
             4,
-            5,
-            6,
-            7
+            6
         ],
         "iscritti": []
     }

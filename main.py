@@ -34,7 +34,7 @@ if __name__ == "__main__":
     gcl = GestoreCliente(clr, cmr)
     gco = GestoreCorso(cor, amr, pcr)
     gin = GestoreIngressi(acr, clr, abr, cmr)
-    gor = GestoreOrario(plr)
+    gor = GestoreOrario(plr, far, spr)
     gpa = GestorePagamento(clr, par)
     gpe = GestorePersonale(amr, crr, gau)
     gpr = GestorePrenotazione(clr, pcr, psr, cor,far, gca)
@@ -42,7 +42,8 @@ if __name__ == "__main__":
     gsa = GestoreStatistiche(sar, acr, pcr, psr)
     gva = GestoreValidita(abr, cmr)
 
-    gpe.registraPersonale("Mario", "Rossi", date(1997, 7, 15), "RSSMRA97L15E388S", "mariorossi@gmail.com", "3564217465", "admin", "admin")
+    if not amr.lastId(): #Almeno un admin deve essere registrato per poter accedere. Bisogna farlo col gestore altrimenti non si sa la password
+        gpe.registraPersonale("Mario", "Rossi", date(1997, 7, 15), "RSSMRA97L15E388S", "mariorossi@gmail.com", "3564217465", "admin", "admin")
 
     app = QApplication(sys.argv) # creo app
     f = MainWindow(gab, gau, gca, gce, gcl, gco, gin, gor, gpa, gpe, gpr, gsp, gsa, gva) # creo finestra

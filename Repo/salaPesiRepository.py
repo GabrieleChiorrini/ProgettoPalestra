@@ -19,7 +19,7 @@ class SalaPesiRepository: # Repository
             self._salePesi = {
                 d["id"]: SalaPesi.fromDict({
                 **d, #Unpacking del dizionario
-                "fasciaOrarie": [self._fasciaOrariaRepo.trovaPerId(dati["fascieOrarie"]) for c in dati["fascieOrarie"]] # trovo le fasce orarie perché ho salvato solo l'id
+                "fasciaOrarie": [self._fasciaOrariaRepo.trovaPerId(dati["fasciaOraria"]) for c in dati["fasciaOraria"].copy()] # trovo le fasce orarie perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di SalaPesi
         except FileNotFoundError:
             self._salePesi = {} # al primo avvio

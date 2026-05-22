@@ -1,0 +1,20 @@
+[
+    {
+        "id": "PL000",
+        "nome": "FitZone",
+        "indirizzo": "Via Roma 25, Milano",
+        "orarioapertura": "08:00:00",
+        "orariochiusura": "20:00:00",
+        "giorniApertura": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ],
+        "corsi": [],
+        "salePesi": [
+            "SP000"
+        ]
+    }
+]

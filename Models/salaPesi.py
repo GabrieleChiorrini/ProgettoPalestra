@@ -33,13 +33,12 @@ class SalaPesi:
         return {
             "id": self._id,
             "maxCapienza": self._maxCapienza,
-            "fasciaOraria": [f.toDict() for f in self._fasciaOraria]
+            "fasciaOraria": [f.get_id() for f in self._fasciaOraria]
         }
     
     @classmethod
     def fromDict(cls, d: dict) -> "SalaPesi":
-        fasce = [FasciaOraria.fromDict(f) for f in d["fasciaOraria"]]
-        return cls( d["id"], d["maxCapienza"], fasce)
+        return cls( d["id"], d["maxCapienza"], d["fasciaOraria"])
     
     def __str__(self) -> str:
         salaPesi = (f"Sala pesi :\n"
