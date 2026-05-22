@@ -3,6 +3,7 @@ from Views.formCapienza import FormCapienza
 from Views.formCliente import FormCliente
 from Views.formCorso import FormCorso
 from Views.formEliminaPrenotazione import FormEliminaPrenotazione
+from Views.formImpostazioniTimer import FormImpostazioniTimer
 from Views.formIngresso import FormIngresso
 from Views.formLogin import FormLogin
 from Views.formOrario import FormOrario

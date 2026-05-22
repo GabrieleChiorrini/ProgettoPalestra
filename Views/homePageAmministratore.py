@@ -4,13 +4,15 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
-from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario, FormCorso
+from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario, FormCorso, FormImpostazioniTimer
 
 class HomePageAmministratore(QWidget):
     def __init__(self, stack, gab: GestoreAbbonamento, gca: GestoreCapienza, gcl: GestoreCliente, gco: GestoreCorso, gor: GestoreOrario, gpa: GestorePagamento, gpe: GestorePersonale, gsp: GestoreSalaPesi):
         super().__init__()
 
-        self._buildUI(stack)
+        self._buildUI()
+
+        self._stack = stack
 
         #Gestori
         self.gestoreAbbonamento = gab
@@ -22,7 +24,7 @@ class HomePageAmministratore(QWidget):
         self.gestorePersonale = gpe
         self.gestoreSalaPesi = gsp
 
-    def _buildUI(self, stack):
+    def _buildUI(self):
         vLayout = QVBoxLayout()
         vLayout.setContentsMargins(0, 0, 0, 0)
 
@@ -180,8 +182,12 @@ class HomePageAmministratore(QWidget):
         vLayout.addLayout(hLayout, 1)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
+        btnEsci = QPushButton("Times")
+        btnEsci.clicked.connect(lambda: self.onTimers)
+        vLayoutf.addWidget(btnEsci)
+
         btnEsci = QPushButton("Esci")
-        btnEsci.clicked.connect(lambda: stack.setCurrentIndex(0))
+        btnEsci.clicked.connect(lambda: self._stack.setCurrentIndex(0))
         vLayoutf.addWidget(btnEsci)
 
         self.frame1 = QFrame()
@@ -314,6 +320,12 @@ class HomePageAmministratore(QWidget):
 
     def onGestisciOrari(self):
         self.form = FormOrario(self.gestoreOrario)
+        self.form.show()
+        self.form.raise_()
+        self.form.activateWindow()
+    
+    def onTimers(self):
+        self.form = FormImpostazioniTimer(self._stack)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()

@@ -5,95 +5,6 @@ from PyQt6.QtCore import QTimer
 
 from Services import GestoreIngressi, GestoreValidita, GestoreStatistiche
 
-class FormImpostazioniTimer(QWidget):
-    # Riceve l'istanza di formIngresso per poterne chiamare i metodi
-    def __init__(self, form_ingresso):
-        super().__init__()
-        self._form_ingresso = form_ingresso 
-        self.setWindowTitle("Impostazioni Timer di Sistema")
-        
-        self._buildUI()
-
-    def _buildUI(self):
-        # Layout Verticale Principale del Form
-        vLayout_principale = QVBoxLayout()
-
-        # timer abbonamento
-        vLayout_principale.addWidget(QLabel("Ogni quanti giorni verificare gli Abbonamenti?"))
-        
-        hLayout_abb = QHBoxLayout()
-        self.spin_abb = QSpinBox()
-        self.spin_abb.setRange(1, 365)
-        self.spin_abb.setSuffix(" giorni")
-        hLayout_abb.addWidget(self.spin_abb)
-
-        btn_abb = QPushButton("Applica")
-        btn_abb.clicked.connect(self.applicaAbbonamento)
-        hLayout_abb.addWidget(btn_abb)
-
-        # Inserisco l'orizzontale nel verticale
-        vLayout_principale.addLayout(hLayout_abb)
-
-
-        # timer certificato
-        vLayout_principale.addWidget(QLabel("Ogni quanti giorni verificare i Certificati Medici?"))
-        
-        hLayout_cert = QHBoxLayout()
-        self.spin_cert = QSpinBox()
-        self.spin_cert.setRange(1, 365)
-        self.spin_cert.setSuffix(" giorni")
-        hLayout_cert.addWidget(self.spin_cert)
-
-        btn_cert = QPushButton("Applica")
-        btn_cert.clicked.connect(self.applicaCertificato)
-        hLayout_cert.addWidget(btn_cert)
-
-        # Inserisco l'orizzontale nel verticale
-        vLayout_principale.addLayout(hLayout_cert)
-
-
-        # timer statistiche
-        vLayout_principale.addWidget(QLabel("Ogni quanti giorni generare le Statistiche?"))
-        
-        hLayout_stat = QHBoxLayout()
-        self.spin_stat = QSpinBox()
-        self.spin_stat.setRange(1, 365)
-        self.spin_stat.setSuffix(" giorni")
-        hLayout_stat.addWidget(self.spin_stat)
-
-        btn_stat = QPushButton("Applica")
-        btn_stat.clicked.connect(self.applicaStatistiche)
-        hLayout_stat.addWidget(btn_stat)
-
-        # Inserisco l'orizzontale nel verticale
-        vLayout_principale.addLayout(hLayout_stat)
-
-        # Aggiungo uno spazio elastico in fondo per spingere tutto in alto
-        vLayout_principale.addStretch()
-
-        # Setto il Vertical Layout come layout del Form
-        self.setLayout(vLayout_principale)
-
-
-    # Metodi per applicare le modifiche (chiamati dai bottoni "Applica")
-    def applicaAbbonamento(self):
-        # Moltiplica i giorni per 24h, 60m, 60s, 1000ms
-        ms = self.spin_abb.value() * 24 * 60 * 60 * 1000
-        self._form_ingresso.setIntervalloAbbonamenti(ms)
-        QMessageBox.information(self, "Info", "Timer abbonamenti aggiornato.")
-
-    def applicaCertificato(self):
-        ms = self.spin_cert.value() * 24 * 60 * 60 * 1000
-        self._form_ingresso.setIntervalloCertificati(ms)
-        QMessageBox.information(self, "Info", "Timer certificati aggiornato.")
-
-    def applicaStatistiche(self):
-        ms = self.spin_stat.value() * 24 * 60 * 60 * 1000
-        # Richiede che in formIngresso ci sia un metodo analogo per le statistiche
-        self._form_ingresso.setIntervalloStatistiche(ms) 
-        QMessageBox.information(self, "Info", "Timer statistiche aggiornato.")
-
-
 class FormIngresso(QWidget):
     def __init__(self, stack: QStackedWidget, gin: GestoreIngressi, gva: GestoreValidita, gst: GestoreStatistiche):
         super().__init__()
@@ -113,7 +24,7 @@ class FormIngresso(QWidget):
         hLayout = QHBoxLayout()
         vLayout = QVBoxLayout()
 
-        self._lbl = QLabel()
+        self._lbl = QLabel("Entrato")
         vLayout.addWidget(self._lbl)
         vLayout.addStretch(1)
 
@@ -204,6 +115,6 @@ class FormIngresso(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     # Nel test "standalone" passi None sia per i gestori che per lo stack. 
-    '''f = FormIngresso(None, None, None, None) 
+    f = FormIngresso(None, None, None, None) 
     f.show()
-    sys.exit(app.exec()) '''
+    sys.exit(app.exec())

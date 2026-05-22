@@ -42,7 +42,7 @@ class GestoreAbbonamento:
 
         try:
             # CONTROLLO VALIDITÀ DELLA DURATA
-            if nuovaDurata is None:
+            if not nuovaDurata:
                 raise ValueError("La nuova durata non può essere nulla")
             
             # Verifichiamo che sia effettivamente un oggetto timedelta
