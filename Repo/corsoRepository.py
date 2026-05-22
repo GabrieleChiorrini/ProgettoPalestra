@@ -42,7 +42,7 @@ class CorsoRepository: # Repository
                 return corso
         return None
 
-    def istruttoreOccupato(self, istruttore: str, orari, giorni, exclude_id: str = None) -> bool:
+    def istruttoreOccupato(self, istruttore: str, orari, giorni, exclude_id: str) -> bool:
         if isinstance(istruttore, str):
             istruttore_id = istruttore
         else:
@@ -72,7 +72,7 @@ class CorsoRepository: # Repository
 
     def lastId(self) -> str:
         # Cerca l'ultimo id
-        return list(self._corsi)[-1] if self._corsi else None
+        return list(self._corsi)[-1] if self._corsi else ""
     
     def newId(self) -> str:
         # Prende l'ultimo id ed aggiunge 1 (inserendo 0 per avere 3 cifre numeriche)

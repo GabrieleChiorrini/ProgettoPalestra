@@ -45,7 +45,7 @@ class GestoreCliente:
     #def TrovaCliente(self, id:str):
      #    return self._clienteRepo.trovaPerId(id)
     
-    def modificaCliente(self, codiceFiscale: str, nuovaEmail: str, nuovoTelefono: str, nuovaDataCertificato: str = None) -> str:
+    def modificaCliente(self, codiceFiscale: str, nuovaEmail: str, nuovoTelefono: str, nuovaDataCertificato: str ) -> str:
         cliente = self._clienteRepo.trovaPerCF(codiceFiscale)
 
         if cliente is None:

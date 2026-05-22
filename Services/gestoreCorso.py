@@ -1,19 +1,20 @@
 from Models import Corso, Amministratore
-from Repo import CorsoRepository, AmministratoreRepository
+from Repo import CorsoRepository, AmministratoreRepository, PrenotazioneCorsoRepository
 from datetime import time
 
 class GestoreCorso():
-    def __init__(self, corsoRepo: CorsoRepository, adminRepo: AmministratoreRepository): # salvo la repository del corso in una variabile da usare nei vari metodi
+    def __init__(self, corsoRepo: CorsoRepository, adminRepo: AmministratoreRepository, prenotazioneCorsoRepo: PrenotazioneCorsoRepository): # salvo la repository del corso in una variabile da usare nei vari metodi
         self._corsoRepo = corsoRepo
         self._adminRepo = adminRepo
-    
-    def creaCorso(self, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list)-> str:
+        self._prenotazioneCorsoRepo = prenotazioneCorsoRepo
+    def creaCorso(self, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list)-> tuple[str | None, str]:
         istruttore = self._adminRepo.trovaPerCF(istruttoreCF)
+        exclude_id = ""  # Non esiste un corso da escludere quando si crea un nuovo corso
 
         if istruttore is None:
-            return "Istruttore non trovato"
+            return None, "Istruttore non trovato"
 
-        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or []): #controllo se l'istruttore è già occupato 
+        if self._corsoRepo.istruttoreOccupato(istruttore, orari, giorni or [], exclude_id): #controllo se l'istruttore è già occupato 
             return None, "Istruttore occupato"
 
         idCorso = self._corsoRepo.newId()  # assegno un nuvo id al corso creandolo con newId() dalla corsoRepository
@@ -84,7 +85,7 @@ class GestoreCorso():
             return None, f"Errore nei dati corso: {e}"
     
 
-    def eliminaCorso(self, corsoId: str)-> str:
+    def eliminaCorso(self, corsoId: str)-> tuple[str | None, str]:
         corso = self._corsoRepo.trovaPerId(corsoId) #verifico che il corso da cancellare esista
         if not corso:
             return None, 'Corso non trovato' 
@@ -92,16 +93,14 @@ class GestoreCorso():
         return corsoId, 'Corso eliminato'
     
 
-    def visualizzaOrari(self) -> list[dict[str, str]]: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche
+    def visualizzaOrari(self) -> list: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche
         corsi = self._corsoRepo.tutti()  # prendo tutti i corsi e li salvo nella variabile corsi
         tabella_orari = [[[] for ora in range(12)] for giorno in range(7)] #inizializzo la lista tabella orari vuota
-
-
 
         for corso in corsi:
             istruttore = corso.get_istruttore()
             nomeIstruttore = istruttore.get_nome() + " " + istruttore.get_cognome()
-            nomeCorso = [corso.getNome()]
+            nomeCorso = corso.get_nome()
             giorni = [giorno.value for giorno in corso.get_giorni()] # da 1 a 7
             orario = int(corso.get_orario().hour) # da 0 a 23, ma partiamo dalle 8
 
@@ -110,14 +109,14 @@ class GestoreCorso():
 
         return tabella_orari
 
-    def visualizzaIscritti(self, corsoId: str) -> list[dict[str, str]] | str: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche oppure una stringa nel caso di lista vuota 
+    def visualizzaIscritti(self, corsoId: str) -> list: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche oppure una stringa nel caso di lista vuota 
 
         corso = self._corsoRepo.trovaPerId(corsoId) #cerco il corso tramite l'id fornito
         if not corso:
-            return None, 'Nessun Corso'        
+            return  ['Nessun Corso']        
         iscritti = corso.get_iscritti() #prendo la lista degli iscritti e la salvo nella var iscritti
         if not iscritti:
-            return None, 'Nessun Iscritto'
+            return ['Nessun Iscritto']
         
         lista_iscritti = [] #inizializzo la lista iscritti vuota
         for iscritto in iscritti:
@@ -127,7 +126,7 @@ class GestoreCorso():
                 "codiceFiscale": iscritto.get_codiceFiscale()
             })
 
-        return lista_iscritti, 'Iscritti trovati'
+        return lista_iscritti
     
     def idCorsi(self) -> list:
         return self._prenotazioneCorsoRepo.ids()

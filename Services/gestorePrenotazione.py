@@ -24,9 +24,10 @@ class GestorePrenotazione:
         
         prenotazione = PrenotazioneCorso(cliente, corso, self._prenotazioneCorsoRepo.newId())
         self._prenotazioneCorsoRepo.aggiungi(prenotazione)
-        self._prenotazioneCorsoRepo.salva()
 
-        corso.set_iscritti(corso.get_iscritti().append(cliente))
+        iscritti = corso.get_iscritti()
+        iscritti.append(cliente)
+        corso.set_iscritti(iscritti)
         self._corsoRepo.salva()
         return f'Prenotazione per il corso {corso.get_nome()} effettuata con successo!'
 
@@ -52,8 +53,11 @@ class GestorePrenotazione:
         self._prenotazioneCorsoRepo.rimuovi(prenotazione)
 
         corso: Corso = prenotazione.get_corso()
-        corso.set_iscritti(corso.get_iscritti().remove(cliente))
-        self._corsoRepo.salva()
+        iscritti = corso.get_iscritti()
+        if cliente in iscritti:
+            iscritti.remove(cliente)
+            corso.set_iscritti(iscritti)
+            self._corsoRepo.salva()
         return "Prenotazione eliminata"
     
     def prenotareSalaPesi(self, fasciaOrariaId: str, clienteId: str) -> str:
@@ -75,9 +79,7 @@ class GestorePrenotazione:
             return "Fascia oraria piena"
         
         prenotazione = PrenotazioneSalaPesi(cliente, fasciaOraria, self._prenotazioneSalaPesiRepo.newId())
-        self._prenotazioneRepo.aggiungi(prenotazione)
-        self._prenotazioneRepo.salva()
-        
+        self._prenotazioneSalaPesiRepo.aggiungi(prenotazione)
         return "Prenotazione effettuata"
     
     def idPrenotazioni(self, idCliente:str) -> list:

@@ -12,7 +12,7 @@ class GestorePagamento ():
         cliente =  self._clienteRepo.trovaPerCF(codiceFiscaleCliente)
         if cliente is None:
             return 'Cliente non trovato'
-        pagamento = Pagamento(self._pagamentoRepo.newId(), importo, data, cliente)
+        pagamento = Pagamento(self._pagamentoRepo.newId(), importo, cliente)
         self._pagamentoRepo.aggiungi(pagamento)
         return 'Pagamento registrato'
     
