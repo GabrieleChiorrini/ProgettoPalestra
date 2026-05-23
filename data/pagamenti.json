@@ -4,5 +4,11 @@
         "importo": 6.0,
         "data": "2026-05-23",
         "cliente": "CL000"
+    },
+    {
+        "id": "PA001",
+        "importo": 100.0,
+        "data": "2026-05-23",
+        "cliente": "CL001"
     }
 ]

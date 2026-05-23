@@ -1,0 +1,32 @@
+[
+    {
+        "id": "ST000",
+        "tipo": "accessi_giornalieri",
+        "data": "2026-05-23T17:39:47.047346",
+        "dati": {
+            "Lunedi": 0,
+            "Martedi": 0,
+            "Mercoledi": 0,
+            "Giovedi": 0,
+            "Venerdi": 1,
+            "Sabato": 1,
+            "Domenica": 0
+        }
+    },
+    {
+        "id": "ST001",
+        "tipo": "prenotazioni_corso",
+        "data": "2026-05-23T17:39:47.048887",
+        "dati": {
+            "Yoga": 2
+        }
+    },
+    {
+        "id": "ST002",
+        "tipo": "prenotazioni_sala",
+        "data": "2026-05-23T17:39:47.050289",
+        "dati": {
+            "15:00": 1
+        }
+    }
+]

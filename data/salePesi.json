@@ -1,7 +1,7 @@
 [
     {
         "id": "SP000",
-        "maxCapienza": 50,
+        "maxCapienza": 30,
         "fasciaOraria": [
             "FO008",
             "FO009",
@@ -14,7 +14,8 @@
             "FO016",
             "FO017",
             "FO018",
-            "FO019"
+            "FO019",
+            "FO023"
         ]
     }
 ]

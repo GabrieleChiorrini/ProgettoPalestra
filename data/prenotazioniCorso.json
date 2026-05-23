@@ -3,5 +3,15 @@
         "cliente": "CL001",
         "corso": "CO005",
         "id": "PC000"
+    },
+    {
+        "cliente": "CL001",
+        "corso": "CO005",
+        "id": "PC001"
+    },
+    {
+        "cliente": "CL001",
+        "corso": "CO004",
+        "id": "PC002"
     }
 ]

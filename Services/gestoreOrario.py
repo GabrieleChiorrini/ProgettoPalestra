@@ -55,13 +55,21 @@ class GestoreOrario:
                 fasce_esistenti = self._fasciaRepo.fascePerSala(sala.get_id())
                 for fascia in fasce_esistenti:
                     orario_fascia = fascia.get_orarioInizio()
-                    if orario_fascia >= nuovoOrarioApertura and (datetime.combine(date.today(), orario_fascia) + DURATA_FASCIA).time() <= nuovoOrarioChiusura:
-                        fasce_orarie.append(fascia)
-                sala.set_fasciaOraria(fasce_orarie)
-                self._salaPesiRepo.salva() # per persistenza
+                    
+                    # Creiamo il datetime di inizio e di fine
+                    inizio_fascia_dt = datetime.combine(date.today(), orario_fascia)
+                    fine_fascia_dt = inizio_fascia_dt + DURATA_FASCIA
+                    
+                    # Creiamo i datetime di limite apertura e chiusura della palestra per oggi
+                    apertura_dt = datetime.combine(date.today(), nuovoOrarioApertura)
+                    chiusura_dt = datetime.combine(date.today(), nuovoOrarioChiusura)
+                    
+                    if nuovoOrarioChiusura <= nuovoOrarioApertura: #faccio così altrimenti mezzanotte rientrava sempre nel giorno corrente
+                        from datetime import timedelta
+                        chiusura_dt += timedelta(days=1)
 
-            self._palestraRepo.salva() # per persistenza
-            return "Orario modificato correttamente"
+                    if inizio_fascia_dt >= apertura_dt and fine_fascia_dt <= chiusura_dt:
+                        fasce_orarie.append(fascia)
 
         except (TypeError, ValueError) as e:
             # Cattura le anomalie e restituisce il messaggio di errore
