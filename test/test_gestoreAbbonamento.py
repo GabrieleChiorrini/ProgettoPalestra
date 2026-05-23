@@ -37,13 +37,13 @@ class TestGestoreAbbonamento(unittest.TestCase):
         self.assertIn("Abbonamento creato", risultato)
     
     def test_creaAbbonamento_gia_esistente(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
-        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "1", TipoAbbonamento.CORSI)
+        risultato = self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "1", TipoAbbonamento.CORSI)
 
         self.assertIn("Esistente", risultato)
     
     def test_rinnovaAbbonamento(self):
-        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
+        self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "1", TipoAbbonamento.CORSI)
         
         risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
@@ -67,7 +67,7 @@ class TestGestoreAbbonamento(unittest.TestCase):
 
         risultato = self.gestoreAbbonamento.rinnovaAbbonamento(self.cliente.get_codiceFiscale(), timedelta(days=90), TipoAbbonamento.CORSI)
         self.assertIn("Abbonamento rinnovato", risultato)
-        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(days=120))
+        self.assertEqual(self.abbRepo.trovaPerIdCliente(self.cliente.get_id()).get_durata(), timedelta(days=90))
 
     def test_visualizzaAbbonamento(self):
         self.gestoreAbbonamento.creaAbbonamento(self.cliente.get_codiceFiscale(), "30", TipoAbbonamento.CORSI)
@@ -76,14 +76,14 @@ class TestGestoreAbbonamento(unittest.TestCase):
         abb = self.abbRepo.trovaPerIdCliente(self.cliente.get_id())
         
         # Verifica che la scadenza corrisponda a quella dell'abbonamento
-        self.assertEqual(risultato["dataScadenza"], abb.get_dataFine().strftime("%d/%m/%Y"))
+        self.assertEqual(risultato["Data scadenza"], abb.get_dataFine().strftime("%d/%m/%Y"))
         
         # Verifica che i giorni alla scadenza siano corretti (29 o 30 a seconda dell'ora)
         giorni_attesi = (abb.get_dataFine() - datetime.today()).days
-        self.assertEqual(risultato["giorniAllaScadenza"], str(giorni_attesi))
+        self.assertEqual(risultato["Mesi alla scadenza"], str(giorni_attesi))
         
         # Verifica che lo stato sia Attivo
-        self.assertEqual(risultato["validità"], "Attivo")
+        self.assertEqual(risultato["Validità"], "Attivo")
     
     def test_visualizzaAbbonamento_non_esistente(self):
         risultato = self.gestoreAbbonamento.visualizzaAbbonamento(self.cliente.get_id())

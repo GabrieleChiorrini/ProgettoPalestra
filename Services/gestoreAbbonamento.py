@@ -26,7 +26,7 @@ class GestoreAbbonamento:
         nuovoAbbonamento= Abbonamento (
             cliente= cliente, 
             id=nuovoId, 
-            durata= timedelta(int(durata)* 30), 
+            durata= timedelta(int(durata)* 30),  #considerando 30 giorni per ogni mese
             dataInizio= datetime.now(),
             stato= True,
             tipo= tipo)
@@ -58,7 +58,7 @@ class GestoreAbbonamento:
             if abbonamento is None:
                 return self.creaAbbonamento(
                     cliente.get_codiceFiscale(),
-                    str(nuovaDurata.days),
+                    str(nuovaDurata.days // 30),  # Convertiamo i giorni in mesi (ipostizzando 30 giorni per mese)
                     tipo
                 )
             
