@@ -19,6 +19,6 @@ class GestoreValidita:
         certificati = self._certificatoMedicoRepo.tutti()
         if certificati:
             for c in certificati:
-                if c.get_dataScadenza < datetime.today():
+                if datetime.combine(c.get_dataScadenza(), datetime.today().time()) < datetime.today():
                     c.set_validità(False)
                     self._certificatoMedicoRepo.aggiungi(c)

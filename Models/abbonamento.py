@@ -35,17 +35,6 @@ class Abbonamento():
     def get_tipo(self) -> TipoAbbonamento:
         return self._tipo
     
-    #def _aggiorna_data_fine(self):
-     #   self._dataFine = self._dataInizio + self._durata
-
-    # def setCliente(self, nuovoCliente: Cliente) -> None:
-    #     if isinstance(nuovoCliente, self._cliente):
-    #         self._cliente = nuovoCliente
-
-    # def setId(self, nuovoId: str) -> None:
-    #     if isinstance(nuovoId, str):
-    #         self._id = nuovoId
-    
     def set_durata(self, nuovaDurata: timedelta) -> None:
         if not isinstance(nuovaDurata, timedelta):
             raise TypeError("La durata deve essere un timedelta.")

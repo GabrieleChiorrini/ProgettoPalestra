@@ -3,7 +3,7 @@ import cv2
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QSpinBox,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox, QStackedWidget)
 from PyQt6.QtCore import QTimer, Qt
-from PyQt6.QtGui import QImage, QPixmap
+from PyQt6.QtGui import QImage, QPixmap, QFont
 
 from Services import GestoreIngressi, GestoreValidita, GestoreStatistiche
 
@@ -31,11 +31,10 @@ class FormIngresso(QWidget):
         self.videoLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         hLayout.addWidget(self.videoLabel)
 
-        self._lbl = QLabel("")
+        self._lbl = QLabel("Avvicina il codice QR")
+        self._lbl.setStyleSheet("font-size: 45px;")
         self._lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        vLayout.addWidget(self._lbl)
-        vLayout.addStretch(1)
-
+        vLayout.addWidget(self._lbl, 1)
         hLayout2 = QHBoxLayout()
 
         self._lblRed = QLabel()
@@ -97,8 +96,7 @@ class FormIngresso(QWidget):
                     self._lblRed.setStyleSheet(self.circleOn("red"))
         else:
             self._ultimoQr = None
-            self._lbl.setText("")
-
+            self._lbl.setText("Avvicina il codice QR")
 
         # Disegna rettangoli attorno ai QR code rilevati
         if points is not None:
@@ -146,6 +144,7 @@ class FormIngresso(QWidget):
         # 3. Timer Statistiche
         self._timerStatistiche = QTimer(self)
         self._timerStatistiche.timeout.connect(self.onVerificaStatisticheScaduta)
+        self._timerStatistiche.start(default_ms * 7)
 
     def onVerificaAbbonamentiScaduta(self):
         # Questo metodo scatta in automatico ogni volta che il timer si azzera
@@ -165,6 +164,9 @@ class FormIngresso(QWidget):
     def onExit(self):
         self.cap.release()
         self._stack.setCurrentIndex(0)
+    
+    def setCap(self) -> None:
+        self.cap = cv2.VideoCapture(0)
 
     # Metodi pubblici chiamati dall'altro Form (FormImpostazioniTimer) per cambiare la durata
     def setIntervalloAbbonamenti(self, millisecondi: int):
