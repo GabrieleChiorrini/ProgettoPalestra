@@ -3,7 +3,7 @@ import os
 from datetime import time
 from test import entita_finte as ef
 from Services import GestoreCorso
-from Repo import CorsoRepository, AmministratoreRepository, ClienteRepository, CertificatoMedicoRepository
+from Repo import CorsoRepository, AmministratoreRepository, ClienteRepository, CertificatoMedicoRepository, PrenotazioneCorsoRepository, PalestraRepository, SalaPesiRepository, FasciaOrariaRepository
 from Models import Corso
 from Enumerazione import GiorniSettimana
 
@@ -14,45 +14,58 @@ class TestGestoreCorso(unittest.TestCase):
         # Definiamo i file JSON di test temporanei
         self.fileCorsi = "testCorsi.json"
         self.fileAmministratori = "testAmministratori.json"
-        self.fileClienti = "testClienti.json"
+        self.fileCliente = "testCliente.json"
         self.fileCertificati = "testCertificatiMedici.json"
+        self.filePrenotazioniCorso = "testPrenotazioniCorso.json"
+        self.filePalestra = "testPalestra.json"
+        self.fileSalaPesi = "testSalaPesi.json"
+        self.fasciaoraria = "testFasciaOraria.json"
 
         # Istanziamo le repository di supporto necessarie al caricamento/ unpacking dei modelli
         self.certificatiRepo = CertificatoMedicoRepository(self.fileCertificati)
-        self.clienteRepo = ClienteRepository(self.certificatiRepo, self.fileClienti)
         self.amministratoreRepo = AmministratoreRepository(self.fileAmministratori)
-        
-        # CorsoRepository richiede le repo di amministratori e clienti
+        self.fasciaOrariaRepo = FasciaOrariaRepository(self.fasciaoraria)
+        self.salaPesiRepo = SalaPesiRepository(self.fasciaOrariaRepo, self.fileSalaPesi)
+        self.clienteRepo = ClienteRepository(self.certificatiRepo, self.fileCliente)
         self.corsoRepo = CorsoRepository(self.amministratoreRepo, self.clienteRepo, self.fileCorsi)
+        self.prenotazioneCorsoRepo = PrenotazioneCorsoRepository(self.corsoRepo, self.clienteRepo, self.filePrenotazioniCorso)
+        self.palestraRepo = PalestraRepository(self.corsoRepo, self.salaPesiRepo, self.filePalestra)
+        
 
-        # Puliamo i dizionari interni per evitare residui
         self.certificatiRepo._certificati = {}
         self.clienteRepo._clienti = {}
         self.amministratoreRepo._amministratori = {}
         self.corsoRepo._corsi = {}
+        self.prenotazioneCorsoRepo._prenotazioniCorso = {}
+        self.palestraRepo._palestre = {}
+        self.salaPesiRepo._salaPesi = {}
+        self.fasciaOrariaRepo._fasceOrarie = {}
 
         # Inizializziamo il servizio da testare
-        self.gestoreCorso = GestoreCorso(self.corsoRepo, self.amministratoreRepo)
+        self.gestoreCorso = GestoreCorso(self.corsoRepo, self.amministratoreRepo,self.prenotazioneCorsoRepo, self.palestraRepo)
         
 
         # Generiamo le entità finte usando il modulo ef
         self.istruttore = ef.personale_finto()         # Primo istruttore
         self.istruttore2 = ef.personale_finto()        # Secondo istruttore per i test di modifica
         self.cliente = ef.cliente_finto()             # Cliente per il test di visualizzazione iscritti
+        self.palestra = ef.palestra_finta()
 
         # Forziamo gli ID fissi perchè altrimenti se ripeto i test l'id non funziona
         self.istruttore._id = "AD001"
         self.istruttore2._id = "AD002"
         self.cliente._id = "CL001"
+        self.palestra._id = "PAL001"
 
         # Carichiamo i dati minimi nelle rispettive repository di supporto
         self.amministratoreRepo.aggiungi(self.istruttore)
         self.amministratoreRepo.aggiungi(self.istruttore2)
         self.clienteRepo.aggiungi(self.cliente)
+        self.palestraRepo.aggiungi(self.palestra)
 
     def tearDown(self):
         # Rimozione dei file JSON temporanei generati durante l'esecuzione del test
-        file_da_eliminare = [self.fileCorsi, self.fileAmministratori, self.fileClienti, self.fileCertificati]
+        file_da_eliminare = [self.fileCorsi, self.fileAmministratori, self.fileCliente, self.fileCertificati]
         for f in file_da_eliminare:
             if os.path.exists(f):
                 os.remove(f)
