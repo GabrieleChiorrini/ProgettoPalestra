@@ -31,7 +31,7 @@ class GestorePagamento ():
                 r1 = {
                     "Importo": r.get_importo(),
                     "Data": r.get_data().strftime("%H:%M del %D %B %Y"),
-                    "Cliente": r.get_cliente().get_nome() + r.get_cliente().get_cognome()
+                    "Cliente": r.get_cliente().get_nome() + " " + r.get_cliente().get_cognome()
                 }
                 ricevute.append(r1)
             return ricevute
@@ -39,7 +39,7 @@ class GestorePagamento ():
             return [{
                     "Importo": "pagamento",
                     "Data": "Nessun",
-                    "Cliente": cliente.get_nome() + cliente.get_cognome()
+                    "Cliente": cliente.get_nome() + " " + cliente.get_cognome()
                 }]
         
     

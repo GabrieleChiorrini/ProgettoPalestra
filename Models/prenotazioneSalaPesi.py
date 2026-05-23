@@ -15,7 +15,7 @@ class PrenotazioneSalaPesi(Prenotazione):
     def toDict(self):
         return {
             "cliente": self._cliente.get_id(),
-            "fascia_oraria": self._fascia_oraria.toDict(),
+            "fascia_oraria": self._fascia_oraria.get_id(),
             "id": self._id
         }
 
@@ -23,7 +23,7 @@ class PrenotazioneSalaPesi(Prenotazione):
     def fromDict(cls, d: dict) -> "PrenotazioneSalaPesi":
         return cls(
             d["cliente"],
-            FasciaOraria.fromDict(d["fascia_oraria"]),
+            d["fascia_oraria"],
             d["id"]
         )
     

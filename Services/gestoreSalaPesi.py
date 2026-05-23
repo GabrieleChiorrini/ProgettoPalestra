@@ -1,6 +1,6 @@
 from Models import SalaPesi
 from Repo import SalaPesiRepository
-from datetime import time
+from datetime import time, datetime
 
 class GestoreSalaPesi():
     def __init__(self, salaPesiRepo: SalaPesiRepository):
@@ -42,4 +42,11 @@ class GestoreSalaPesi():
         if not salaPesi:
             return "Sala Pesi non trovata"
         
-        return next((f for f in salaPesi.get_fasciaOraria() if f.get_orarioInizio() == time(int(orario))), [])
+        return next((f.get_id() for f in salaPesi.get_fasciaOraria() if f.get_orarioInizio() == datetime.strptime(orario, "%H:%M").time()), [])
+    
+    def orariFasceOrarie(self, salaPesiId:str) -> list:
+        salaPesi = self._salaPesiRepo.trovaPerId(salaPesiId)
+        if not salaPesi:
+            return []
+        
+        return [a.get_orarioInizio().strftime("%H:%M") for a in salaPesi.get_fasciaOraria()]

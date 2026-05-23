@@ -86,7 +86,6 @@ class FormIngresso(QWidget):
             qr_data = decoded_info[0]  # Prendi il primo QR code
             if qr_data != self._ultimoQr:
                 self._ultimoQr = qr_data
-                print(f"QR TROVATO: {qr_data}")
                 if self.gestoreIngressi.gestisciIngresso(qr_data):
                     self._lbl.setText("Benvenuto")
                     self._lblGreen.setStyleSheet(self.circleOn("green"))

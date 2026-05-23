@@ -8,9 +8,9 @@ from Models import PrenotazioneSalaPesi
 
 class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
     def __init__(self, fasciaOrariaRepo: FasciaOrariaRepository, salaPesiRepo: SalaPesiRepository, clienteRepo: ClienteRepository, path: str = "prenotazioniSalaPesi.json"):
-        super().__init__(clienteRepo, path)
         self._fasciaOrariaRepo = fasciaOrariaRepo #repo fasce orarie
         self._salaPesiRepo = salaPesiRepo #repo sale pesi
+        super().__init__(clienteRepo, path)
     
     def carica(self) -> None: # Ricrea gli oggetti dal file di persistenza
         try:
@@ -22,7 +22,8 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
             self._prenotazioni = {
                 d["id"]: PrenotazioneSalaPesi.fromDict({
                 **d, #Unpacking del dizionario
-                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"]), # trovo il cliente perché ho salvato solo l'id
+                "fascia_oraria": self._fasciaOrariaRepo.trovaPerId(d["fascia_oraria"])
             })  for d in dati} # from dict è metodo di classe di PrenotazioneSalaPesi
 
         except FileNotFoundError:
@@ -33,9 +34,9 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
     
     def nPerFasciaOraria(self) -> defaultdict:
         n = defaultdict(int)
-        for p in self._prenotazioni:
+        for p in self._prenotazioni.values():
             if isinstance(p, PrenotazioneSalaPesi):
-                n[p.get_fascia_oraria()] += 1
+                n[p.get_fascia_oraria().get_orarioInizio().strftime("%H:%M")] += 1
         return n
     
     def newId(self):
@@ -46,8 +47,8 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
         return self.incrementaId(ultimoId)
 
     def idsPerCliente(self, clienteId: str) -> list:
-        return [(a.get_fasciaOraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values()) if a.get_cliente().get_id() == clienteId]
+        return [(a.get_fascia_oraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values()) if a.get_cliente().get_id() == clienteId]
     
     def ids(self) -> list:
-        return [(a.get_fasciaOraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values())]
+        return [(a.get_fascia_oraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values())]
     

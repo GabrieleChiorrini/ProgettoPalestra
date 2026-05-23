@@ -121,17 +121,22 @@ class GestoreCorso():
 
         corso = self._corsoRepo.trovaPerId(corsoId) #cerco il corso tramite l'id fornito
         if not corso:
-            return  ['Nessun Corso']        
+            return  [{
+                "nome": "Nessun",
+                "cognome" : "Corso"
+            }]        
         iscritti = corso.get_iscritti() #prendo la lista degli iscritti e la salvo nella var iscritti
         if not iscritti:
-            return ['Nessun Iscritto']
+            return [{
+                "nome": "Nessun",
+                "cognome" : "Iscritto"
+            }]
         
         lista_iscritti = [] #inizializzo la lista iscritti vuota
         for iscritto in iscritti:
             lista_iscritti.append({ #compilo la lista iscritti con i vari dati formiti successivamente 
                 "nome": iscritto.get_nome(),
-                "cognome": iscritto.get_cognome(),
-                "codiceFiscale": iscritto.get_codiceFiscale()
+                "cognome": iscritto.get_cognome()
             })
 
         return lista_iscritti

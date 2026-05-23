@@ -165,17 +165,14 @@ class HomePageAmministratore(QWidget):
         btnRegPag = QPushButton("Registrare pagamento")
         btnRegPag.clicked.connect(self.onRegistraPagamento)
         vLayoutf.addWidget(btnRegPag)
-        btnRegPag.setStyleSheet("""QPushButton {text-align: left;}""")
 
         btnModCapienza = QPushButton("Modifica capienza sala pesi")
         btnModCapienza.clicked.connect(self.onModificaCapienza)
         vLayoutf.addWidget(btnModCapienza)
-        btnModCapienza.setStyleSheet("""QPushButton {text-align: left;}""")
 
         btnGestOrari = QPushButton("Gestisci orari")
         btnGestOrari.clicked.connect(self.onGestisciOrari)
         vLayoutf.addWidget(btnGestOrari)
-        #btnGestOrari.setStyleSheet("""QPushButton {text-align: left;}""")
 
         lbl3 = QLabel()
         vLayoutf.addWidget(lbl3)
@@ -331,7 +328,6 @@ class HomePageAmministratore(QWidget):
         self.form.activateWindow()
     
     def onTimers(self):
-        print("ciaoo")
         self.form = FormImpostazioniTimer(self._stack)
         self.form.show()
         self.form.raise_()

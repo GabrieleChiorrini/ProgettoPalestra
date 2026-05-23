@@ -48,9 +48,6 @@ class GestoreAutenticazione():
         #passwordDecriptata = self.aes.dec(data_string=credenziali.get_password(), key=self.ChiaveHex)
         passwordDecriptata = cryptocode.decrypt(credenziali.get_password(), self._chiave)
 
-        print(passwordDecriptata)
-        print(password)
-
         if password != passwordDecriptata:
             return "Password errata", None
         

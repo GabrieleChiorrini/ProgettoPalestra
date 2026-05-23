@@ -1,7 +1,7 @@
 from Models import Palestra
 from Models.fasciaOraria import FasciaOraria
 from Repo import PalestraRepository, FasciaOrariaRepository,  SalaPesiRepository
-from datetime import time, timedelta, datetime
+from datetime import time, timedelta, datetime, date
 from Enumerazione.giorniSettimana import GiorniSettimana
 
 
@@ -55,9 +55,9 @@ class GestoreOrario:
                 fasce_esistenti = self._fasciaRepo.fascePerSala(sala.get_id())
                 for fascia in fasce_esistenti:
                     orario_fascia = fascia.get_orarioInizio()
-                    if orario_fascia >= nuovoOrarioApertura and (orario_fascia + DURATA_FASCIA) <= nuovoOrarioChiusura:
+                    if orario_fascia >= nuovoOrarioApertura and (datetime.combine(date.today(), orario_fascia) + DURATA_FASCIA).time() <= nuovoOrarioChiusura:
                         fasce_orarie.append(fascia)
-                sala.set_fasceOrarie(fasce_orarie)
+                sala.set_fasciaOraria(fasce_orarie)
                 self._salaPesiRepo.salva() # per persistenza
 
             self._palestraRepo.salva() # per persistenza

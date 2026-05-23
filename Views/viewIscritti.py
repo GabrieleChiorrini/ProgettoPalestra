@@ -27,6 +27,8 @@ class ViewIscirtti(QWidget):
 
         self._vLayout.addLayout(fLayout)
 
+        self._onIndiceCambia() #Chiamo la prima volta
+
         btnAnnulla = QPushButton("Annulla")
         btnAnnulla.clicked.connect(self.close)
         self._vLayout.addWidget(btnAnnulla)
@@ -53,9 +55,18 @@ class ViewIscirtti(QWidget):
 
         iscritti = self._gestoreCorso.visualizzaIscritti(corsoId)
 
+        for i in range(self._vLayout.count() -2, 0, -1):
+            item = self._vLayout.takeAt(i)
+
+            if item:
+                widget = item.widget()
+
+                if widget:
+                    widget.deleteLater()
+
         for a in iscritti:
-            lbl = QLabel(a)
-            self._vLayout.addWidget(lbl)
+            lbl = QLabel(a["nome"] + " " + a["cognome"])
+            self._vLayout.insertWidget(1, lbl)
         
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
         self._centerWindow()

@@ -24,25 +24,16 @@ class FormPrenotazioneSalaPesi(QWidget):
         self._comboSalaPesi = QComboBox()
         self._comboSalaPesi.addItems(self._gestoreSalaPesi.get_ids())
         self._comboSalaPesi.setCurrentIndex(0)
+        self._comboSalaPesi.currentIndexChanged.connect(lambda: self.onSalaPesiChange(self._comboSalaPesi.currentText()))
         fLayout.addRow("Sala Pesi:", self._comboSalaPesi)
 
         vLayout.addLayout(fLayout)
 
-        gLayout = QGridLayout()
+        self._gLayout = QGridLayout()
 
-        self._gruppo = QButtonGroup()
-        listaFasceOrarie = list(range(12))
-        for i1 in range(math.ceil(len(listaFasceOrarie)/5)):
-            for i2 in range(5):
-                indice = (i1 * 5) + (i2 + 1)
-                if indice > len(listaFasceOrarie):
-                    break
-                _radioButton = QRadioButton(str(indice))
-                self._gruppo.addButton(_radioButton)
+        self.onSalaPesiChange(self._comboSalaPesi.currentText())
 
-                gLayout.addWidget(_radioButton, i1, i2)
-
-        vLayout.addLayout(gLayout)
+        vLayout.addLayout(self._gLayout)
 
         hLayout = QHBoxLayout()
 
@@ -58,6 +49,37 @@ class FormPrenotazioneSalaPesi(QWidget):
         vLayout.addLayout(hLayout)
 
         self.setLayout(vLayout)
+        self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
+    
+    def onSalaPesiChange(self, salaPesiId: str) -> None:
+        self._gruppo = QButtonGroup()
+        listaFasceOrarie = self._gestoreSalaPesi.orariFasceOrarie(salaPesiId)
+
+        #Pulizia Layout 
+        for a in range(self._gLayout.columnCount()):
+            for b in range(self._gLayout.rowCount()):
+                item = self._gLayout.itemAtPosition(b, a)
+
+                if item:
+                    widget = item.widget()
+                    
+                    if widget:
+                        self._gLayout.removeWidget(widget)
+                        widget.deleteLater()
+
+
+        for i1 in range(math.ceil(len(listaFasceOrarie)/5)):
+            for i2 in range(5):
+                indice = (i1 * 5) + (i2)
+
+                if indice + 1 > len(listaFasceOrarie):
+                    break
+
+                _radioButton = QRadioButton(str(listaFasceOrarie[indice]))
+                self._gruppo.addButton(_radioButton)
+
+                self._gLayout.addWidget(_radioButton, i1, i2)
+        
         self.resize(self.sizeHint().width() + 40, self.sizeHint().height())
     
     def onPrenota(self):

@@ -9,19 +9,20 @@ class GestoreStatistiche:
         self._prenotazioneCorsoRepo = prenotazioneCorsoRepo
         self._prenotazioneSalaPesiRepo = prenotazioneSalaPesiRepo
     
-    def generaStatistiche(self) -> tuple:
+    def generaStatistiche(self) -> None:
         #Accessi x giorno
-        statisticheAccessi = Statistica("accessi_giornalieri", self._ingressoRepo.nPerGiorni())
+        statisticheAccessi = Statistica(self._statisticheRepo.newId(), "accessi_giornalieri", self._ingressoRepo.nPerGiorni())
+        self._statisticheRepo.aggiungi(statisticheAccessi)
         #Corsi x Corso
-        statisticheCorsi = Statistica("prenotazioni_corso", self._prenotazioneCorsoRepo.nPerCorso())
+        statisticheCorsi = Statistica(self._statisticheRepo.newId(), "prenotazioni_corso", self._prenotazioneCorsoRepo.nPerCorso())
+        self._statisticheRepo.aggiungi(statisticheCorsi)
         #SalaPesi x Fascia Oraria
-        statisticheSalaPesi = Statistica("prenotazioni_sala", self._prenotazioneSalaPesiRepo.nPerFasciaOraria())
-
-        return (statisticheCorsi, statisticheSalaPesi, statisticheAccessi)
+        statisticheSalaPesi = Statistica(self._statisticheRepo.newId(), "prenotazioni_sala", self._prenotazioneSalaPesiRepo.nPerFasciaOraria())
+        self._statisticheRepo.aggiungi(statisticheSalaPesi)
 
     def visualizzaStatistiche(self) -> list:
         statistica = self._statisticheRepo.trovaPerId(self._statisticheRepo.lastId())
         if statistica is None or statistica.get_data_creazione() < (datetime.today() - timedelta(7)):
             self.generaStatistiche()
         
-        return self._statisticheRepo.tutti()
+        return [a.visualizza_statistica() for a in self._statisticheRepo.tutti()]

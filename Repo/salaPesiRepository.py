@@ -30,7 +30,7 @@ class SalaPesiRepository: # Repository
                 [a.toDict() for a in self._salePesi.values()], f, indent = 4)# list comprehension. 
                 #cicla sui Corsi nella repo e li salva nel file .json
 
-    def trovaPerId(self, id: str):
+    def trovaPerId(self, id: str) -> SalaPesi:
         return self._salePesi.get(id) # _salePesi è un dizionario;
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 

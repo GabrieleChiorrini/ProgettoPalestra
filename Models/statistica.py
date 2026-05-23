@@ -4,11 +4,15 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 
 class Statistica:
-    def __init__(self, tipo_statistica: str, dati: dict):
+    def __init__(self, id: str, tipo_statistica: str, dati: dict, data: datetime = None):
         #controller mi da dati gia pronti in dizionario
+        self._id = id
         self._tipo_statistica = tipo_statistica
-        self._data_creazione = datetime.now()
+        self._data_creazione = data or datetime.now()
         self._dati = dati
+
+    def get_id(self) -> str:
+        return self._id
 
     def get_tipo_statistica(self) -> str:
         return self._tipo_statistica
@@ -22,7 +26,8 @@ class Statistica:
     #per visualizzare grafico
     def visualizza_statistica(self):
         if not self._dati:
-            raise ValueError("Nessun dato disponibile per la statistica")
+            return
+            #raise ValueError("Nessun dato disponibile per la statistica")
 
         if self._tipo_statistica == "accessi_giornalieri":
             return self._grafico_barre(
@@ -67,6 +72,7 @@ class Statistica:
     
     def toDict(self) -> dict:
         return {
+            "id": self._id,
             "tipo": self._tipo_statistica,
             "data": self._data_creazione.isoformat(),
             "dati": self._dati
@@ -74,7 +80,7 @@ class Statistica:
     
     @classmethod
     def fromDict(cls, d:dict) -> "Statistica":
-        return cls( d["tipo"], d["data"], d["dati"])
+        return cls(d["id"], d["tipo"], d["dati"], datetime.fromisoformat(d["data"]))
 
     def __str__(self) -> str:
         return (

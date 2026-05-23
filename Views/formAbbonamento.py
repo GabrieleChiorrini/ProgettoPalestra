@@ -68,6 +68,10 @@ class FormAbbonamento(QWidget):
             self.warning("Inserisci la durata dell'abbonamento")
             return
         
+        if not durataAbbonamento.isnumeric():
+            self.warning("La durata deve essere un numero")
+            return
+        
         tipo = self._comboTipo.currentIndex()
 
         risultato = self._gestoreAbbonamento.creaAbbonamento(codiceFiscale, durataAbbonamento, TipoAbbonamento(tipo))
@@ -82,6 +86,10 @@ class FormAbbonamento(QWidget):
         durataAbbonamento = self._lineEditDurata.text().strip()
         if not durataAbbonamento:
             self.warning("Inserisci la durata dell'abbonamento")
+            return
+        
+        if not durataAbbonamento.isnumeric():
+            self.warning("La durata deve essere un numero")
             return
         
         if not durataAbbonamento.isnumeric():

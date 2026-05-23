@@ -7,8 +7,8 @@ from Models import PrenotazioneCorso
 
 class PrenotazioneCorsoRepository(PrenotazioneRepository):
     def __init__(self, corsoRepo: CorsoRepository, clienteRepo: ClienteRepository, path: str = "prenotazioniCorso.json"):
-        super().__init__(clienteRepo, path)
         self._corsoRepo = corsoRepo #repo corsi
+        super().__init__(clienteRepo, path)
     
     def carica(self) -> None: # Ricrea gli oggetti dal file di persistenza
         try:
@@ -20,7 +20,8 @@ class PrenotazioneCorsoRepository(PrenotazioneRepository):
             self._prenotazioni = {
                 d["id"]: PrenotazioneCorso.fromDict({
                 **d, #Unpacking del dizionario
-                "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
+                "corso": self._corsoRepo.trovaPerId(d["corso"]),
+                "cliente": self._clienteRepo.trovaPerId(d["cliente"]), # trovo il cliente perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di PrenotazioneCorso
 
 
@@ -29,7 +30,7 @@ class PrenotazioneCorsoRepository(PrenotazioneRepository):
     
     def nPerCorso(self) -> defaultdict: #tocca mette quelli speciali che inizia da 0:
         n = defaultdict(int)
-        for p in self._prenotazioni:
+        for p in self._prenotazioni.values():
             if isinstance(p, PrenotazioneCorso):
                 corso = p.get_corso()
                 n[corso.get_nome()] += 1

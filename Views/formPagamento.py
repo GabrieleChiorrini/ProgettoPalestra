@@ -60,6 +60,10 @@ class FormPagamento(QWidget):
             self._warning("Inserisci l'importo del pagamento")
             return
         
+        if not importo.isnumeric():
+            self._warning("L'importos deve essere un numero")
+            return
+        
         dataPagamento = self._dateTimeEdit.dateTime().toPyDateTime()
         if dataPagamento > datetime.today():
             self._warning("La data non può essere nel futuro!")
