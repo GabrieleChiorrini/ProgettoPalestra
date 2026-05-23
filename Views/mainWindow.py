@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
         self.page1 = FormLogin(self.stack, gau)
         self.page2 = FormRegistrazione(self.stack, gau)
         self.page3 = HomePageAmministratore(self.stack, gab, gca, gcl, gco, gor, gpa, gpe, gsp)
-        self.page4 = HomePageCliente(self.stack, None, gab, gce, gco, gpa, gpr, gsa)
+        self.page4 = HomePageCliente(self.stack, None, gab, gce, gco, gpa, gpr, gsa, gsp)
         self.page5 = FormIngresso(self.stack, gin, gva, gsa)
 
         self.stack.addWidget(self.page1)

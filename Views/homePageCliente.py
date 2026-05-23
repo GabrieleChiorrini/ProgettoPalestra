@@ -3,11 +3,11 @@ from PyQt6.QtWidgets import (QApplication, QStackedWidget, QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy)
 from PyQt6.QtCore import QPropertyAnimation
 from PyQt6 import QtCore
-from Services import (GestoreAbbonamento, GestoreCertificato, GestoreCorso, GestorePagamento, GestorePrenotazione, GestoreStatistiche)
+from Services import (GestoreAbbonamento, GestoreCertificato, GestoreCorso, GestorePagamento, GestorePrenotazione, GestoreStatistiche, GestoreSalaPesi)
 from Views import FormEliminaPrenotazione, FormPrenotazioneCorso, FormPrenotazioneSalaPesi, ViewAbbonamento, ViewCertificato, ViewOrariCorsi, ViewIscirtti, ViewPagamenti, ViewStatistiche
 
 class HomePageCliente(QWidget):
-    def __init__(self, stack: QStackedWidget, clieteId: str, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche):
+    def __init__(self, stack: QStackedWidget, clieteId: str, gab: GestoreAbbonamento, gce: GestoreCertificato, gco: GestoreCorso, gpa: GestorePagamento, gpr: GestorePrenotazione, gsa: GestoreStatistiche, gsp: GestoreSalaPesi):
         super().__init__()
 
         self._buildUI(stack)
@@ -19,6 +19,7 @@ class HomePageCliente(QWidget):
         self.gestorePagamento = gpa
         self.gestorePrenotazione = gpr
         self.gestoreStatistiche = gsa
+        self.gestoreSalaPesi = gsp
 
         #idCliente
         self._clienteId = clieteId
@@ -181,13 +182,13 @@ class HomePageCliente(QWidget):
         self.sender().setText(tDopo)
 
     def _onPrenotazioneSalaPesi(self):
-        self.form = FormPrenotazioneSalaPesi(self.gestorePrenotazione, self._clienteId)
+        self.form = FormPrenotazioneSalaPesi(self.gestorePrenotazione,self.gestoreSalaPesi, self._clienteId)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()
 
     def _onPrenotazioneCorso(self):
-        self.form = FormPrenotazioneCorso(self.gestorePrenotazione, self._clienteId)
+        self.form = FormPrenotazioneCorso(self.gestorePrenotazione, self.gestoreCorso, self._clienteId)
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()

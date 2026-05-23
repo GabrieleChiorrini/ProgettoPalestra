@@ -23,7 +23,7 @@ class FormOrario(QWidget):
         self._comboPalestra = QComboBox()
         [self._comboPalestra.addItem(a[0], a[1]) for a in self._gestoreOrario.get_ids()]
         self._comboPalestra.setCurrentIndex(0)
-        fLayout.addRow("Sala Pesi:", self._comboPalestra)
+        fLayout.addRow("Palestra:", self._comboPalestra)
 
         self._timeEditApertura = QTimeEdit()
         fLayout.addRow("Orario Apertura:", self._timeEditApertura)
@@ -49,7 +49,7 @@ class FormOrario(QWidget):
         btnReg = QPushButton("Modifica")
         btnReg.clicked.connect(self.onModifica)
         hLayout.addWidget(btnReg)
-        self.setWindowTitle("Modifica capienza sala Pesi")
+        self.setWindowTitle("Modifica orario palestra")
 
         vLayout.addLayout(hLayout)
 

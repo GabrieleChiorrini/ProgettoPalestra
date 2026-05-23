@@ -51,7 +51,7 @@ class FormPrenotazioneCorso(QWidget):
             self._warning("Seleziona un corso valido")
             return
 
-        risultato = self._gestorePrenotazione(corsoId, self._clienteId)
+        risultato = self._gestorePrenotazione.prenotaCorso(corsoId, self._clienteId)
         QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
@@ -59,6 +59,6 @@ class FormPrenotazioneCorso(QWidget):
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    f = FormPrenotazioneCorso(None, None)
+    f = FormPrenotazioneCorso(None, None, None)
     f.show() # mostro finestra
     sys.exit(app.exec())

@@ -20,9 +20,9 @@ if __name__ == "__main__":
     far = FasciaOrariaRepository(CARTELLA_DATI + "/fascieOrarie.json")
     par = PagamentoRepository(clr, CARTELLA_DATI + "/pagamenti.json")
     spr = SalaPesiRepository(far, CARTELLA_DATI + "/salePesi.json")
-    plr = PalestraRepository(crr, spr, CARTELLA_DATI + "/palestre.json")
+    plr = PalestraRepository(cor, spr, CARTELLA_DATI + "/palestre.json")
     pcr = PrenotazioneCorsoRepository(cor, clr, CARTELLA_DATI + "/prenotazioniCorso.json")
-    psr = PrenotazioneSalaPesiRepository(far, spr, clr, CARTELLA_DATI + "/prenotazioniSalaPesi")
+    psr = PrenotazioneSalaPesiRepository(far, spr, clr, CARTELLA_DATI + "/prenotazioniSalaPesi.json")
     sar = StatisticaRepository(CARTELLA_DATI + "/statistiche.json")
     utr = UtenteRepository(CARTELLA_DATI + "/utenti.json")
 
