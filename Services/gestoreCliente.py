@@ -81,6 +81,9 @@ class GestoreCliente:
 
         except (TypeError, ValueError) as e:
             return f"Errore nei dati cliente: {e}"
+        
+        if nuovaEmail is None and nuovoTelefono is None and nuovaDataCertificato is None:
+            return "Errore nei dati cliente"
 
         self._clienteRepo.salva()
         return "Cliente modificato correttamente"

@@ -71,7 +71,7 @@ class TestGestoreCliente(unittest.TestCase):
     def test_modificaCliente_dati_errati(self):
         
         self.gestoreCliente.registraCliente(self.cliente.get_nome(), self.cliente.get_cognome(),self.cliente.get_dataNascita(),self.cliente.get_codiceFiscale(), self.cliente.get_email(), self.cliente.get_telefono(), self.certificatoMedico.get_dataEffettuato())
-        risultato = self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(), "", None, None)
+        risultato = self.gestoreCliente.modificaCliente(self.cliente.get_codiceFiscale(), None, None, None)
         self.assertIn('Errore nei dati cliente', risultato)
 
 
