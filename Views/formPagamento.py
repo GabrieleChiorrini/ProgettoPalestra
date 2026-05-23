@@ -23,8 +23,8 @@ class FormPagamento(QWidget):
         fLayout.addRow("Codice Fiscale Cliente:", self._lineEditCliente)
 
         self._lineEditDurata = QLineEdit()
-        self._lineEditDurata.setPlaceholderText("Durata Abbonamento")
-        fLayout.addRow("Durata Abbonamento:", self._lineEditDurata)
+        self._lineEditDurata.setPlaceholderText("Importo pagamento")
+        fLayout.addRow("Importo pagamento:", self._lineEditDurata)
 
         self._dateTimeEdit = QDateTimeEdit()
         self._dateTimeEdit.setDateTime(QDateTime.currentDateTime())

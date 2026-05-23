@@ -34,7 +34,7 @@ class GestorePagamento ():
                     "Cliente": r.get_cliente().get_nome() + r.get_cliente().get_cognome()
                 }
                 ricevute.append(r1)
-            return ricevuta
+            return ricevute
         else:
             return [{
                     "Importo": "pagamento",

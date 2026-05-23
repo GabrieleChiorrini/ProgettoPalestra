@@ -33,7 +33,11 @@ class ViewPagamenti(QWidget):
 
             vLayout2.addLayout(hLayout2)
             
-            lblImporto = QLabel("€ " + f"{a["Importo"]:.2f}" + "\n") if a["Importo"].isnumeric() else QLabel(f"{a["Importo"]}" + "\n")# A capo per spaziatura
+            if isinstance(a["Importo"], (int, float)):
+                lblImporto = QLabel(f"€ {a['Importo']:.2f}\n")
+            else:
+                # Se è una stringa di avviso (es. "Nessun" o "Null"), la stampi direttamente come testo
+                lblImporto = QLabel(f"{a['Importo']}\n")
             lblImporto.setAlignment(Qt.AlignmentFlag.AlignRight)
             vLayout2.addWidget(lblImporto)
 
@@ -49,6 +53,6 @@ class ViewPagamenti(QWidget):
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    f = ViewPagamenti(None)
+    f = ViewPagamenti(None, None)
     f.show() # mostro finestra
     sys.exit(app.exec())
