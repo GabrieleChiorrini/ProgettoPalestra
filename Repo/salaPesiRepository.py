@@ -35,6 +35,7 @@ class SalaPesiRepository: # Repository
     # la ricerca con i dizionari è molto semplice, basta prendere la chiave nel dict
 
     def trovaPerFasciaOraria(self, id:str) -> SalaPesi:
+        #Ricerca la sala pesi in base all'id della fascia Oraria fornita
         return next((
             sala
             for sala in self._salePesi.values()
@@ -62,6 +63,7 @@ class SalaPesiRepository: # Repository
         return list(self._salePesi.values())
     
     def ids(self) -> list:
+        # Restituisce tutti gli id delle Sale Pesi
         return list(self._salePesi.keys())
     
     def getMaxCapienza(self, salaPesiId: str) -> int:

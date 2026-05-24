@@ -10,6 +10,7 @@ class GestoreStatistiche:
         self._prenotazioneSalaPesiRepo = prenotazioneSalaPesiRepo
     
     def generaStatistiche(self) -> None:
+        """"Recupero del numero di accessi settimanali, di prenotazioni per Fasce orarie e di prenotazioni per corso e creazione delle loro statistiche"""
         #Accessi x giorno
         statisticheAccessi = Statistica(self._statisticheRepo.newId(), "accessi_giornalieri", self._ingressoRepo.nPerGiorni())
         self._statisticheRepo.aggiungi(statisticheAccessi)
@@ -21,6 +22,7 @@ class GestoreStatistiche:
         self._statisticheRepo.aggiungi(statisticheSalaPesi)
 
     def visualizzaStatistiche(self) -> list:
+        """Generazione dei grafici delle statistiche per la visualizzazione e generazione di esse se più vecchie di una settimana"""
         statistica = self._statisticheRepo.trovaPerId(self._statisticheRepo.lastId())
         if statistica is None or statistica.get_data_creazione() < (datetime.today() - timedelta(7)):
             self.generaStatistiche()

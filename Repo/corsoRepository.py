@@ -95,5 +95,6 @@ class CorsoRepository: # Repository
             self.salva()
     
     def ids(self) -> list:
+        #Restituisce (nome - orario, id) di tutti i corsi
         return [(a.get_nome() + " - " + a.get_orario().strftime("%H:%M"), a.get_id()) for a in list(self._corsi.values())]
  

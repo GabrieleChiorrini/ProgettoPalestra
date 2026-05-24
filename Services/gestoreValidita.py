@@ -8,6 +8,7 @@ class GestoreValidita:
         self._certificatoMedicoRepo = certificatoRepo
 
     def verificaValiditaAbbonamenti(self) -> None:
+        """Verifica della validità di ogni abbonamento ed eventuale aggiornamento dello stato per confronto della data odierna con quella di scandenza"""
         abbonamenti = self._abbonmaneotRepo.tutti()
         if abbonamenti:
             for a in abbonamenti:
@@ -16,6 +17,7 @@ class GestoreValidita:
                     self._abbonmaneotRepo.aggiungi(a)
     
     def verificaValiditaCertificati(self) -> None:
+        """Verifica della validità di ogni certificato medico ed eventuale aggiornamento di essa per confronto della data odierna con quella di scandenza"""
         certificati = self._certificatoMedicoRepo.tutti()
         if certificati:
             for c in certificati:

@@ -59,4 +59,5 @@ class PalestraRepository: # Repository
         self.salva()
 
     def ids(self) -> list:
+        #Ottenimento di (nome, id) di tutte le palestre
         return [(a.get_nome(), a.get_id()) for a in list(self._palestre.values())]

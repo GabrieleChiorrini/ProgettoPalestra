@@ -16,6 +16,8 @@ class GestoreOrario:
 
 
     def modificaOrario(self, palestraId: str, nuovoOrarioApertura: time, nuovoOrarioChiusura: time, nuoviGiorni: list):
+        """ Modifica l'orario di apertura e chiusura oltre ai gionri di apertura per la palestra di cui si fornisce l'id.
+            Inoltre riassegna automaticamente le fasce orarie alle sale pesi in base ai nuovi orari di apertura e chiusura"""
         try:
             # 1. CONTROLLO SUGLI ORARI (Presenza e Tipo)
             if nuovoOrarioApertura is None or nuovoOrarioChiusura is None:
@@ -48,6 +50,7 @@ class GestoreOrario:
             palestra.set_orariochiusura(nuovoOrarioChiusura)
             palestra.set_giorniApertura(nuoviGiorni)
 
+            #Riassegnazione delle fasce orarie
             sale_pesi = palestra.get_salePesi()
 
             for sala in sale_pesi:
@@ -65,7 +68,6 @@ class GestoreOrario:
                     chiusura_dt = datetime.combine(date.today(), nuovoOrarioChiusura)
                     
                     if nuovoOrarioChiusura <= nuovoOrarioApertura: #faccio così altrimenti mezzanotte rientrava sempre nel giorno corrente
-                        from datetime import timedelta
                         chiusura_dt += timedelta(days=1)
 
                     if inizio_fascia_dt >= apertura_dt and fine_fascia_dt <= chiusura_dt:
@@ -76,4 +78,5 @@ class GestoreOrario:
             return f"Errore nei dati palestra: {e}"
 
     def get_ids(self) -> list:
+        """ Restituisce (nome, id) di tutte le palestre cercandole nella Repository"""
         return self._palestraRepo.ids()

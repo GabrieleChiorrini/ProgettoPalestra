@@ -36,7 +36,7 @@ class ClienteRepository: # Repository
         
 
     def trovaPerCF(self, codiceFiscale: str):
-
+        #Cerca il cliente con codice fiscale uguale a quello fornito
             for cliente in self._clienti.values():
 
                 if cliente.get_codiceFiscale() == codiceFiscale:

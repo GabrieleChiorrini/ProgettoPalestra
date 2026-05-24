@@ -44,9 +44,11 @@ class PrenotazioneCorsoRepository(PrenotazioneRepository):
         return self.incrementaId(ultimoId)
     
     def idsPerCliente(self, clienteId: str) -> list:
+        #Ritorna (nomeCorso, id) di ogni prenotazione del corso del cliente di cui è stato fornito l'id
         return [(a.get_corso().get_nome(), a.get_id()) for a in list(self._prenotazioni.values()) if a.get_cliente().get_id() == clienteId]
     
     def ids(self) -> list:
+        #Ritorna (nomeCorso. id) di tutte le prenotazioni
         return [(a.get_corso().get_nome(), a.get_id()) for a in list(self._prenotazioni.values())]
 
  

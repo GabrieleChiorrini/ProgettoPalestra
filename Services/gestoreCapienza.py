@@ -9,13 +9,15 @@ class GestoreCapienza:
         self._fasciaOrariaRepo = fasciaOrariaRepository
     
     def controllaCapienzaCorso(self, corsoId: str) -> bool:
-        corso: Corso | None = self._corsoRepo.trovaPerId(corsoId)
+        """Controllo della capienza del corso di cui si è fornito l'id"""
+        corso = self._corsoRepo.trovaPerId(corsoId)
         if corso is None:
             return False
         
         return len(corso.get_iscritti()) < corso.get_maxCapienza()
     
     def controllaCapienzaFasciaOraria(self, fasciaOrariaId: str) -> bool:
+        """Controllo della capienza della fasciaOraria di cui si è fornito l'id"""
         fasciaOraria: FasciaOraria | None = self._fasciaOrariaRepo.trovaPerId(fasciaOrariaId)
         if fasciaOraria is None:
             return False

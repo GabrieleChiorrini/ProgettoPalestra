@@ -12,6 +12,7 @@ class GestoreAutenticazione():
         #self.aes = AES(running_mode="ECB", key=self.ChiaveHex)
 
     def registrazione(self, username: str, password:str, codiceFiscale:str) -> str:
+        """Registrazione del cliente con username, password e codiceFiscale per collegarlo effettivamente ad un cliente già esistente. Criptaggio della password prima del salvataggio"""
         if not isinstance(username, str):
             return "L'username deve essere una stringa!"
         
@@ -35,6 +36,8 @@ class GestoreAutenticazione():
         return "Cliente registrato correttamente!"
     
     def login(self, username:str, password:str) -> str:
+        """Controllo dell'esattezza delle credenziali (username e password) inserite per effetuare il login (confronto tra password decriptate).
+           Cambio della schermata (diversa tra amministratore e cliente) se il login va a buon fine"""
         if not isinstance(username, str):
             return "L'username deve essere una stringa!", None
         
@@ -60,4 +63,5 @@ class GestoreAutenticazione():
         return "Credenziali non collegate a nessuno", None
     
     def criptaPassword(self, password: str) -> str:
+        """Criptaggio della password passatagli"""
         return cryptocode.encrypt(password, self._chiave)

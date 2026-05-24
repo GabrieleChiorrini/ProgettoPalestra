@@ -44,6 +44,7 @@ class CredenzialiRepository: # Repository
             return None
     
     def trovaPerUsername(self, username:str):
+        # Restituisce le credenziali di cui coincide l'username
         return next((c for c in self._credenzialiRepo.values() if c.get_username() == username), None)
     
     def lastId(self) -> str:

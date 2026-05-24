@@ -10,6 +10,8 @@ class GestoreIngressi():
         self._certificatoMedicoRepo = certificatoRepo
 
     def gestisciIngresso(self, clienteId: str) -> bool:
+        """Registrazione dell'ingresso del cliente di cui si è fornito l'id.
+           Per effettuare l'ingresso il cliente deve avere un abbonamento ed il certificato medico valido oltre a non essere già in palestra"""
         cliente = self._clienteRepo.trovaPerId(clienteId)
         if cliente is None:
             print("Cliente non trovato")

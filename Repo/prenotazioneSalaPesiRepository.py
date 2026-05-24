@@ -47,8 +47,10 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
         return self.incrementaId(ultimoId)
 
     def idsPerCliente(self, clienteId: str) -> list:
+        #Restituisce (orarioFasciaOraria. id) delle prenotazioni del cliente di cui è stato fornito l'id. L'orario in formato HH:MM
         return [(a.get_fascia_oraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values()) if a.get_cliente().get_id() == clienteId]
     
     def ids(self) -> list:
+        #Restituisce (orarioFasciaOraria. id) di tutte le prenotazioni. L'orario in formato HH:MM
         return [(a.get_fascia_oraria().get_orarioInizio().strftime("%H:%M"), a.get_id()) for a in list(self._prenotazioni.values())]
     

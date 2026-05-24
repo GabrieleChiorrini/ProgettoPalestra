@@ -43,6 +43,7 @@ class IngressoRepository: # Repository
             return None
         
     def listPerCliente(self, cliente: Cliente) -> list:
+        # Restituisce la lista di ingressi effettuati dal cliente fornito
         return [ingresso for ingresso in self._accessi.values() if cliente == ingresso.get_cliente()]
     
     def nPerGiorni(self) -> dict:
