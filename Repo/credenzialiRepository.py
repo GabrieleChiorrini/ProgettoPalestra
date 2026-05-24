@@ -22,7 +22,7 @@ class CredenzialiRepository: # Repository
                 **d, #Unpacking del dizionario
                 "utente": self._clienteRepo.trovaPerCF(d["utente"]) if not self._clienteRepo.trovaPerCF(d["utente"]) is None else self._amministratoreRepo.trovaPerCF(d["utente"]) # trovo l'utente perché ho salvato solo il codice fiscale
             })  for d in dati} # from dict è metodo di classe di Credenziali
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._credenzialiRepo = {} # al primo avvio
 
     def salva(self) -> None:

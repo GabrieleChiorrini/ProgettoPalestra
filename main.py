@@ -37,7 +37,7 @@ if __name__ == "__main__":
     gor = GestoreOrario(plr, far, spr)
     gpa = GestorePagamento(clr, par)
     gpe = GestorePersonale(amr, crr, gau)
-    gpr = GestorePrenotazione(clr, pcr, psr, cor,far, gca)
+    gpr = GestorePrenotazione(clr, pcr, psr, cor,far, gca, abr)
     gsp = GestoreSalaPesi(spr)
     gsa = GestoreStatistiche(sar, acr, pcr, psr)
     gva = GestoreValidita(abr, cmr)

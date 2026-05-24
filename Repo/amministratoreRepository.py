@@ -16,7 +16,7 @@ class AmministratoreRepository: # Repository
                 d["id"]: Amministratore.fromDict(d) for d in dati # from dict è metodo di classe di Amministratore
                 # invoca il costruttore sulla base dei dati contenti in un dizionario
             }
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._amministratori = {} # al primo avvio
 
     def salva(self) -> None:

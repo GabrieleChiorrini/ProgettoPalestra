@@ -23,7 +23,7 @@ class CorsoRepository: # Repository
                 "istruttore": self._amministratoreRepo.trovaPerId(d["istruttore"]), # trovo l'istruttore perché ho salvato solo l'id
                 "iscritti": [self._clienteRepo.trovaPerId(c) for c in d["iscritti"]] # trovo gli iscritti perché ho salvato solo gli id
             })  for d in dati} # from dict è metodo di classe di Corso
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._corsi = {} # al primo avvio
 
     def salva(self) -> None:

@@ -25,7 +25,7 @@ class PrenotazioneCorsoRepository(PrenotazioneRepository):
             })  for d in dati} # from dict è metodo di classe di PrenotazioneCorso
 
 
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._prenotazioni = {} # al primo avvio
     
     def nPerCorso(self) -> defaultdict: #tocca mette quelli speciali che inizia da 0:

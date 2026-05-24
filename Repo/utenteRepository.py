@@ -16,7 +16,7 @@ class UtenteRepository: # Repository
                 d["id"]: Utente.fromDict(d) for d in dati # from dict è metodo di classe di Utente
                 # invoca il costruttore sulla base dei dati contenti in un dizionario
             }
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._utenti = {} # al primo avvio
 
     def salva(self) -> None:

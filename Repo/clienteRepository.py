@@ -21,7 +21,7 @@ class ClienteRepository: # Repository
                 "certificato": self._certificatoRepo.trovaPerId(d["certificato"]) # trovo il certificato perché ho salvato solo l'id
             })  for d in dati}
 
-        except FileNotFoundError:
+        except FileNotFoundError, json.JSONDecodeError:
             self._clienti = {}
                 
     def salva(self) -> None:
