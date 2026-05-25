@@ -7,6 +7,7 @@ class GestoreSalaPesi():
         self._salaPesiRepo = salaPesiRepo
 
     def modificaCapienza(self, salaPesiId: str, nuovaCapienza: int) -> str:
+        '''Modifica la capienza massima della sala pesi dato il suo ID e restituisce un messaggio di conferma o errore.'''
         try:
             # 1. CONTROLLO SULLA PRESENZA E SUL TIPO DI DATO
             if nuovaCapienza is None:
@@ -27,7 +28,7 @@ class GestoreSalaPesi():
 
             # Se tutti i controlli passano, applichiamo la modifica e salviamo
             sala.set_maxCapienza(nuovaCapienza)
-            self._salaPesiRepo.aggiornaCapienza()
+            self._salaPesiRepo.salva()
             return "Capienza aggiornata"
 
         except (TypeError, ValueError) as e:

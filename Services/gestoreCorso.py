@@ -10,6 +10,7 @@ class GestoreCorso():
         self._palestraRepo = palestraRepo
 
     def creaCorso(self, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list)-> tuple[str | None, str]:
+        '''Crea un nuovo corso con i dati forniti e restituisce l'ID del corso creato insieme a un messaggio di conferma o errore.'''
         istruttore = self._adminRepo.trovaPerCF(istruttoreCF)
         exclude_id = ""  # Non esiste un corso da escludere quando si crea un nuovo corso
 
@@ -31,6 +32,7 @@ class GestoreCorso():
     
 
     def modificaCorso(self, corsoId: str, nome: str, orari: time, maxCapienza: int, istruttoreCF: str, giorni: list):
+        '''Modifica un corso esistente con i nuovi dati forniti e restituisce l'ID del corso modificato insieme a un messaggio di conferma o errore.'''
         try:
             corso = self._corsoRepo.trovaPerId(corsoId) 
             if not corso:    
@@ -87,6 +89,7 @@ class GestoreCorso():
     
 
     def eliminaCorso(self, corsoId: str)-> tuple[str | None, str]:
+        '''Elimina un corso esistente dato il suo ID e restituisce l'ID del corso eliminato insieme a un messaggio di conferma o errore.'''
         corso = self._corsoRepo.trovaPerId(corsoId) #verifico che il corso da cancellare esista
         if not corso:
             return None, 'Corso non trovato'
@@ -102,6 +105,7 @@ class GestoreCorso():
     
 
     def visualizzaOrari(self) -> list: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche
+        '''Restituisce una tabella degli orari dei corsi, organizzata per giorni della settimana e fasce orarie.'''
         corsi = self._corsoRepo.tutti()  # prendo tutti i corsi e li salvo nella variabile corsi
         tabella_orari = [[[] for ora in range(12)] for giorno in range(7)] #inizializzo la lista tabella orari vuota
 
@@ -118,7 +122,7 @@ class GestoreCorso():
         return tabella_orari
 
     def visualizzaIscritti(self, corsoId: str) -> list: #ritorna una lista con ogni elemento che è un dizionario con le chiavi che sono str e i valori anche oppure una stringa nel caso di lista vuota 
-
+        '''Restituisce una lista degli iscritti a un corso dato il suo ID, con i nomi e cognomi degli iscritti.'''
         corso = self._corsoRepo.trovaPerId(corsoId) #cerco il corso tramite l'id fornito
         if not corso:
             return  [{

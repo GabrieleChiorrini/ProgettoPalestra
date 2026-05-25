@@ -11,6 +11,7 @@ class GestorePersonale:
 
      def registraPersonale(self, nome: str, cognome: str, dataNascita: date, 
                               codiceFiscale: str, email: str, telefono: str, username: str, password: str) -> str: #non passo id perchè lo genera sistema
+          '''Registra un nuovo membro del personale con i dati forniti e restituisce un messaggio di conferma o errore.'''
           #check se esiste
           personaleEsistente = self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
@@ -45,6 +46,7 @@ class GestorePersonale:
           return "Personale creato"
 
      def modificaPersonale(self, codiceFiscale:str,nuovaEmail:str, nuovoTelefono:str) -> str:
+          '''Modifica le informazioni di un membro del personale dato il suo codice fiscale e restituisce un messaggio di conferma o errore.'''
           personale= self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
           if personale is None:
@@ -74,6 +76,7 @@ class GestorePersonale:
           return "Personale modificato"
     
      def eliminaPersonale(self, codiceFiscale:str) -> str:
+          '''Elimina un membro del personale dato il suo codice fiscale e restituisce un messaggio di conferma o errore.'''
           personale= self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
           if personale is None:

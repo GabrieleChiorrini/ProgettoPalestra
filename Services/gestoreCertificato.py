@@ -8,7 +8,8 @@ class GestoreCertificato:
       self._clienteRepo = ClienteRepo
 
    def visualizzaCertificato(self, idCliente: str):
-
+      '''Restituisce le informazioni del certificato medico di un cliente dato il suo ID.'''
+      
       cliente = self._clienteRepo.trovaPerId(idCliente)
 
       if cliente is None:

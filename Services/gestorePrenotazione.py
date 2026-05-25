@@ -79,6 +79,9 @@ class GestorePrenotazione:
         return "Prenotazione eliminata"
     
     def prenotareSalaPesi(self, fasciaOrariaId: str, clienteId: str) -> str:
+        '''Permette la prenotazione della sala pesi per la fascia oraria di cui si è passato l'id per il cliente di cui si è fornito l'id
+           Viene però prima effettuato il controllo della validià degli id, della validità di abbonamento e certificato del cliente e dell'effettiva capienza della fascia oraria'''
+        
         fasciaOraria: FasciaOraria = self._fasciaOrariaRepo.trovaPerId(fasciaOrariaId)
         cliente: Cliente = self._clienteRepo.trovaPerId(clienteId)
         

@@ -17,6 +17,7 @@ class GestorePagamento ():
         return 'Pagamento registrato'
     
     def visualizzaPagamento (self, clienteId: str) -> list:
+        '''Restituisce una lista dei pagamenti effettuati da un cliente dato il suo ID, con i dettagli di ogni pagamento.'''
         cliente =  self._clienteRepo.trovaPerId(clienteId)
         if cliente is None:
             return [{
