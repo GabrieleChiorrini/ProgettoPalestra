@@ -65,12 +65,3 @@ class SalaPesiRepository: # Repository
     def ids(self) -> list:
         # Restituisce tutti gli id delle Sale Pesi
         return list(self._salePesi.keys())
-    
-    def getMaxCapienza(self, salaPesiId: str) -> int:
-        sala = self.trovaPerId(salaPesiId)
-        if sala is None:
-            raise ValueError(f"Sala pesi con ID {salaPesiId} non trovata")
-        return sala.get_maxCapienza()
-    
-    def aggiornaCapienza(self) -> None:
-        self.salva()
