@@ -1,10 +1,10 @@
 [
     {
-        "id": "CO004",
-        "nome": "ciao",
+        "id": "CO000",
+        "nome": "Spinning",
         "maxCapienza": 18,
         "istruttore": "AD001",
-        "orario": "00:00:00",
+        "orario": "09:00:00",
         "giorni": [
             1,
             5
@@ -14,7 +14,7 @@
         ]
     },
     {
-        "id": "CO005",
+        "id": "CO001",
         "nome": "Yoga",
         "maxCapienza": 8,
         "istruttore": "AD001",
@@ -29,11 +29,11 @@
         ]
     },
     {
-        "id": "CO006",
-        "nome": "bo",
+        "id": "CO002",
+        "nome": "Pilates",
         "maxCapienza": 6,
         "istruttore": "AD001",
-        "orario": "00:00:00",
+        "orario": "17:00:00",
         "giorni": [
             5
         ],

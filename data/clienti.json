@@ -10,10 +10,10 @@
         "certificato": "CM000"
     },
     {
-        "nome": "Franco",
-        "cognome": "Chiaraluce",
+        "nome": "Francesco",
+        "cognome": "Chiatti",
         "dataNascita": "1888-07-03",
-        "codiceFiscale": "CHRFRN88L03E387B",
+        "codiceFiscale": "CHTFRN88L03E387B",
         "email": "ciao@libero.it",
         "telefono": "65473975187",
         "id": "CL001",

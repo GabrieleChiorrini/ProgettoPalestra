@@ -2,31 +2,43 @@
     {
         "id": "ST000",
         "tipo": "accessi_giornalieri",
-        "data": "2026-05-23T17:39:47.047346",
+        "data": "2026-05-25T18:35:16.927134",
         "dati": {
-            "Lunedi": 0,
+            "Lunedi": 1,
             "Martedi": 0,
-            "Mercoledi": 0,
-            "Giovedi": 0,
-            "Venerdi": 1,
+            "Mercoledi": 2,
+            "Giovedi": 1,
+            "Venerdi": 2,
             "Sabato": 1,
-            "Domenica": 0
+            "Domenica": 1
         }
     },
     {
         "id": "ST001",
         "tipo": "prenotazioni_corso",
-        "data": "2026-05-23T17:39:47.048887",
+        "data": "2026-05-25T18:35:16.928471",
         "dati": {
-            "Yoga": 2
+            "Yoga": 4,
+            "Pilates": 2,
+            "Spinning": 1
         }
     },
     {
         "id": "ST002",
         "tipo": "prenotazioni_sala",
-        "data": "2026-05-23T17:39:47.050289",
+        "data": "2026-05-25T18:35:16.929540",
         "dati": {
-            "15:00": 1
+            "08:00": 3,
+            "09:00": 5,
+            "10:00": 1,
+            "11:00": 2,
+            "12:00": 4,
+            "14:00": 2,
+            "15:00": 4,
+            "16:00": 2,
+            "17:00": 1,
+            "18:00": 6,
+            "19:00": 1
         }
     }
 ]

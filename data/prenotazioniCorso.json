@@ -1,22 +1,37 @@
 [
     {
         "cliente": "CL001",
-        "corso": "CO005",
+        "corso": "CO001",
         "id": "PC000"
     },
     {
         "cliente": "CL001",
-        "corso": "CO005",
+        "corso": "CO001",
         "id": "PC001"
     },
     {
         "cliente": "CL001",
-        "corso": "CO004",
+        "corso": "CO002",
         "id": "PC002"
     },
     {
         "cliente": "CL001",
-        "corso": "CO005",
+        "corso": "CO000",
         "id": "PC003"
+    },
+    {
+        "cliente": "CL001",
+        "corso": "CO002",
+        "id": "PC004"
+    },
+    {
+        "cliente": "CL001",
+        "corso": "CO001",
+        "id": "PC005"
+    },
+    {
+        "cliente": "CL001",
+        "corso": "CO001",
+        "id": "PC006"
     }
 ]
