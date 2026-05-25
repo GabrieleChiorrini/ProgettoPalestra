@@ -8,5 +8,15 @@
         "cliente": "CL001",
         "fascia_oraria": "FO019",
         "id": "PS001"
+    },
+    {
+        "cliente": "CL001",
+        "fascia_oraria": "FO012",
+        "id": "PS002"
+    },
+    {
+        "cliente": "CL001",
+        "fascia_oraria": "FO011",
+        "id": "PS003"
     }
 ]
