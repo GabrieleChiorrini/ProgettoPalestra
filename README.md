@@ -17,3 +17,6 @@ C'è anche la possibilità di visualizzare gli orari dei corsi ed i vari iscritt
 
 Permette di automatizzare la verifica della scadenza degli abbonamenti e del certificato medico come anche la gestione degli ingressi nella palestra.
 Calcola anche le varie statistiche della struttura
+
+## Installazione
+Per l'esecuzione è sufficiente installare le librerie presenti nel file <code> requirements.txt </code>
