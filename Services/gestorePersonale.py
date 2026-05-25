@@ -46,7 +46,7 @@ class GestorePersonale:
           return "Personale creato"
 
      def modificaPersonale(self, codiceFiscale:str,nuovaEmail:str, nuovoTelefono:str) -> str:
-          '''Modifica le informazioni di un membro del personale dato il suo codice fiscale e restituisce un messaggio di conferma o errore.'''
+          """Modifica i dati di un membro del personale esistente, inclusi email e telefono. Restituisce un messaggio di successo o di errore."""
           personale= self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
           if personale is None:
@@ -76,7 +76,7 @@ class GestorePersonale:
           return "Personale modificato"
     
      def eliminaPersonale(self, codiceFiscale:str) -> str:
-          '''Elimina un membro del personale dato il suo codice fiscale e restituisce un messaggio di conferma o errore.'''
+          """Elimina un membro del personale esistente e le sue credenziali associate. Restituisce un messaggio di successo o di errore."""
           personale= self._amministratoreRepo.trovaPerCF(codiceFiscale)
 
           if personale is None:

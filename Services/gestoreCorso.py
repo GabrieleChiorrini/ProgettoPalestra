@@ -146,6 +146,7 @@ class GestoreCorso():
         return lista_iscritti
     
     def idCorsi(self) -> list:
+        """Restituisce (nome - orario, id) di tutti i corsi"""
         return self._corsoRepo.ids()
 
 

@@ -1,5 +1,4 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget
+from PyQt6.QtWidgets import QMainWindow, QStackedWidget
 from . import FormLogin, FormRegistrazione, HomePageAmministratore, HomePageCliente, FormIngresso
 from Services import *
 

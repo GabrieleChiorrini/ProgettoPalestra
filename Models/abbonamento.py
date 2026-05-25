@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, time, date
-from Enumerazione.tipoAbbonamento import TipoAbbonamento
+from Enumerazione import TipoAbbonamento
 from . import Cliente
 
 class Abbonamento():

@@ -1,6 +1,5 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QFormLayout, QLineEdit, QPushButton, QHBoxLayout, QComboBox, QMessageBox)
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QHBoxLayout, QComboBox, QMessageBox
 
 from datetime import timedelta
 

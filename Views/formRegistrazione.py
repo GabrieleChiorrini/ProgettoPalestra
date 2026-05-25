@@ -1,6 +1,5 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout, QStackedWidget, QMessageBox)
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFormLayout, QStackedWidget, QMessageBox
 from Services import GestoreAutenticazione
 
 class FormRegistrazione(QWidget):

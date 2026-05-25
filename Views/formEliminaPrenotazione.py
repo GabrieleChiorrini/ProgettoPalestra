@@ -1,7 +1,5 @@
-import sys, math
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QGridLayout, QButtonGroup, QPushButton, QHBoxLayout, QRadioButton, QMessageBox, QFormLayout, QComboBox
-from PyQt6.QtCore import QDateTime
-from datetime import datetime
+import sys
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QPushButton, QHBoxLayout, QMessageBox, QFormLayout, QComboBox
 
 if not __name__ == "__main__":
     from Services import GestorePrenotazione

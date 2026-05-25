@@ -1,9 +1,7 @@
-import sys
-import cv2
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QSpinBox,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox, QStackedWidget)
+import sys, cv2
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QGridLayout, QHBoxLayout, QStackedWidget
 from PyQt6.QtCore import QTimer, Qt
-from PyQt6.QtGui import QImage, QPixmap, QFont
+from PyQt6.QtGui import QImage, QPixmap
 
 from Services import GestoreIngressi, GestoreValidita, GestoreStatistiche
 

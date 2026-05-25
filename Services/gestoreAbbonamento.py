@@ -9,6 +9,7 @@ class GestoreAbbonamento:
         self._clienterepo = ClienteRepo
 
     def creaAbbonamento (self, codiceFiscalCliente :str, durata: str,  tipo: TipoAbbonamento) -> str:
+        """Crea un nuovo abbonamento per un cliente esistente, specificando la durata e il tipo di abbonamento. Restituisce un messaggio di successo o di errore."""
 
         cliente = self._clienterepo.trovaPerCF(codiceFiscalCliente)
 
@@ -35,6 +36,7 @@ class GestoreAbbonamento:
         return "Abbonamento creato"
 
     def rinnovaAbbonamento(self, codiceFiscaleCliente: str, nuovaDurata: timedelta, tipo: TipoAbbonamento) -> str:
+        """Rinnova un abbonamento esistente per un cliente, estendendo la durata in base alla nuova durata specificata. Restituisce un messaggio di successo o di errore."""
         cliente = self._clienterepo.trovaPerCF(codiceFiscaleCliente)
 
         if cliente is None:
@@ -88,6 +90,7 @@ class GestoreAbbonamento:
         return "Abbonamento rinnovato"
         
     def visualizzaAbbonamento(self, idCliente: str ) -> dict:
+         """Visualizza i dettagli dell'abbonamento di un cliente, inclusa la data di scadenza, i mesi rimanenti e la validità."""
          abbonamento = self._abbonamentorepo.trovaPerIdCliente(idCliente)
 
          if abbonamento is None:

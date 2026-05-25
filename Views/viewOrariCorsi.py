@@ -1,10 +1,7 @@
-import sys, math
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QTableView, QAbstractItemView, QGridLayout
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
+import sys
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QGridLayout
 from datetime import time, datetime, timedelta
-if not __name__ == "__main__":
-    from Services import GestoreCorso
-
+from Services import GestoreCorso
 from Enumerazione import GiorniSettimana
 
 class ViewOrariCorsi(QWidget):

@@ -36,9 +36,11 @@ class GestoreSalaPesi():
             return f"Errore nei dati sala pesi: {e}"
         
     def get_ids(self) -> list:
+        """Restituisce tutti gli id delle Sale Pesi"""
         return self._salaPesiRepo.ids()
     
     def idFasciaOraria(self, salaPesiId:str, orario: str) -> str:
+        """Restituisce l'id della fascia oraria grazie all'id della sala pesi in cui si trova e l'orario di inizio"""
         salaPesi = self._salaPesiRepo.trovaPerId(salaPesiId)
         if not salaPesi:
             return "Sala Pesi non trovata"
@@ -46,6 +48,7 @@ class GestoreSalaPesi():
         return next((f.get_id() for f in salaPesi.get_fasciaOraria() if f.get_orarioInizio() == datetime.strptime(orario, "%H:%M").time()), [])
     
     def orariFasceOrarie(self, salaPesiId:str) -> list:
+        """Restituisce tutti gli orari delle fasce orarie della sala pesi di cui è fornito l'id"""
         salaPesi = self._salaPesiRepo.trovaPerId(salaPesiId)
         if not salaPesi:
             return []

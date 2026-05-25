@@ -1,8 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QFormLayout, QLineEdit, QTimeEdit, QSpinBox, QCheckBox, QComboBox, QPushButton, QMessageBox
-
-if not __name__ == "__main__":
-    from Services import GestoreCorso
-
+from Services import GestoreCorso
 from Enumerazione import GiorniSettimana
 
 class FormCorso(QWidget):

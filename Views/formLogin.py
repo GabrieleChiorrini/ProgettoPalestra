@@ -1,6 +1,4 @@
-import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox, QStackedWidget)
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QMessageBox, QStackedWidget
 from Services import *
 
 class FormLogin(QWidget):

@@ -1,8 +1,6 @@
 import sys, qtawesome
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy, QStackedWidget)
-from PyQt6.QtGui import QIcon
-from PyQt6.QtCore import QPropertyAnimation
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QGridLayout, QHBoxLayout, QFrame, QSizePolicy, QStackedWidget
+from PyQt6.QtCore import QPropertyAnimation, Qt
 from PyQt6 import QtCore
 from Services import GestoreAbbonamento, GestoreCapienza, GestoreCliente, GestoreCorso, GestoreOrario, GestorePagamento, GestorePersonale, GestoreSalaPesi
 from . import FormPersonale, FormCliente, FormAbbonamento, FormPagamento, FormCapienza, FormOrario, FormCorso, FormImpostazioniTimer
@@ -28,25 +26,34 @@ class HomePageAmministratore(QWidget):
     def _buildUI(self):
         vLayout = QVBoxLayout()
         vLayout.setContentsMargins(0, 0, 0, 0)
+        vLayout.setSpacing(0)
 
-        hLayout1 = QHBoxLayout()
+        #TopBar
+        topBar = QFrame()
 
-        btn1 = QPushButton()
-        btn1.setIcon(qtawesome.icon('fa5s.bars'))
-        btn1.setFixedSize(40, 40)
-        btn1.clicked.connect(self.slideMenuLeft)
-        hLayout1.addWidget(btn1, 1)
+        topBarLayout = QHBoxLayout(topBar)
+        topBarLayout.setContentsMargins(15, 10, 15, 10)
 
-        lbl1 = QLabel()
-        #lbl1.setStyleSheet("background-color: green;")
-        hLayout1.addWidget(lbl1, 10)
-        vLayout.addLayout(hLayout1)
+        btnMenu = QPushButton()
+        btnMenu.setIcon(qtawesome.icon('fa5s.bars'))
+        btnMenu.setFixedSize(40, 40)
+        btnMenu.clicked.connect(self.slideMenuLeft)
+        topBarLayout.addWidget(btnMenu, 1)
+
+        lblDashboardTitle = QLabel("AMMINISTRATORE")
+        topBarLayout.addWidget(lblDashboardTitle)
+        topBarLayout.addStretch()
+
+        vLayout.addWidget(topBar)
 
         vLayoutf = QVBoxLayout()
+        vLayoutf.setContentsMargins(10, 15, 10, 15)
+        vLayoutf.setSpacing(8)
 
         #Personale
         hLayout2 = QHBoxLayout()
         lblPersonale = QLabel("Personale")
+        lblPersonale.setStyleSheet("font-size: 20px;font-weight: bold;padding-left: 2px;")
         hLayout2.addWidget(lblPersonale, 1)
         self.btnPersonale = QPushButton(">")
         self.btnPersonale.clicked.connect(lambda: self.dropDownMenu1(self.frame2))
@@ -77,6 +84,7 @@ class HomePageAmministratore(QWidget):
         #Cliente
         hLayout3 = QHBoxLayout()
         lblCliente = QLabel("Cliente")
+        lblCliente.setStyleSheet("font-size: 20px;font-weight: bold;padding-left: 2px;")
         hLayout3.addWidget(lblCliente, 1)
         self.btnCliente = QPushButton(">")
         self.btnCliente.clicked.connect(lambda: self.dropDownMenu1(self.frame3))
@@ -97,7 +105,6 @@ class HomePageAmministratore(QWidget):
         vLayout3.addWidget(btnElCli)
 
         self.frame3 = QFrame()
-        #self.frame3.setFixedHeight(0)
         self.frame3.setMaximumHeight(0)
         self.frame3.setMinimumHeight(0)
         self.frame3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -108,6 +115,7 @@ class HomePageAmministratore(QWidget):
         #Abbonamento
         hLayout4 = QHBoxLayout()
         lblAbbonamento = QLabel("Abbonamento")
+        lblAbbonamento.setStyleSheet("font-size: 20px;font-weight: bold;padding-left: 2px;")
         hLayout4.addWidget(lblAbbonamento, 1)
         self.btnAbbonamento = QPushButton(">")
         self.btnAbbonamento.clicked.connect(lambda: self.dropDownMenu1(self.frame4))
@@ -128,13 +136,13 @@ class HomePageAmministratore(QWidget):
         self.frame4.setMaximumHeight(0);
         self.frame4.setMinimumHeight(0);
         self.frame4.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        #self.frame4.setStyleSheet("background-color: blue;")
         self.frame4.setLayout(vLayout4)
         vLayoutf.addWidget(self.frame4)
 
         #Corso
         hLayout5 = QHBoxLayout()
         lblCorso = QLabel("Corso")
+        lblCorso.setStyleSheet("font-size: 20px;font-weight: bold;padding-left: 2px;")
         hLayout5.addWidget(lblCorso, 1)
         self.btnCorso = QPushButton(">")
         self.btnCorso.clicked.connect(lambda: self.dropDownMenu1(self.frame5))
@@ -162,15 +170,21 @@ class HomePageAmministratore(QWidget):
         self.frame5.setLayout(vLayout5)
         vLayoutf.addWidget(self.frame5)
 
+        vLayout.addSpacing(15)
+
         btnRegPag = QPushButton("Registrare pagamento")
+        btnRegPag.setIcon(qtawesome.icon('fa5s.credit-card'))
         btnRegPag.clicked.connect(self.onRegistraPagamento)
         vLayoutf.addWidget(btnRegPag)
 
         btnModCapienza = QPushButton("Modifica capienza sala pesi")
+        btnModCapienza.setIcon(qtawesome.icon('fa5s.users'))
+
         btnModCapienza.clicked.connect(self.onModificaCapienza)
         vLayoutf.addWidget(btnModCapienza)
 
-        btnGestOrari = QPushButton("Gestisci orari")
+        btnGestOrari = QPushButton("Gestisci orari")        
+        btnGestOrari.setIcon(qtawesome.icon('fa5s.clock'))
         btnGestOrari.clicked.connect(self.onGestisciOrari)
         vLayoutf.addWidget(btnGestOrari)
 
@@ -179,14 +193,15 @@ class HomePageAmministratore(QWidget):
         vLayoutf.addStretch(1)
 
         hLayout = QHBoxLayout()
-        vLayout.addLayout(hLayout, 1)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
         btnTimers = QPushButton("Timers")
+        btnTimers.setIcon(qtawesome.icon('fa5s.hourglass-half'))
         btnTimers.clicked.connect(self.onTimers)
         vLayoutf.addWidget(btnTimers)
 
         btnEsci = QPushButton("Esci")
+        btnEsci.setIcon(qtawesome.icon('fa5s.sign-out-alt', color='#ff4d4d'))
         btnEsci.clicked.connect(lambda: self._stack.setCurrentIndex(0))
         vLayoutf.addWidget(btnEsci)
 
@@ -197,21 +212,82 @@ class HomePageAmministratore(QWidget):
         self.frame1.setLayout(vLayoutf)
         hLayout.addWidget(self.frame1, 1)
 
+        widgetTitolo = QWidget()
+        layoutTitolo = QVBoxLayout(widgetTitolo)
+        layoutTitolo.setContentsMargins(40, 40, 40, 40)
+        layoutTitolo.setSpacing(30)
+
+        #Brand e Slogan
+        layoutSt = QVBoxLayout()
+        layoutSt.setSpacing(5)
+        
+        lblBrand = QLabel("FIT ZONE")
+        lblBrand.setStyleSheet("font-size:64px; font-weight:900; letter-spacing: 6px;")
+        lblBrand.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        lblSlogan = QLabel("NIENTE SCUSE, SOLO RISULTATI")
+        lblSlogan.setStyleSheet("font-size:14px; font-weight:bold; letter-spacing: 4px; color: #128A93")
+        lblSlogan.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        layoutSt.addWidget(lblBrand)
+        layoutSt.addWidget(lblSlogan)
+        layoutTitolo.addLayout(layoutSt)
+
+        # Divisore decorativo orizzontale
+        line = QFrame()
+        line.setFrameShape(QFrame.Shape.HLine)
+        line.setFrameShadow(QFrame.Shadow.Sunken)
+        line.setStyleSheet("max-height: 1px; border: none;")
+        layoutTitolo.addWidget(line)
+
         gridLayout = QGridLayout()
-        hLayout.addLayout(gridLayout)
-        hLayout.addStretch(1)
+        gridLayout.setSpacing(20)
 
-        lbl3 = QLabel("Prova")
-        gridLayout.addWidget(lbl3, 0, 0)
+        btnCliente2 = QPushButton("Registra Cliente")
+        btnCliente2.setStyleSheet("border: 2px solid; border-radius: 30px;")
+        btnCliente2.clicked.connect(self.onRegistraCliente)
+        btnCliente2.setIcon(qtawesome.icon('fa5s.user'))
+        btnCliente2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        gridLayout.addWidget(btnCliente2, 1, 0)
 
+        btnAbb2 = QPushButton("Crea abbonamento")
+        btnAbb2.setStyleSheet("border: 2px solid; border-radius: 30px;")
+        btnAbb2.clicked.connect(self.onCreaAbbonamento)
+        btnAbb2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        btnAbb2.setIcon(qtawesome.icon('fa5s.address-card'))
+        gridLayout.addWidget(btnAbb2, 1, 1)
+
+        btnPersonale3 = QPushButton("Registra Personale")
+        btnPersonale3.setStyleSheet("border: 2px solid; border-radius: 30px;")
+        btnPersonale3.clicked.connect(self.onRegistraPersonale)
+        btnPersonale3.setIcon(qtawesome.icon('fa5s.user'))
+        btnPersonale3.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        gridLayout.addWidget(btnPersonale3, 2, 0)
+
+        btnCorso2 = QPushButton("Crea Corso")
+        btnCorso2.setStyleSheet("border: 2px solid; border-radius: 30px;")
+        btnCorso2.clicked.connect(self.onCreaCorso)
+        btnCorso2.setIcon(qtawesome.icon('fa5s.pencil-alt'))
+        btnCorso2.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        gridLayout.addWidget(btnCorso2, 2, 1)
+
+
+        gridLayout.setRowStretch(0, 1)
+        gridLayout.setRowStretch(1, 1)
+        gridLayout.setRowStretch(2, 1)
+        gridLayout.setRowStretch(3, 1)
+
+        layoutTitolo.addLayout(gridLayout)
+
+        hLayout.addWidget(widgetTitolo)
+        vLayout.addLayout(hLayout, 1)
         self.setLayout(vLayout)
-        #self.showMaximized()
 
     def slideMenuLeft(self):
         wAttuale = self.frame1.width()
 
         if wAttuale == 0:
-            wDopo = 200
+            wDopo = 280
             iconaDopo = qtawesome.icon('fa5s.times')
         else:
             wDopo = 0
@@ -332,3 +408,9 @@ class HomePageAmministratore(QWidget):
         self.form.show()
         self.form.raise_()
         self.form.activateWindow()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv) # creo app
+    f = HomePageAmministratore(None, None, None, None, None, None, None, None, None) # creo finestra
+    f.showMaximized() # mostro finestra
+    sys.exit(app.exec()) # avvio il loop degli eventi
