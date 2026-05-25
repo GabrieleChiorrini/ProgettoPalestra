@@ -1,7 +1,5 @@
 import sys
 from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QFormLayout, QTimeEdit, QPushButton, QHBoxLayout, QCheckBox, QMessageBox, QComboBox
-from PyQt6.QtCore import QDateTime
-from datetime import datetime
 
 if not __name__ == "__main__":
     from Services import GestoreOrario

@@ -1,9 +1,7 @@
-import sys, math
+import sys
 from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QFormLayout, QComboBox, QMessageBox
 from PyQt6.QtGui import QGuiApplication
-if not __name__ == "__main__":
-    from Services import GestoreCorso
-
+from Services import GestoreCorso
 
 class ViewIscirtti(QWidget):
     def __init__(self, gco: GestoreCorso):

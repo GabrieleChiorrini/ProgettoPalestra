@@ -1,10 +1,7 @@
-import sys, math
+import sys
 from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
 from PyQt6.QtCore import Qt
-if not __name__ == "__main__":
-    from Services import GestorePagamento
-
-from Enumerazione import GiorniSettimana
+from Services import GestorePagamento
 
 class ViewPagamenti(QWidget):
     def __init__(self, gpa: GestorePagamento, clienteId: str):

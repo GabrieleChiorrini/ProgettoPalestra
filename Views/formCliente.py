@@ -1,7 +1,5 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout, QDateEdit)
-
+from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout, QDateEdit)
 from PyQt6.QtCore import QDate
 
 if __name__ != "__main__":

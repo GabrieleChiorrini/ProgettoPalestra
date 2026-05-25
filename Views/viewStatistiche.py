@@ -1,10 +1,6 @@
-import sys, math
-from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QHBoxLayout, QComboBox, QGridLayout
-from PyQt6.QtCore import Qt
-if not __name__ == "__main__":
-    from Services import GestoreStatistiche
-
-from Models import Statistica
+import sys
+from PyQt6.QtWidgets import QWidget, QApplication, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
+from Services import GestoreStatistiche
 
 class ViewStatistiche(QWidget):
     def __init__(self, gst: GestoreStatistiche):

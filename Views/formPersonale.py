@@ -1,9 +1,6 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout,
-    QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout, QDateEdit)
-
-if __name__ != "__main__":
-    from Services import GestorePersonale
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QMessageBox, QHBoxLayout, QFormLayout, QDateEdit
+from Services import GestorePersonale
 
 class FormPersonale(QWidget):
     def __init__(self, gpe:GestorePersonale, modifica:bool = False, elimina:bool = False):
