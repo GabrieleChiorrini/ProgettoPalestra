@@ -1,0 +1,22 @@
+@startuml AttivitàCU24
+start
+
+:Fornisce data odierna;
+
+while (Ci sono altri abbonamenti?) is (si)
+
+    :Recupera lista abbonamenti;
+
+    :Confronta data con scadenza;
+
+    if (Abbonamento scaduto?) then (si)
+
+        :Aggiorna stato a scaduto;
+    endif
+
+endwhile (no)
+
+
+
+stop
+@enduml

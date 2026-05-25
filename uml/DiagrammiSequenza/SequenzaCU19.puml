@@ -1,0 +1,48 @@
+@startuml Visualizza tabella orari Corsi
+
+actor Cliente as C
+participant ViewCorso as I <<boundary>>
+participant GestoreCorso as S <<control>>
+participant CorsoRepository as D
+'database DB 
+
+activate C
+C -> I: clicca "Visualizza orari corsi"
+deactivate C
+activate I
+
+I -> S: visualizzaOrariCorsi_clicked()
+deactivate I
+activate S
+
+S -> D: ottieniInfoCorsi()
+deactivate S
+activate D
+
+/' D -> DB: getInfoCorsi()
+deactivate D
+activate DB
+
+DB --> D: corsi
+deactivate DB
+activate D '/
+
+D --> S:corsi
+deactivate D
+activate S
+
+S -> S: intabellare risultati (infoCorsi)
+activate S
+
+S --> S: tabellaInfoCorsi
+deactivate S
+
+S -> I:tabellaInfoCorsi
+deactivate S
+activate I
+
+I --> C: tabella orari corsi
+deactivate I
+activate C
+
+@enduml

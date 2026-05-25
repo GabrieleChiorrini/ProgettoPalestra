@@ -1,0 +1,122 @@
+@startuml DiagrammaClassiConPackage
+
+'top to bottom direction
+skinparam linetype ortho
+
+hide empty member
+
+class Utente <<entity>> {
+- nome: String
+- cognome: String
+- dataNascita: String
+- codiceFiscale: String
+- email: String
+- telefono: String
+}
+
+class Credenziali <<entity>> {
+    -utente: Utente
+    - username: String
+    - password: String
+}
+
+
+' ------------------ UTENTI ------------------
+package "Utenti" {
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+class Amministratore <<entity>> {
+    - id: String
+}
+
+
+class CertificatoMedico <<entity>> {
+    - dataEffettuato: Date
+    - durata:Date
+    -Validità: bool
+    - certificato: String
+}
+
+
+}
+
+' ------------------ STRUTTURA ------------------
+package "Struttura" {
+
+
+class SalaPesi <<entity>> {
+    - maxCapienza: Integer
+}
+
+class Corso {
+    - codice: String
+    - nome: String
+    - maxCapienza: Integer
+    - istruttore: Amministratore
+    - orario: DateTime
+    - iscritti: List<Cliente>
+}
+
+class FasciaOraria <<entity>> {
+    - inizio: Time
+    - durata: Time
+}
+
+}
+
+' ------------------ ABBONAMENTI ------------------
+package "Abbonamento    " {
+class Abbonamento <<entity>> {
+- id: String
+- durata : DurataAbbonamento
+- dataInizio: Date
+- dataFine: Date
+- stato: bool
+- tipo: Integer
+}
+
+
+class Pagamento {
+    - id: String
+    - importo: Float
+    - data: DateTime
+}
+
+}
+
+' ------------------ PRENOTAZIONI ------------------
+package "Prenotazioni" {
+abstract class Prenotazione {
+}
+
+class PrenotazioneCorso <<entity>> {
+}
+
+class PrenotazioneSalaPesi <<entity>> {
+}
+
+}
+
+Utente<|-- Cliente
+
+Utente<|-- Amministratore
+Utente<-r- Credenziali
+
+Cliente "1  " <-- "0..*   " Abbonamento: possiede
+Cliente <--  CertificatoMedico: possiede
+Cliente "1  \n" -r-> "0..* " Prenotazione: effettua
+
+PrenotazioneCorso --|> Prenotazione
+Prenotazione <|-- PrenotazioneSalaPesi
+
+PrenotazioneCorso "0..*    " --> "1\n\n\n" Corso
+PrenotazioneSalaPesi "\n0..*" --> "1  " SalaPesi
+SalaPesi "1" -down-> "1..* " FasciaOraria
+
+Abbonamento <-- Pagamento
+Amministratore <-- Pagamento: registra
+
+@enduml

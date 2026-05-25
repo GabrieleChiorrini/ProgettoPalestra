@@ -1,0 +1,23 @@
+
+@startuml AttivitàCU25
+start
+
+:Fornisce data odierna;
+
+while (Ci sono altri Certificati?) is (si)
+
+    :Recupera lista abbonamenti;
+
+    :Confronta data con scadenza;
+
+    if (Certificato scaduto?) then (si)
+
+        :Aggiorna stato a scaduto;
+    endif
+
+endwhile (no)
+
+
+
+stop
+@enduml

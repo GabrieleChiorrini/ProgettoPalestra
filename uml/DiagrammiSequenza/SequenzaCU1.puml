@@ -1,0 +1,47 @@
+@startuml Diagramma di Sequenza CU Registra Personale
+
+actor Amministratore as A
+participant FormPersonale as FRP <<boundary>>
+participant GestorePersonale as SGP <<control>>
+participant GestoreAutenticazione as GA <<control>>
+participant AmministratoreRepository as AR
+participant Amministratore as P <<entity>>
+participant Credenziali as C <<entity>>
+participant CredenzialiRepository as CR
+autoactivate on
+
+A -> FRP: inserisce dati personale
+FRP -> SGP: registraPersonale(dati)
+SGP ->AR: controlloEsistenza 
+return amministratore / None
+
+opt amministratore esiste 
+
+    return alert("Personale esiste")
+
+    return personale già esistente
+
+    activate SGP
+end
+    
+SGP -> AR: crea nuovo id
+return amministratoreId
+SGP -> P**: create(dati)
+SGP -> C**: crea username e password amministratore
+SGP -> GA: cripta password
+return password criptata
+
+    SGP -> AR : aggiungiPersonale(amministratore)
+    deactivate AR
+    SGP -> CR: aggiungiCredenziali(Credenziali)
+    deactivate CR
+    SGP -> AR : save()
+    deactivate AR
+    SGP -> CR: save()
+    deactivate CR
+    SGP --> FRP: alert("Personale creato")
+    deactivate AR
+    activate FRP
+
+    FRP --> A: personale creato
+@enduml

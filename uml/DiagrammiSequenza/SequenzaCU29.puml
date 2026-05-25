@@ -1,0 +1,52 @@
+@startuml Registrazione
+actor Cliente
+
+participant "Form Registrazione" as IU <<boundary>>
+participant "Gestore Credenziali" as S <<entity>>
+participant "CredenzialiRepository" as MR <<entity>>
+participant "Credenziali" as CR <<entity>>
+participant "Cliente" as C <<entity>>
+participant "ClienteRepository" as CR2 <<entity>>
+
+Cliente -> IU : Inserisce username e password e CF
+activate IU
+IU -> S : Invia dati utente 
+activate S
+S -> MR : Verifica esistenza utente
+activate MR
+MR --> S : Credenziali / None
+
+opt Credenziali
+deactivate
+S --> IU : Mostra errore
+IU --> Cliente : Visualizza "Utente già registrato"
+'activate MR
+end
+
+'MR --> S : Dati validi
+deactivate MR
+S -> S : Cripta password
+activate S
+return passwordCriptata
+S -> CR2 : trovaperCF(CF)
+activate CR2
+CR2-->S : Cliente/null
+deactivate CR2
+
+opt cliente non trovato 
+S -> IU: Mostra errore
+IU -> Cliente: Visualizza "Cliente non trovato"
+end
+
+S -> CR** : create(username, passwordCriptata)
+'S -> C** : Crea nuovo cliente
+
+S -> C : setCredenziali(Credenziali)
+S -> MR : Salva credenziali
+S -> CR2 : save()
+
+
+S --> IU : Mostra conferma registrazione
+IU --> Cliente : Visualizza "Registrazione completata"
+
+@enduml

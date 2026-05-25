@@ -1,0 +1,10 @@
+@startuml VisualizzaAbbonamento
+start
+
+:Clicca visualizza abbonamento;
+:Trova abbonamento;
+:Calcola scadenza;
+:Visualizza abbonamento e scadenza;
+
+stop
+@enduml

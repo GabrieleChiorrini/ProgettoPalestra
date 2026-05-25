@@ -1,0 +1,12 @@
+@startuml VisualizzaCertificato
+start
+
+:Trova certificato;
+if (Certificato) then (Non trovato)
+    :Mostra "Certificato non trovato";
+else
+    :Calcola scadenza;
+    :Visualizza certificato e scadenza;
+endif
+stop
+@enduml

@@ -1,0 +1,13 @@
+@startuml Visualizza tabella orari Corsi
+
+start
+
+:Cliente clicca "Visualizza orari corsi";
+
+:Il sistema ottiene le informazioni sui corsi;
+
+:Il sistema crea la tabella con le informazioni sui corsi;
+
+:La tabella con gli orari dei corsi viene visualizzata;
+
+stop

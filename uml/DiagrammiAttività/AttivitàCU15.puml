@@ -1,0 +1,25 @@
+@startuml Prenotare Sala Pesi
+
+start
+
+:sceglie la fascia oraria;
+
+:Viene inviata la richiesta al sistema;
+
+:Trova Per Id la fascia oraria e il cliente;
+
+:ControllaCapienza;
+
+if (capienza non disponibile) then (si)
+    :Il sistema invia un messaggio di alert \n"Fascia oraria Piena";
+
+else (no)
+
+    :Il sistema crea la prenotazione;
+
+    :Il sistema salva la prenotazione;
+
+    :Viene inviato un messaggio di conferma;
+
+endif
+stop

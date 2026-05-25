@@ -1,0 +1,45 @@
+@startuml Visualizza ricevuta
+
+actor Cliente as C
+participant ViewPagamento as I <<boundary>>
+participant GestorePagamento as S <<control>>
+participant PagamentoRepository as DR
+'database DB
+
+activate C
+
+C -> I: clicca "Visualizza ricevute"
+deactivate C
+activate I
+I -> S: VisualizzaRicevute_clicked()
+deactivate I
+activate S
+'S -> S: getRicevuteCliente(cliente)
+'activate S
+
+S -> DR: getRicevuteCliente(cliente)
+activate DR
+return ricevute/nessuna ricevuta
+
+/'DR -> DB: query getRicevuteCliente(cliente)
+DB --> DR: ricevute / nessuna ricevuta '/
+
+
+alt ricevute esistenti
+    'DR --> S: ricevute
+    S --> I: ricevute
+    deactivate S
+    activate I
+    I --> C: ricevute
+    deactivate
+else ricevute non esistenti
+    'DR --> S: nessuna ricevuta
+    S --> I: nessuna ricevuta
+    deactivate S
+    activate I
+    I --> C: nessuna ricevuta
+    deactivate I
+    activate C
+end
+
+@enduml

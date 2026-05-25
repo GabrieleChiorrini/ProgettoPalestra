@@ -1,0 +1,91 @@
+@startuml DiagrammaCasiDUsoCliente
+
+left to right direction
+
+actor Cliente as C
+actor Utente as U
+
+' ------------------ GESTIONE UTENTI ------------------
+package "Gestione utenti" {
+
+'usecase "Registrare personale" as UC1
+'usecase "Modifica personale" as UC2
+'usecase "Elimina personale" as UC3
+
+'usecase "Registrare cliente" as UC4
+'usecase "Modificare dati cliente" as UC5
+'usecase "Eliminare cliente" as UC6
+usecase "Visualizza certificato" as UC7
+
+usecase "Registrazione" as UC29
+usecase "Login" as UC30
+
+}
+
+' ------------------ ABBONAMENTI E PAGAMENTI ------------------
+package "Abbonamenti e pagamenti" {
+
+'usecase "Crea abbonamento" as UC8
+'usecase "Rinnova abbonamento" as UC9
+usecase "Visualizzare abbonamento" as UC10
+'usecase "Registrare pagamento" as UC11
+usecase "Visualizza ricevuta" as UC12
+
+}
+
+' ------------------ ATTIVITÀ PALESTRA ------------------
+package "Attività palestra" {
+
+'usecase "Modifica capienza sala pesi" as UC13
+'usecase "Gestisci orario" as UC14
+usecase "Prenotare sala pesi" as UC15
+
+'usecase "Creare corso" as UC16
+'usecase "Modifica corso" as UC17
+'usecase "Cancella corso" as UC18
+usecase "Visualizza tabella orari corsi" as UC19
+usecase "Visualizzare iscritti ai corsi" as UC20
+
+usecase "Prenotare corso" as UC21
+usecase "Annullare prenotazione Corso" as UC22
+usecase "Annullare prenotazione sala pesi" as UC23
+
+}
+
+' ------------------ ACCESSI E CONTROLLI ------------------
+package "Accessi e controlli" {
+
+'usecase "Gestire ingressi" as UC23
+
+'usecase "Verifica validità abbonamento" as UC24
+'usecase "Verifica validità certificato medico" as UC25
+usecase "Controlla capienza" as UC26
+
+}
+
+' ------------------ STATISTICHE ------------------
+package "Statistiche" {
+
+'usecase "Generare statistiche" as UC27
+usecase "Consultare statistiche" as UC28
+
+}
+
+C --> UC7
+C --> UC10
+C --> UC12
+C -up-> UC15
+C -up-> UC19
+C -up-> UC20
+C -up-> UC21
+C -up-> UC22
+C -up-> UC23
+C --> UC29
+C --> UC28
+UC21 .up.> UC26 : include
+UC15 .up.> UC26 : include
+
+U --> UC30
+
+
+@enduml

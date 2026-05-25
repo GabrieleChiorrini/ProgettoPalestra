@@ -1,0 +1,47 @@
+@startuml Diagramma di Sequenza CU Registra Cliente
+
+actor Amministratore as A
+participant FormCliente as FRP <<boundary>>
+participant GestoreCliente as SGC <<control>>
+participant ClienteRepository as CR
+participant CertificatoRepository as CMR
+participant Cliente as P <<entity>>
+participant Certificato as C <<entity>>
+autoactivate on
+
+A -> FRP: inserisce dati cliente e data certificato
+FRP -> SGC: registraCliente(dati)
+SGC -> CR: trovaCliente(cliente)
+return 
+
+opt cliente esiste 
+
+    return alert("Cliente esiste")
+
+    return cliente già esistente
+
+    activate SGC
+end
+
+SGC -> CR : crea nuovo id cliente
+return idCliente
+SGC -> CMR : crea nuovo id certificato
+return idCertificato
+deactivate P
+SGC -> C**
+SGC -> P**: create(dati)
+
+    SGC-> CR: aggiungiCliente(cliente)
+    deactivate CR
+    SGC -> CMR: aggiungi certificato
+    deactivate CMR
+    SGC -> CR: save()
+    SGC -> CMR: save()
+    deactivate CMR
+    deactivate CR
+    SGC --> FRP: alert("Cliente creato")
+    deactivate CR
+    activate FRP
+
+    FRP --> A: cliente e certificato creati
+@enduml

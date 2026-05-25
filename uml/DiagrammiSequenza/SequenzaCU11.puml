@@ -1,0 +1,82 @@
+@startuml RegistrarePagamento 
+
+actor Amministratore as A
+participant FormPagamento as I <<boundary>>
+participant GestorePagamento as S <<control>>
+participant ClienteRepository as DC
+participant PagamentoRepository as DP
+participant Pagamento as P <<entity>>
+'database DB
+
+/' activate A
+A -> I: seleziona il cliente
+deactivate A
+activate I
+
+I -> S: getCliente(cliente)
+deactivate I
+activate S
+
+S -> DC: trovaCliente(cliente)
+activate DC
+return cliente '/
+
+'S -> DC: find(cliente)
+'DC -> DB: query find(cliente)
+'DB --> DC: cliente
+'DC --> S: cliente
+
+/' S --> I: cliente
+deactivate S
+activate I
+
+I --> A: dati cliente
+deactivate I
+activate A '/
+
+A -> I: inserisci dati pagamento e cliente
+deactivate A
+activate I
+
+I -> S: dati
+deactivate I
+activate S
+
+S -> DC: trovaCliente(cliente)
+deactivate S
+activate DC
+return cliente
+activate S
+
+
+opt Cliente non trovato
+    S --> I : "Cliente non trovato"
+    activate I
+    I --> A : "Cliente non trovato"
+    deactivate I
+end
+
+
+S -> P** : create(importo, data, cliente)
+activate P
+
+S -> DP: salvaPagamento(pagamento)
+
+/' P -> DP: salva(pagamento)
+activate DP 
+DP -> DB: salva
+DB --> DP: conferma salvataggio
+DP --> P: pagamento salvato
+deactivate DP '/
+
+'P --> S: pagamento
+'deactivate P
+
+
+S --> I: alert("Pagamento registrato")
+deactivate S
+activate I
+I --> A: Pagamento registrato
+activate A
+
+@enduml

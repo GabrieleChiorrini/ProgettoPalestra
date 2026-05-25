@@ -1,0 +1,26 @@
+@startuml RegistrarePagamento 
+
+start
+
+:Inserisci dati pagamento e cliente;
+
+:I dati vengono inviati al sistema;
+
+:Il sistema recupera il cliente;
+
+if (Cliente) then (Non Trovato)
+
+:Mostra "Cliente Non trovato";
+
+else (Trovato)
+
+:crea un nuovo pagamento;
+
+:salva il pagamento;
+
+:viene mostrato un messaggio di conferma;
+
+endif
+stop
+
+@enduml

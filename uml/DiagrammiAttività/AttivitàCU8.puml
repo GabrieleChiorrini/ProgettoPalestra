@@ -1,0 +1,12 @@
+@startuml CreaAbbonamento
+start
+
+:Seleziona cliente;
+:Trova cliente;
+:Crea abbonamento;
+:Aggiungi Abbonamento;
+:Salva;
+:Mostra "Abbonamento creato";
+
+stop
+@enduml

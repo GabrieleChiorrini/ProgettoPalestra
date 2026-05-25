@@ -1,0 +1,98 @@
+@startuml Palestra
+
+skinparam Linetype ortho
+
+hide empty member
+
+class FormOrario <<boundary>> {
+    +eseguiModifica(): void
+}
+
+class FormCorso <<boundary>> {
+    + eseguiCrea(): void
+    + eseguiModifica(): void
+    + eseguiCancella(): void
+}
+
+class ViewCorso <<boundary>> {
+    + mostraOrari(): void
+    + mostraIscritti(): void
+}
+
+class FormCapienzaSalaPesi <<boundary>> {
+    + eseguiModifica(): void
+}
+
+class Amministratore <<entity>> {
+    - id: String
+}
+
+class Palestra <<entity>> {
+    - nome: String 
+    - indirizzo: String
+    - orarioApertura: Time
+    - orarioChiusura: Time
+    - giorniApertura: Giorni
+}
+
+class Corso {
+    - codice: String
+    - nome: String
+    - maxCapienza: Integer
+    - istruttore: Amministratore
+    - orario: DateTime
+    - iscritti: List<Cliente>
+}
+
+class SalaPesi <<entity>> {
+    - maxCapienza: Integer
+}
+
+class FasciaOraria <<entity>> {
+    - salaPesi: SalaPesi
+    - inizio: Time
+    - durata: Time
+    - iscritti: List<Cliente>
+}
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+class GestoreSalaPesi <<control>> {
+    + modificaCapienza(salaPesiId: str, nuovaCapienza: int): str
+}
+
+class GestoreCorso <<control>> {
+    + creaCorso(datiCorso: list): str
+    + modificaCorso(corsoId: str, datiCorso: list): str
+    + eliminaCorso(corsoId : str): str
+    + visualizzaOrari(): list
+    + visualizzaIscritti(corsoId: str): list
+}
+
+class GestoreOrario <<control>> {
+    + modifcaOrario(nuoviOrari: list, palestraId: str): str
+}
+
+FormCapienzaSalaPesi --> GestoreSalaPesi
+FormCorso --> GestoreCorso
+ViewCorso --> GestoreCorso
+FormOrario --> GestoreOrario
+
+GestoreOrario ...> Palestra
+GestoreCorso ..> Corso
+GestoreSalaPesi ..> SalaPesi
+
+SalaPesi "1" --> "1..*" FasciaOraria
+
+SalaPesi "0..*   " --o "1" Palestra
+Corso "0..*\n" --o "1  " Palestra
+
+'Amministratore .u.> GestoreCorso
+'Amministratore .u.> GestoreOrario
+'Amministratore .u.> GestoreSalaPesi
+
+Amministratore "1..* " -d-> "1" Palestra: <<gestisce>>
+GestoreCorso <.r. Cliente
+@enduml

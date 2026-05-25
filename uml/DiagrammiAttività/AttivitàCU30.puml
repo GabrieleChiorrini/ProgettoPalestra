@@ -1,0 +1,51 @@
+@startuml AttivitàCU30
+
+start
+
+:Inserisce credenziali;
+
+:Invia credenziali al sistema;
+
+:Controlla esistenza credenziali;
+
+if (Credenziali esistono?) then (No)
+
+    :Mostra errore;
+    
+    :Visualizza "Credenziali errate";
+
+
+else (Si)
+
+    :Verifica correttezza credenziali;
+
+        if (Credenziali corrette?) then (No)
+
+            :Mostra errore;
+            
+            :Visualizza "Credenziali errate";
+
+
+        else (Si)
+
+            :Controlla tipo credenziali;
+
+                if (Admin?) then (Si)
+
+                    :Mostra interfaccia admin;
+
+                    :Login admin effettuato;
+
+                else (Cliente)
+
+                    :Mostra interfaccia cliente;
+                    
+                    :Login cliente effettuato;
+
+                endif
+
+        endif
+
+    endif
+
+stop

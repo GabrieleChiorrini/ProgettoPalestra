@@ -1,0 +1,21 @@
+@startuml Modifica corso
+
+start
+:L'amministratore inserisce il corso ed i nuovi dati ;
+
+:I dati vengono inviati al sistema;
+
+:Il sistema ottiene i dati del corso;
+
+if (Istruttore) then (Occupato)
+    :alert di errore: Istruttore Occupato;
+
+else
+
+    :Il sistema aggiorna i dati del corso;
+
+    :I dati vengono salvati;
+
+    :Viene mostrato un messaggio di conferma;
+endif
+stop

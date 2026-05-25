@@ -1,0 +1,47 @@
+@startuml AttivitàCU23
+
+start
+
+:Invia Cliente;
+
+:Trova Per Id CLiente;
+
+:Verifica Certificto;
+
+if () then (Certificato non valido)
+
+    :Accesso Negato;
+
+    :trova pper Id Abbonamento;
+
+    if() then (Abbonamento non valido)
+
+        :Accesso Negato;
+
+    else (Abbonamento Valido)
+
+    :Verifica Ingresso Attivo;
+
+        if () then (Già Entrato)
+
+        :Accesso Negato;
+
+        else ()
+
+        :Registra Ingresso;
+
+        :Accesso Consentito;
+        endif
+    endif
+endif
+
+
+
+
+
+
+
+
+stop
+
+@enduml

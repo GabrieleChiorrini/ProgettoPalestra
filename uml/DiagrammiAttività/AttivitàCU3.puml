@@ -1,0 +1,17 @@
+@startuml EliminaPersonale
+
+start
+
+:Seleziona personale;
+:Trova personale;
+if (Esiste?) then (No)
+    :Mostra "Personale non trovato";
+else (Si)
+    
+    :Elimina dati amministratore;
+    :Elimina dati credenziali;
+    :Salva;
+    :Dati eliminati;
+endif
+stop
+@enduml

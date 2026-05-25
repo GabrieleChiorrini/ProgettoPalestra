@@ -1,0 +1,23 @@
+@startuml Visualizza ricevuta
+
+start
+
+:Cliente clicca "Visualizza ricevute";
+
+:Invia richiesta al sistema;
+
+:Recupera ricevute cliente;
+
+if (Ricevute presenti?) then (si)
+
+:Mostra ricevute al cliente;
+
+else (no)
+
+:Mostra messaggio "Nessuna ricevuta disponibile";
+
+endif
+
+stop
+
+@enduml

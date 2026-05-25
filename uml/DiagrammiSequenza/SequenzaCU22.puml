@@ -1,0 +1,57 @@
+@startuml EliminaPrenotazioneCorso
+
+actor Cliente
+participant "Form prenotazione" as Interfaccia <<boundary>>
+participant "Gestore Prenotazione" as Gestore <<control>>
+
+participant PrenotazioneCorsoRepository as PR
+participant PrenotazioneCorso <<entity>>
+participant CorsoRepository as CR
+participant Corso <<entity>>
+
+note right of Cliente
+cliente ha una prenotazione
+end note 
+
+Cliente -> Interfaccia : annullaPrenotazione(prenotazione)
+activate Interfaccia
+
+Interfaccia -> Gestore : recuperaPrenotazione(prenotazione)
+activate Gestore
+
+Gestore -> PR : trovaPrenotazione(prenotazioneId)
+activate PR
+PR --> Gestore : Prenotazione
+deactivate PR
+
+'Gestore --> Interfaccia : Prenotazione
+'Interfaccia --> Cliente : visualizza schermata prenotazione
+'Cliente -> Interfaccia : seleziona "annulla prenotazione"
+'Interfaccia -> Gestore : annulla(Prenotazione)
+
+Gestore -> PR : trovaCliente(clienteId)
+activate PR
+PR --> Gestore : cliente
+deactivate PR
+
+Gestore -> PrenotazioneCorso!! : elimina prenotazione
+Gestore -> PR : deletePrenotazione(Prenotazione)
+
+Gestore -> Corso : rimuovi iscrizione cliente
+note right of Interfaccia
+il diagramma di sequenza per 
+l'eliminazione della prenotazione 
+della sala pesi segue la stessa
+logica con l'unica differenza che 
+non va cancellata l'iscrizione del 
+cliente dalla sala pesi
+end note
+Gestore -> CR : salva()
+
+Gestore --> Interfaccia : annullamento confermato
+deactivate Gestore
+Interfaccia --> Cliente : "prenotazione annullata"
+
+deactivate Interfaccia
+
+@enduml

@@ -1,0 +1,131 @@
+@startuml Attività
+
+hide empty member
+skinparam linetype ortho
+
+class FormAbbonamento <<boundary>> {
+    + eseguiCrea(): void
+    + eseguiRinnova(): void
+}
+
+class ViewAbbonamento <<boundary>> {
+    + mostra(): void
+
+}
+
+class FormPrenotazione <<boundary>> {
+    + eseguiCrea(): void
+    + annullaAnnulla(): void
+}
+
+class FormPagamento <<boundary>> {
+    + eseguiCrea(): void
+}
+
+class ViewPagamento <<boundary>> {
+    + mostra(): void
+}
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+/'class Amministratore <<entity>> {
+    - id: String
+}'/
+
+class Abbonamento <<entity>> {
+    - cliente: Cliente
+    - id: String
+    - durata: timedelta
+    - dataInizio: Date 
+    - dataFine: Date
+    - stato: bool
+    - tipo: tipoAbbonamento
+}
+
+class Corso <<entity>> {
+    - codice: String
+    - nome: String
+    - maxCapienza: Integer
+    - istruttore: Amministratore
+    - orario: DateTime
+    - iscritti: List<Cliente>
+}
+
+class SalaPesi <<entity>> {
+    - maxCapienza: Integer
+}
+
+abstract class Prenotazione  {
+    
+}
+
+class PrenotazioneCorso <<entity>> {
+    - cliente: Cliente
+    - corso: Corso
+}
+
+class PrenotazioneSalaPesi <<entity>> {
+    - cliente: Cliente
+    - salaPesi: SalaPesi
+}
+
+class Pagamento <<entity>> {
+    - cliente: Cliente
+    - id: String
+    - importo: Float
+    - data: DateTime 
+}
+
+class GestoreAbbonamento  <<control>> {
+    + creaAbbonamento(c: Cliente, t: tipoAbbonamento): str
+    + rinnovaAbbonamento(a: Abbonamento, c:Cliente, durata: str): str
+    + visualizzaAbbonamento(c:Cliente): dict
+}
+
+class GestorePrenotazione <<control>> {
+    + prenotaCorso(corsoId: str, clienteId: str): str
+    + prenotaSalaPesi(fasciaOrariaId: str, clienteId: str): str
+    + eliminaPrenotazioneSalapesi(prenotazioneId: str, clienteId: str): str
+    + eliminaPrenotazioneCorso(prenotazioneId: str, clienteId: str): str
+
+}
+
+class GestorePagamento <<control>> {
+    + registraPagamento(clienteId: str, importo: float, data: datetime): str
+    + visualizzaPagamento(clienteId: str): list
+}
+
+FormAbbonamento --> GestoreAbbonamento
+ViewAbbonamento --> GestoreAbbonamento
+FormPagamento --> GestorePagamento
+ViewPagamento --> GestorePagamento
+FormPrenotazione --> GestorePrenotazione
+
+GestoreAbbonamento ..> Abbonamento
+GestorePrenotazione ..> Prenotazione
+GestorePagamento ..> Pagamento
+
+Prenotazione <|-- PrenotazioneSalaPesi
+Prenotazione <|-- PrenotazioneCorso
+
+PrenotazioneCorso "0..*" --> "1 " Corso
+PrenotazioneSalaPesi "0..*" --> "1 " SalaPesi
+
+Cliente <.. GestoreAbbonamento
+Cliente <.. GestorePrenotazione
+Cliente <.. GestorePagamento
+
+'Amministratore <.. GestoreAbbonamento
+'Amministratore <.. GestorePrenotazione
+'Amministratore <.. GestorePagamento
+
+Cliente "1   " -- "0..*" Prenotazione
+Cliente "1" -- "0..*  " Abbonamento
+Cliente "1" -- "0..*  \n" Pagamento
+
+'Amministratore "1" -- "0..*" Pagamento
+'Amministratore "1" -- "0..*" Abbonamento
+
+@enduml

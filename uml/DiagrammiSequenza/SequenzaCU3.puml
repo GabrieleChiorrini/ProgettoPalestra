@@ -1,0 +1,38 @@
+@startuml Diagramma di sequenza CU3 Elimina Personale
+
+actor Amministratore as A
+participant FormPersonale as FRP <<boundary>>
+participant GestorePersonale as SGP <<control>>
+participant AmministratoreRepository as AR
+participant Amministratore as P <<entity>>
+participant Credenziali as C <<entity>>
+participant Credenzialirepository as CR
+autoactivate on
+
+A ->FRP: seleziona personale da eliminare
+FRP ->SGP: trova personale
+SGP -> AR: trova personale
+return amministratore/None 
+opt amministratore non esistente 
+SGP --> FRP: errore
+FRP --> A: "personale non trovato"
+end
+
+'SGP -->FRP: amministratore
+'FRP --> A: dati personale
+'A -> FRP : elimina dati
+'FRP -> SGP: elimina dati
+SGP -> P!!: elimina dati
+SGP -> C!!: elimina dati
+SGP -> AR: elimina dati
+deactivate AR
+SGP -> CR: elimina credenziali
+deactivate CR
+SGP -> AR : save() 
+deactivate AR
+SGP -> CR: save()
+deactivate CR
+SGP --> FRP: dati eliminati
+deactivate AR
+FRP --> A: dati eliminati 
+

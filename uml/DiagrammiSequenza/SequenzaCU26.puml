@@ -1,0 +1,58 @@
+@startuml ControllaCapienza
+
+actor Sistema
+
+participant "Gestore Capienza" as Servizio <<control>>
+participant "PrenotazioneRepository" as PR 
+participant "CorsoRepository" as Corso
+participant "SalaPesiRepository" as SalaPesi
+
+note over Sistema, Servizio
+Precondizioni: l'amministratore ha 
+impostato la capienza
+end note 
+
+Sistema -> Servizio : verificaCapienza(Prenotazione)
+activate Servizio
+Servizio -> PR : tipo prenotazione
+activate PR
+PR --> Servizio : corso o sala pesi
+deactivate PR
+
+alt prenotazione corso
+
+    Servizio -> Corso : recupera dati corso
+    activate Corso
+    Corso --> Servizio : dati (capienza, iscritti)
+    deactivate Corso
+    Servizio -> Servizio : confronta iscritti < capienza
+    activate Servizio
+    return
+
+    opt corso pieno
+        Servizio --> Sistema : prenotazione negata
+    end
+    Servizio --> Sistema : prenotazione consentita
+
+else prenotazione sala pesi
+
+    Servizio -> SalaPesi : recupera dati sala pesi(fascia oraria)
+    activate SalaPesi
+    SalaPesi --> Servizio : sala pesi
+    deactivate SalaPesi
+
+    Servizio -> Servizio : confronta disponibilità < capienza
+    activate Servizio
+    return
+
+    opt sala piena
+        Servizio --> Sistema : prenotazione negata
+    end
+
+    Servizio --> Sistema : prenotazione consentita
+
+end
+
+deactivate Servizio
+
+@enduml

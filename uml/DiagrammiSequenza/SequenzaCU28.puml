@@ -1,0 +1,38 @@
+
+@startuml ConsultareStatistiche
+
+actor Cliente
+
+participant "Form statistiche" as IU <<boundary>>
+participant "Gestore Statistiche" as Servizio <<control>>
+participant "StatisticaRepository" as Statistica
+
+note right of Cliente
+Precondizione:
+cliente è registrato 
+end note
+
+Cliente -> IU : richiede statistiche
+activate IU
+
+IU -> Servizio : visualizza statistiche
+activate Servizio
+
+Servizio -> Statistica : query statistiche salvate 
+activate Statistica
+Statistica --> Servizio : statistiche 
+deactivate Statistica
+
+opt statistiche non generate
+
+ref over Servizio, Statistica : GenerareStatistiche 
+end
+
+Servizio --> IU : schermata statistiche
+deactivate Servizio
+IU --> Cliente : visualizza dati
+
+
+deactivate IU
+
+@enduml

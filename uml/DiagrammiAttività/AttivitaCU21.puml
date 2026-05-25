@@ -1,0 +1,32 @@
+@startuml AttivitaCU21
+
+start
+:SelezionaCorso;
+:Trova il Corso per Id;
+:Trova il cliente;
+:ControllaCapienza;
+
+if(Corso pieno?) then (si)
+
+    :Mostra "Corso Pieno";
+
+
+else (no)
+
+    :Crea Prenotazione;
+
+    :Salva Prenotazione;
+
+    :Aggiorna Capienza;
+
+    :Aggiungi Iscritto;
+
+    :Salva Corso;
+
+    :Mostra "Prenotazione Effettuata";
+
+endif
+
+stop
+
+@enduml

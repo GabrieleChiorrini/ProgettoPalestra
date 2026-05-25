@@ -1,0 +1,48 @@
+@startuml AttivitàCU29
+
+start
+
+:Inserisce username, password e CF;
+
+:Invia dati utente;
+
+:Verifica esistenza utente;
+
+if (Utente già registrato?) then (Sì)
+
+    :Mostra errore;
+
+    :Visualizza "Utente già registrato";
+
+
+else (No)
+
+    :Cripta password;
+
+    :Ricerca cliente tramite CF;
+
+        if (Cliente trovato?) then (No)
+
+            :Mostra: "Cliente non trovato";
+
+        else (Si)
+            
+            :Crea Credenziali;
+
+            :setCredenziali;
+
+            :Salva Credenziali;
+            
+            :Salva;
+
+        endif
+
+    :Mostra conferma registrazione;
+
+    :Visualizza "Registrazione completata";
+
+endif
+
+stop
+
+@enduml

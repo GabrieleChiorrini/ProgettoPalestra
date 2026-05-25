@@ -1,0 +1,30 @@
+@startuml AttivitàCU22
+
+start
+
+:Seleziona Prenotazione;
+
+:Trova Prenotazione e cliente 
+
+:Eimina Prenotazione;
+
+:Rimuovi iscrizione cliente;
+
+note left
+il diagramma di sequenza per 
+l'eliminazione della prenotazione 
+della sala pesi segue la stessa
+logica con l'unica differenza che 
+non va cancellata l'iscrizione del 
+cliente dalla sala pesi
+end note
+
+:Salva;
+
+:Mostra "Prenotazione Annullata";
+
+
+
+stop
+
+@enduml

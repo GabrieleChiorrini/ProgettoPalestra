@@ -1,0 +1,16 @@
+@startuml Visualizza iscritti Corso
+
+start
+
+:Cliente clicca "Visualizza iscritti corso";
+
+:Il sistema ottiene la lista degli iscritti al corso;
+
+if (La lista è vuota?) then (sì)
+    :Il sistema visualizza "Nessun iscritto al corso";
+else (no)
+    :Il sistema visualizza la lista degli iscritti al corso;
+
+endif
+
+stop

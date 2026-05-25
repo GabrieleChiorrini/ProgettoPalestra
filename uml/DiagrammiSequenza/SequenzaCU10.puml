@@ -1,0 +1,17 @@
+@startuml Diagramma di sequenza CU7 Visualizza Abbonamento
+
+actor Cliente as C
+participant ViewAbbonamento as FRP <<boundary>>
+participant GestoreAbbonamento as S <<control>>
+participant AbbonamentoRepository as AR 
+
+autoactivate on
+
+C -> FRP : visualizza abbonamento
+FRP -> S : trova abbonamento
+S -> AR : trova abbonamento
+AR --> S : abbonamento 
+S -> S : calcola scadenza
+S --> S : scadenza calcolata 
+S --> FRP : abbonamento e scadenza visualizzati
+FRP --> C : abbonamento e scadenza visualizzati

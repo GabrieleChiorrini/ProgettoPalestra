@@ -1,0 +1,20 @@
+@startuml ModificaPersonale
+
+start
+
+:Inserisci nuovi dati personale;
+:ModificaPersonale
+:Trova personale;
+
+if (esiste) then (No)
+    :Mostra "Personale non trovato";
+
+else
+    :Modifica dati personale;
+    :Aggiorna Personale;
+    :Salva dati personale;
+    :Mostra "Dati modificati";
+    
+endif
+stop
+@enduml

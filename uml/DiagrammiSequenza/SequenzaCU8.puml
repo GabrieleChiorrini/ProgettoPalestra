@@ -1,0 +1,29 @@
+@startuml Diagramma di Sequenza CU8 Crea Abbonamento
+
+actor Amministratore as A
+participant FormAbbonamento as FRP <<boundary>>
+participant GestoreAbbonamento as SGA <<control>>
+participant AbbonamentoRepository as ABR
+participant ClienteRepository as CR
+participant Abbonamento as AB <<entity>>
+
+autoactivate on 
+
+
+'A -> FRP : seleziona cliente
+'FRP -> SGA : selezina cliente 
+'SGA --> FRP : cliente
+'FRP --> A : cliente
+A -> FRP : crea abbonamento(tipo, cliente)
+FRP -> SGA : crea abbonamento(tipo, cliente)
+SGA -> CR : getCliente(Cliente)
+CR --> SGA : cliente
+SGA -> AB** : create(tipo)
+SGA -> ABR: aggiungiAbbonamento(abbonamento)
+deactivate ABR
+SGA -> ABR :save()
+SGA --> FRP : abbonamento creato
+FRP --> A : abbonamento creato
+
+
+

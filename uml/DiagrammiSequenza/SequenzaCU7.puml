@@ -1,0 +1,21 @@
+@startuml Diagramma di sequenza CU7 Visualizza Certificato
+
+actor Cliente as C
+participant ViewCertificato as FRP <<boundary>>
+participant GestoreCertificato as S <<control>>
+participant CertificatoRepository as CER 
+
+autoactivate on
+
+C -> FRP : visualizza certificato
+FRP -> S : trova certificato
+S -> CER : certificato
+return certificato/None 
+opt certificato non trovato
+S --> FRP: errore
+FRP --> C: "certificato non trovato"
+end
+S -> S : calcola scadenza
+S --> S: scadenza calcolata
+S --> FRP : certificato e scadenza visualizzati
+FRP --> C : certificato e scadenza visualizzati

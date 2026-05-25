@@ -1,0 +1,12 @@
+@startuml Diagramma Attori
+
+actor Utente as U
+actor Amministratore as A
+actor Cliente as C
+rectangle Sistema <<actor>>
+rectangle Tempo <<actor>>
+
+U <|-- A
+U <|-- C
+
+@enduml

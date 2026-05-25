@@ -1,0 +1,39 @@
+@startuml enumerate
+hide empty member
+
+enum Giorni {
+    Lunedì
+    Martedì
+    Mercoledì
+    Giovedì
+    Venerdì
+    Sabato 
+    Domenica 
+}
+
+enum tipoAbbonamento {
+    SalaPesi&Corsi
+    Corsi
+    SalaPesi
+}
+
+class Palestra <<entity>> {
+    - nome: String 
+    - indirizzo: String
+    - orarioApertura: Time
+    - orarioChiusura: Time
+    - giorniApertura: Giorni
+}
+
+class Abbonamento <<entity>> {
+    - id: String
+    - durata : timedDelta
+    - dataInizio: Date 
+    - dataFine: Date 
+    - stato: Bool {0=attivo, 1=scaduto}
+    - tipoAbbonale: Integer {0=both, 1, 2}
+}
+
+DurataAbbonamento --> Abbonamento
+Giorni --> Palestra
+tipoAbbonamento --> Abbonamento

@@ -1,0 +1,21 @@
+@startuml RegistraCliente
+start
+
+:Inserisce dati cliente e data certificato;
+:Trova Cliente;
+
+if (esiste?) then (Sì)
+    :Mostra "Cliente già esistente";
+
+else (No)
+    :Crea nuovo Id Cliente ;
+    :Crea nuovo Id Certificato;
+    :Crea Cliente;
+    :Aggiungi Certificato;
+    :Salva Cliente;
+    :Salva Certificato;
+    :Mostra "Cliente creato";
+    
+endif
+stop
+@enduml

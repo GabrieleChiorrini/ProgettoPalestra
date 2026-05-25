@@ -1,0 +1,23 @@
+@startuml AttivitàCU27
+
+start
+
+:Avvia Generazione Statistiche;
+
+:Recupera accessi giornalieri;
+
+:Cacola statistica accessi giornalieri;
+
+:Recupera prenotazioni corsi;
+
+:Crea statistica prenotazioni corsi;
+
+:Recupera prenotazioni sala pesi;
+
+:Crea statistica prenotazione sala pesi;
+
+
+
+stop
+
+@enduml 

@@ -1,0 +1,112 @@
+@startuml No Form
+
+skinparam Linetype ortho
+hide empty member
+
+class FormIngresso <<boundary>> {
+    + eseguiIngresso()
+    + eseguiControlloValidita()
+    + eseguiGenerazioneStatistiche()
+}
+
+class FasciaOraria <<entity>> {
+    - inizio: Time
+    - durata: Time
+    - iscritti: List<Cliente>
+}
+
+class Corso {
+    - codice: String
+    - nome: String
+    - maxCapienza: Integer
+    - istruttore: Amministratore
+    - orario: DateTime
+    - iscritti: List<Cliente>
+}
+
+class Palestra <<entity>> {
+    - nome: String 
+    - indirizzo: String
+    - orarioApertura: Time
+    - orarioChiusura: Time
+    - giorniApertura: Giorni
+}
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+class Abbonamento <<entity>> {
+- id: String
+- durata : timedelta
+- dataInizio: Date
+- dataFine: Date
+- stato: Boolean
+- tipo: tipoAbbonamento
+}
+
+class CertificatoMedico <<entity>> {
+    - dataEffettuato: Date
+    - durata:Date
+    -Validità: bool
+    - certificato: String
+}
+
+class Accesso <<entity>> {
+    - orario: DateTime
+    - cliente: Cliente
+}
+
+class GestoreIngressi <<control>> {
+    + gestisciIngresso(clienteId: str): bool
+}
+
+class GestoreCapienza <<control>> {
+    + controllaCapienzaCorso(corsoId : str): bool
+    + controllaCapienzaSalaPesi(fasciaorariaId: str): bool
+}
+
+class GestoreValidita <<control>> {
+    + verificaValiditaCertificati(): void
+    + verificaValiditaAbbonamenti(): void
+
+}
+
+class ViewStatistiche <<boundary>> {
+    + consultareStatistiche(): void
+}
+
+class GestoreStatistiche <<control >> {
+    + generaStatistiche(): list
+    + visualizzaStatistiche(): list
+}
+
+class Statistica <<entity>> {
+    - dataGenerazione: DateTime
+    - tipoStatistica: String
+    - dati: Array
+    - grafico: Plot
+}
+
+GestoreCapienza ..> FasciaOraria
+GestoreCapienza ..> Corso
+GestoreIngressi ..> Abbonamento
+GestoreIngressi ..> CertificatoMedico
+GestoreIngressi ..> Accesso
+
+GestoreValidita .u.> Abbonamento
+GestoreValidita .u.> CertificatoMedico
+
+Accesso "0..*" --> "1" Palestra
+Accesso "0..*" -u-> "1" Cliente
+
+CertificatoMedico "1" --> "1" Cliente
+
+ViewStatistiche --> GestoreStatistiche
+GestoreStatistiche ..> Statistica
+
+GestoreIngressi <- FormIngresso
+GestoreValidita <-- FormIngresso
+FormIngresso -> GestoreStatistiche
+
+@enduml

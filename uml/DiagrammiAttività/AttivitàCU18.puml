@@ -1,0 +1,17 @@
+@startuml CancellaCorso
+
+start
+:Amministratore inserisce il corso;
+
+:Il corso viene inviato al sistema;
+
+:Il sistema recupera i dati del corso;
+
+:Il sistema cancella il corso;
+
+:Viene salvata la cancellazione del corso;
+
+:Viene mostrato un messaggio di conferma;
+
+stop
+

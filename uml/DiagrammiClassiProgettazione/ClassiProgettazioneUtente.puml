@@ -1,0 +1,99 @@
+@startuml Classi Progettazione Utente
+
+skinparam Linetype ortho
+hide empty member
+
+class Utente <<entity>> {
+    - nome: String 
+    - cognome: String 
+    - dataNascita: String 
+    - codiceFiscale: String
+    - email: String 
+    - telefono: String
+}
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+class CertificatoMedico <<entity>> {
+    - cliente: Cliente
+    - dataEffettuato: Date
+    - durata:Date
+    - certificato: FilePath
+    - validità: bool
+}
+
+class Credenziali <<entity>> {
+    - utente: Utente
+    - username: String
+    - password: String
+}
+
+
+class Amministratore <<entity>> {
+    - id: String
+}
+
+class FormCliente <<boundary>> {
+    + eseguiRegistra(): void
+    + eseguiModifica(): void
+    + eseguiElimina(): void
+}
+
+class ViewCertificato <<boundary>> {
+    + visualizzaCertificato(): void
+}
+
+class FormPersonale <<boundary>> {
+    + eseguiRegistra(): void
+    + eseguiModifica(): void
+    + eseguiElimina(): void
+}
+
+class FormLogin <<boundary>> {
+    + eseguiLogin(): void
+}
+
+class FormRegistrazione <<boundary>> {
+    + eseguiRegistrazione(): void
+}
+
+class GestoreCliente <<control >> {
+    + registraCliente(datiCliente: list): str
+    + modificaCliente(clienteId: str, nuoviDati: list): str
+    + eliminaCliente(clienteId: str): str
+}
+
+class GestorePersonale <<control >> {
+    + registraPersonale(datiPersonale: list): str
+    + modificaPersonale(personaleId: str, nuoviDati: list): str
+    + eliminaPersonale(personaleId: str): str
+}
+
+class GestoreAutenticazione <<control >> {
+    + registrazione(username: str, password: str, codiceFiscale: str): str
+    + login(username: str, password: str): str
+}
+
+class GestoreCertificato <<control >> {
+    + visualizzaCertificato(clienteId: str): str
+}
+
+ViewCertificato --> GestoreCertificato
+FormCliente --> GestoreCliente
+
+FormPersonale --> GestorePersonale
+FormLogin --> GestoreAutenticazione
+FormRegistrazione --> GestoreAutenticazione
+
+GestoreCertificato ..> CertificatoMedico
+GestoreCliente ..> Cliente
+GestorePersonale ..> Amministratore
+GestoreAutenticazione ..> Credenziali
+
+Cliente --|> Utente
+Amministratore --|> Utente
+Credenziali --> Utente
+
+Cliente --> CertificatoMedico: <<possiede>>

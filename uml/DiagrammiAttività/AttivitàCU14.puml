@@ -1,0 +1,19 @@
+@startuml Gestisci Orari
+start 
+
+:Inserisce i dati;
+
+:Viene inviata la richiesta al sistema;
+
+:Il sistema trova la palestra;
+
+if (Palestra) then (Non trovata)
+    :Mostra "Palestra non trovata";
+
+else
+    :setta nuovi orari e giorni;
+    :salva nuovi orari e giorni;
+    :Viene inviato un messaggio di conferma;
+endif
+stop
+@enduml

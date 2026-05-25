@@ -1,0 +1,86 @@
+@startuml Modifca capienza Sala Pesi
+
+actor Amministratore as A
+participant FormCapienza as I <<boundary>>
+participant GestoreSalaPesi as S <<control>>
+participant SalaPesiRepository as DSP
+participant SalaPesi as SP <<entity>>
+'database DB
+
+activate A
+
+' A -> I: clicca "Modifica capienza"
+' deactivate A
+' activate I
+
+' I -> S: ModificaCapienza_clicked()
+' deactivate I
+' activate S
+
+' S -> DSP: getMaxCapienza()
+' deactivate S
+' activate DSP
+
+' return capienzaMassimaAttuale
+' activate S
+
+' S -> I: capienza attuale
+' deactivate S
+' activate I
+
+' I --> A: capienza attuale
+' deactivate I
+' activate A
+
+A -> I: inserisce nuova capienza
+deactivate A
+activate I
+
+I -> S: modifcaCapienza(nuovaCapienza)
+deactivate I
+activate S
+
+opt Capienza non valida
+
+    S --> I : "La capienza deve essere positiva"
+    activate I 
+    I--> A : "La capienza deve essere positiva"
+    deactivate I
+
+end
+
+S -> SP: setCapienza(nuovaCapienza)
+'deactivate S
+'activate SP
+
+S -> DSP: aggiornaCapienza(nuovaCapienza)
+
+/'SP -> DSP: aggiornaDati(capienza)
+deactivate SP
+activate DSP
+
+DSP -> DB: aggiorna capienza
+deactivate DSP
+activate DB
+
+DB --> DSP: capienza aggiornata
+deactivate DB
+activate DSP
+
+DSP --> SP: capienza aggiornata
+deactivate DSP
+activate SP'/
+
+'SP --> S: capienza aggiornata
+'deactivate SP
+'activate S
+
+S --> I: alert("Capienza aggiornata")
+deactivate S
+activate I
+
+I --> A: capienza aggiornata
+deactivate I
+activate A
+
+@enduml

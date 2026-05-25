@@ -1,0 +1,34 @@
+
+@startuml VerificaCertificato
+
+actor Tempo
+
+participant FormIngresso as FI <<boundary>>
+participant "Gestore Validità" as Servizio <<control>>
+participant "CertificatoRepository" as CR
+participant Certificato <<entity>>
+
+note over Tempo, Servizio
+Precondizioni: il cliente è registrato
+end note 
+
+Tempo -> FI: fornisce data odierna
+FI -> Servizio : avvia controllo
+
+loop per ogni certificato
+    Servizio -> CR : recupera certificato(cliente)
+    activate CR
+    CR --> Servizio : certificato
+    deactivate CR
+    Servizio -> Servizio : confronta data con scadenza
+    activate Servizio
+    return
+
+    opt certificato scaduto
+        Servizio -> Certificato : aggiorna stato a scaduto
+        
+    end
+end 
+deactivate Servizio
+
+@enduml

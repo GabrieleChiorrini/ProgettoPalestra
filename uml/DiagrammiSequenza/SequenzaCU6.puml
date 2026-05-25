@@ -1,0 +1,36 @@
+@startuml Diagramma di sequenza CU6 Elimina Cliente
+
+actor Amministratore as A
+participant FormCliente as FRP <<boundary>>
+participant GestoreCliente as SGC <<control>>
+participant ClienteRepository as CR
+participant Cliente as P <<entity>>
+participant CertificatoMedico as CM <<entity>>
+participant CertificatoRepository as CMR 
+autoactivate on
+
+A ->FRP: inserisce cliente da eliminare
+FRP ->SGC: trova cliente
+SGC -> CR: trova cliente
+return cliente/None 
+opt cliente non trovato
+SGC --> FRP: errore 
+FRP --> A: "cliente non trovato"
+end
+SGC -> CMR: certificato
+return certificato/None
+opt certificato trovato
+SGC -> CM!!: elimina certificato
+SGC -> CR: save()
+end
+'SGC -->FRP: cliente
+'FRP --> A: dati cliente
+'A -> FRP : elimina dati
+'FRP -> SGC: elimina dati
+SGC -> P!!: elimina dati
+
+deactivate CR
+SGC -> CR: save()
+SGC --> FRP: dati eliminati
+deactivate CR
+FRP --> A: dati eliminati 

@@ -1,0 +1,31 @@
+@startuml AttivitàCU28
+
+start
+
+:Richiede statistiche;
+
+:Visualizza statistiche;
+
+:Query statistiche salvate;
+
+if (Statistiche generate?) then (Si)
+
+:Recupera statistiche;
+
+else (No)
+
+:Genera statistiche;
+
+:Salva statistiche;
+
+endif
+
+:Mostra schermata statistiche;
+
+:Visualizza dati al cliente;
+
+
+
+stop
+
+@enduml 

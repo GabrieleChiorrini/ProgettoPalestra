@@ -1,0 +1,28 @@
+@startuml ModificaCliente
+
+start
+
+:inserisce cliente e nuovi dati e nuova data certificato;
+:Trova cliente;
+:Modifica Cliente;
+
+if (Certificato) then (None)
+
+else (Not None)
+    :Trova Certificato;
+    
+    if (Certificato) then (Non trovato)
+    :Mostra "Certificato Non trovato";
+
+    else (Trovato)
+    :Modifica data;
+    :Imposta validità = True;
+    :Salva Certificato;
+    endif
+endif
+
+:Salva Cliente;
+:Dati Modificati;
+
+stop
+@enduml

@@ -1,0 +1,62 @@
+@startuml Login
+actor Utente as U
+participant FormLogin as I <<boundary>>
+participant GestoreCredenziali as S <<control>>
+participant CredenzialiRepository as LR
+
+activate U
+
+U -> I: inserisce Credenziali
+deactivate U
+activate I
+
+I -> S: credenzialiUtente(credenziali)
+deactivate I
+activate S
+
+deactivate U
+
+S -> LR: verificaCredenziali(credenziali)
+activate LR
+return crendenziali giuste/errate
+
+opt credenziali errate
+    S --> I: alert("Credenziali errate")
+    deactivate S
+    activate I
+
+    I --> U: credenziali errate
+    deactivate I
+    activate U
+    activate S
+end
+
+deactivate U
+
+S -> S:checkTipoCredenziali(credenziali)
+activate S
+return admin / cliente
+
+alt admin
+    S -> I: interfaccia admin
+    deactivate S
+    activate I
+
+    I -> U: login da admin effettuato
+    deactivate I
+    activate U
+    activate S
+    deactivate U
+
+else cliente
+    S -> I: interfaccia cliente
+    deactivate S
+    activate I
+
+    I -> U: login da cliente effettuato
+    deactivate I
+    activate U
+end
+
+
+@enduml

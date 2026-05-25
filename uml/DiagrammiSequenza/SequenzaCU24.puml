@@ -1,0 +1,34 @@
+
+@startuml VerificaAbbonamento
+
+actor Tempo
+
+participant FormIngresso as FI <<boundary>>
+participant "Gestore Validità" as Servizio <<control>>
+participant "AbbonamentoRepository" as AR
+participant Abbonamento <<entity>>
+
+note over Tempo, Servizio
+Precondizioni: il cliente è registrato
+end note 
+
+Tempo -> FI : fornisce data odierna
+FI -> Servizio: avvia controllo
+loop per ogni abbonamento
+    Servizio -> AR : recupera lista abbonamenti(cliente)
+    activate AR
+    AR --> Servizio : abbonamento
+    deactivate AR
+    Servizio -> Servizio : confronta data con scadenza
+    activate Servizio
+    return
+
+    opt abbonamento scaduto
+        Servizio -> Abbonamento : aggiorna stato a scaduto
+        
+    end
+end
+deactivate Servizio
+
+
+@enduml

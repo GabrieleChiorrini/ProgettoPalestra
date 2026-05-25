@@ -1,0 +1,32 @@
+@startuml Diagramma di sequenza CU2 Modifica Personale
+actor Amministratore as A
+participant FormPersonle as FRP <<boundary>>
+participant GestorePersonale as SGP <<control>>
+participant AmministratoreRepository as AR 
+participant Amministratore as P <<entity>>
+
+autoactivate on
+
+'A ->FRP: seleziona personale
+'SGP -->FRP: personale
+'FRP --> A: dati personale
+A -> FRP: Inserisce personale e nuovi dati
+FRP ->SGP: modificaPersonale(dati)
+SGP -> AR: trova personale
+return personale/None 
+opt personale non trovato 
+SGP --> FRP : errore
+FRP --> A : "personale non trovato"
+end 
+'FRP -> SGP: modificaPersonale(dati)
+SGP -> P: modificaPersonale(dati)
+deactivate P
+activate SGP 
+SGP -> AR: aggiornaPersonale(personale)
+deactivate AR
+SGP -> AR :save()
+deactivate P
+deactivate AR
+SGP --> FRP: dati modificati
+FRP --> A: dati modificati
+@enduml

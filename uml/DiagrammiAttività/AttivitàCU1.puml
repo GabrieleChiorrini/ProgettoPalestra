@@ -1,0 +1,22 @@
+@startuml RegistraPersonale
+start
+
+:Inserisce dati personale;
+:Controlla esistenza;
+
+if (esiste?) then (Sì)
+    :Mostra "Personale già esistente";
+
+else (No)
+    :Crea Amministratore;
+    :Crea Credenziali;
+    :Cripta Password;
+    :Aggiungi Personale;
+    :Aggiungi Credenziali;
+    :Salva Amministratore;
+    :Salva Credenziali;
+    :Mostra "Personale creato";
+    
+endif
+stop
+@enduml

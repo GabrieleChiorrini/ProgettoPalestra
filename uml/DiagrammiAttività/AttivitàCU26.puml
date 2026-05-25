@@ -1,0 +1,63 @@
+@startuml AttivitàCU26
+
+start
+
+:Verifica Capienza;
+
+:Tipo Prenotazione;
+
+if () then (Prenotazione Corso)
+
+    :Recupera Dati Corso;
+
+    :Confronta iscritti<capienza;
+
+        if () then (Corso Pieno)
+
+            :Prenotazione Negata;
+
+        else (Corso non al completo)
+
+            :Prenotazione Consentita;
+        
+    endif 
+
+else (Prenotazione Sala Pesi)
+
+    :Recupera dati Sala Pesi;
+
+    :Confronta disponibilità<capienza;
+
+        if () then (Sala Pesi Piena)
+
+            :Prenotazione Negata;
+    
+        else (Sala pesi libera)
+
+            :Prenotazione Consentita;
+    
+    endif
+endif
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+stop
+
+@enduml

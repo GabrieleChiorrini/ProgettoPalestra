@@ -1,0 +1,19 @@
+@startuml RinnovaAbbonamento
+start
+:Inserisce Cliente e dati rinnovo;
+:Trova cliente;
+:Trova Abbonamento;
+:Verifica Stato Abbonamento;
+
+if (scaduto) then (No)
+    :Prende la data della scadenza;
+    
+else (Si)
+    :Imposta la data inizio rinnovo = oggi;
+    
+endif
+:imposta la nuova fine;
+:salva;
+
+stop
+@enduml

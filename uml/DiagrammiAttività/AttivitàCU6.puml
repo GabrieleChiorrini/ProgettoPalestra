@@ -1,0 +1,25 @@
+@startuml EliminaCliente
+
+start
+
+:Inserisce Cliente da eliminare;
+:Trova Cliente;
+if (Cliente) then (Non trovato)
+    :Mostra "Cliente non trovato";
+
+else(Trovato)
+    :trova certificato;
+    if (Certificato) then (Trovato)
+    :Elimina certificato;
+    :Salva certificato eliminato;
+
+    else (None)
+    endif
+
+:Elimina dati;
+:Salva dati eliminati;
+:dati eliminati;
+endif
+
+stop
+@enduml

@@ -1,0 +1,105 @@
+@startuml Modifca corso
+
+actor Amministratore as A
+participant FormCorso as I <<boundary>>
+participant GestoreCorso as S <<control>>
+participant CorsoRepository as DC
+participant Corso as C <<entity>>
+'database DB
+
+activate A
+A -> I: Inserisce il corso ed i nuovi dati
+deactivate A
+activate I
+
+I -> S: getCorso(corso)
+deactivate I
+activate S
+
+S -> DC: ottieniDatiCorso
+deactivate S
+activate DC
+
+/'S -> DC: ottieniCorso(corso)
+deactivate S
+activate DC
+
+DC -> DB: queryCorso(corso)
+deactivate DC
+activate DB
+
+DB --> DC: infoCorso
+deactivate DB
+activate DC
+
+DC -> C**: create(infoCorso)
+deactivate DC
+activate C'/
+
+DC --> S: corso
+deactivate DC
+activate S
+
+
+deactivate A
+
+/' S -> I: corso
+deactivate S
+activate I
+
+I --> A: corso
+deactivate I
+activate A
+
+A -> I: Inserisce nuovi dati corso
+deactivate A
+activate I
+
+I -> S: modificaCorso(nuoviDati)
+deactivate I
+activate S '/
+
+S -> C : set(nuoviDati)
+'deactivate S
+'activate C
+opt istruttoreOccupato 
+    S --> I: alert("istruttore occupato")
+    deactivate S
+    activate I
+
+    I --> A: istruttore occupato
+    deactivate I
+    activate A
+    
+    activate S
+    
+end
+S -> DC: aggiornaCorso(corso)
+
+/'C -> DC: salvaDatiCorso()
+deactivate C
+activate DC
+
+DC -> DB: salva()
+deactivate DC
+activate DB
+
+DB --> DC: salvataggio effettuato
+deactivate DB
+activate DC
+
+DC --> C: salvataggio effettuato
+deactivate DC
+activate C'/
+
+'C --> S: corso modificato
+'deactivate C
+'activate S
+
+S --> I: alert("Corso modificato")
+deactivate S
+activate I
+I --> A: Corso modificato
+activate A
+
+@enduml

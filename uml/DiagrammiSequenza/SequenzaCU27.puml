@@ -1,0 +1,47 @@
+@startuml GenerareStatistiche
+
+actor Tempo
+
+participant "Form Ingresso" as IU <<boundary>> 
+'form che ha il timer che avvia la generazione delle statistiche
+participant "Gestore Statistiche" as Servizio <<control>>
+
+participant "AccessoRepository" as Accesso
+participant "PrenotazioneCorsoRepository" as PrenotazioneCorso
+participant "PrenotazioneSalaRepository" as PrenotazioneSala
+participant Statistica <<entity>>
+
+'database Database
+
+Tempo -> IU : avvia generazione statistiche
+IU -> Servizio : genera statistiche
+activate Servizio
+
+Servizio -> Accesso : recupera accessi giornalieri
+activate Accesso
+
+Accesso --> Servizio : lista accessi
+deactivate Accesso
+
+Servizio -> Statistica** : crea statistica accessi giornalieri
+
+Servizio -> PrenotazioneCorso : recupera prenotazioni corsi
+activate PrenotazioneCorso
+
+PrenotazioneCorso --> Servizio : dati corsi
+deactivate PrenotazioneCorso
+
+Servizio -> Statistica** : crea statistica prenotazioni corsi
+
+Servizio -> PrenotazioneSala : recupera prenotazioni sala
+activate PrenotazioneSala
+
+PrenotazioneSala --> Servizio : dati sala pesi
+deactivate PrenotazioneSala
+
+
+Servizio -> Statistica** : crea statistica prenotazione sala pesi
+
+deactivate Servizio
+
+@enduml

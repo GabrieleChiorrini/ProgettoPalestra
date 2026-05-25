@@ -1,0 +1,74 @@
+@startuml Creare Corso
+
+actor Amministratore as A
+participant FormCorso as FC <<boundary>>
+participant GestoreCorso as S <<control>>
+participant CorsoRepository as DC
+participant Corso as C <<entity>>
+'database DB
+
+activate A
+
+A -> FC: inserisce dati
+deactivate A
+activate FC
+
+FC -> S: creaCorso(nome, orari, capienza, istruttore)
+deactivate FC
+activate S
+
+S -> DC: controllaOccupazione(istruttore)
+deactivate S
+activate DC
+return occupazione
+activate S
+
+opt istruttoreOccupato 
+    S --> FC: alert("istruttore occupato")
+    deactivate S
+    activate FC
+
+    FC --> A: istruttore occupato
+    deactivate FC
+    activate A
+    
+    activate S
+end
+
+deactivate A
+
+S -> C** : create(nome, orari, capienza, istruttore)
+'deactivate S
+'activate C
+
+S -> DC: salvaCorso(datiCorso)
+
+/'C -> DC: salvaCorso
+deactivate C
+activate DC
+
+DC -> DB: salva corso
+deactivate DC
+activate DB
+
+DB --> DC: corso salvato
+deactivate DB
+activate DC
+
+DC --> C: corso salvato
+deactivate DC
+activate C'/
+
+'C --> S: corso creato
+'deactivate C
+'activate S
+
+S --> FC: alert("Corso creato")
+deactivate S
+activate FC
+
+FC --> A: corso creato
+deactivate FC
+activate A
+
+@enduml

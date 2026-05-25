@@ -1,0 +1,44 @@
+@startuml Diagramma di sequenza CU2 Modifica CLiente
+actor Amministratore as A
+participant FormCliente as FRP <<boundary>>
+participant GestoreCliente as SGC <<control>>
+participant ClienteRepository as CR
+participant Cliente as P <<entity>>
+participant Certificato as C <<entity>>
+participant Certificatorepository as CMR
+autoactivate on
+
+A ->FRP: inserisce cliente e nuovi dati e nuova data certificato
+'FRP ->SGC: trova cliente
+'SGC -->FRP: cliente
+'FRP --> A: dati Cliente
+'A -> FRP: modifica dati Cliente
+FRP -> SGC: dati
+SGC -> CR: trovaCliente(cliente)
+return cliente
+SGC -> P: modificaCliente(dati)
+deactivate P
+SGC -> SGC: verifica se certificato è None o no
+return certificato or None 
+opt certificato not None
+SGC-> CMR: trova certificato
+return certificato/None
+opt certificato non trovato
+SGC--> FRP: errore
+FRP --> A: "certificato non trovato"
+end
+SGC -> C: modifica data(dataEffettuato)
+deactivate C
+SGC -> C: set validità true
+deactivate C
+SGC -> CMR: save()
+end
+deactivate CMR
+
+SGC -> CR :save()
+deactivate CR
+deactivate P
+deactivate CR
+SGC --> FRP: dati modificati
+FRP --> A: dati modificati
+@enduml

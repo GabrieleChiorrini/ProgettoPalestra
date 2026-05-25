@@ -1,0 +1,77 @@
+@startuml Cancella Corso
+
+actor Amministratore as A
+participant FormCorso as I <<boundary>>
+participant GestoreCorso as S <<control>>
+participant CorsoRepository as DC
+participant Corso as C <<entity>>
+'database DB
+
+activate A
+A -> I: inserisce il corso
+deactivate A
+activate I
+
+I -> S: getCorso(corso)
+deactivate I
+activate S
+
+S -> DC: getCorso(corso)
+deactivate S
+activate DC
+
+/' DC -> DB: query(corso)
+deactivate DC
+activate DB
+
+DB --> DC: dati corso
+deactivate DB
+activate DC '/
+
+DC --> S: corso
+deactivate DC
+activate S
+
+/' S --> I: corsi
+deactivate S
+activate I
+
+I --> A: corso
+deactivate I
+activate A
+
+A -> I: clicca "Cancella corso"
+deactivate A
+activate I
+
+I -> S: cancellaCorso_clicked()
+deactivate I
+activate S '/
+
+S -> C!!: cancella()
+
+S -> DC: cancellaCorso(corso)
+'deactivate S
+'activate DC
+
+/'DC -> DB: delete(corso)
+deactivate DC
+activate DB
+
+DB --> DC: corso eliminato
+deactivate DB
+activate DC
+
+DC --> S: corso eliminato
+deactivate DC
+activate S'/
+
+S -> I: alert("Corso eliminato")
+deactivate S
+activate I
+
+I -> A: Corso eliminato
+deactivate I
+activate A
+
+@enduml

@@ -1,0 +1,58 @@
+@startuml GestioneAccessi
+
+actor "Sistema"
+
+participant "Gestore Ingressi" as Gestore <<control>>
+participant ClienteRepository as CR
+participant Cliente as C <<entity>>
+participant "AbbonamentoRepository" as AR
+participant "IngressoRepository" as AR
+participant Ingresso <<entity>>
+
+note over Sistema
+Precondizione:
+Cliente ha scansionato la tessera
+end note
+
+Sistema -> Gestore : invia cliente
+activate Gestore
+Gestore -> CR : trovaPerId(clienteId)
+activate CR
+CR --> Gestore : Cliente
+deactivate CR
+Gestore -> C : getCertificato
+activate C
+C --> Gestore : certificato
+deactivate C
+ref over Gestore : VerificaCertificato
+
+opt certificato non valido
+    Gestore --> Sistema : Accesso negato
+    
+end
+Gestore -> AR : trovaPerId(clienteId)
+activate AR
+AR --> Gestore : Abbonamento
+deactivate AR
+ref over Gestore : VerificaAbbonamento
+
+opt abbonamento non valido
+    Gestore --> Sistema : Accesso negato
+end
+
+Gestore -> AR : verifica ingresso attivo
+activate AR
+AR --> Gestore : bool
+deactivate AR
+
+opt già entrato
+    Gestore --> Sistema : Accesso negato
+    
+end
+
+Gestore -> Ingresso : registra ingresso
+Gestore --> Sistema : Accesso consentito
+deactivate Gestore
+
+
+@enduml

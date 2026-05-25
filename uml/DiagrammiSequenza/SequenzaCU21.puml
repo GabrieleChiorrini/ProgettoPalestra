@@ -1,0 +1,57 @@
+@startuml PrenotaCorso
+
+actor Cliente
+participant "Form Prenotazione" as Interfaccia <<boundary>>
+participant "Gestore Prenotazione" as Gestore <<control>>
+participant "ClienteRepository" as CLR 
+participant "CorsoRepository" as CR 
+participant "PrenotazioneRepository" as PR <<entity>>
+participant Corso <<entity>>
+participant Prenotazione <<entity>>
+
+
+note right of Cliente
+cliente ha 
+abbonamento e 
+certificato valido
+end note 
+
+Cliente -> Interfaccia : inserisce il corso a cui prenotarsi
+activate Interfaccia
+
+Interfaccia -> Gestore : creaPrenotazione(corso, cliente)
+activate Gestore
+Gestore -> CR : trovaPerId(corso)
+activate CR
+CR -> Gestore : corso
+deactivate CR
+Gestore -> CLR: trova(cliente)
+activate CLR
+CLR -> Gestore: cliente
+deactivate CLR
+
+ref over Gestore : controlla capienza
+
+opt corso pieno
+    Gestore --> Interfaccia : prenotazione rifiutata
+    Interfaccia --> Cliente : esito "corso pieno"
+end
+
+' Gestore --> Interfaccia : prenotazione consentita
+' Interfaccia --> Cliente : visualizza scheda prenotazione
+
+' Cliente -> Interfaccia : conferma prenotazione
+' Interfaccia -> Gestore : conferma prenotazione
+Gestore -> Prenotazione ** : creaPrenotazione(cliente, corso)
+Gestore -> Prenotazione : aggiungiPrenotazione(Prenotazione)
+Gestore -> PR : salvaPrenotazione(Prenotazione)
+
+Gestore -> Corso : aggiungiIscritto(cliente)
+Gestore -> CR : salvaCorso(corso)
+Gestore --> Interfaccia : prenotazione confermata
+deactivate Gestore
+Interfaccia --> Cliente : prenotazione effettuata
+deactivate Interfaccia
+
+
+@enduml 

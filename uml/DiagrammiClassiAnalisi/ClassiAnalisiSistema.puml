@@ -1,0 +1,80 @@
+@startuml DiagrammaClassiConPackage
+
+'top to bottom direction
+skinparam linetype ortho
+
+hide empty member
+
+class Sistema {}
+
+' ------------------ UTENTI ------------------
+package "Utenti" {
+
+class Cliente <<entity>> {
+    - codice: String
+}
+
+class Amministratore <<entity>> {
+    - id: String
+}
+
+}
+
+' ------------------ STRUTTURA ------------------
+package "Struttura" {
+class Palestra <<entity>> {
+- nome: String
+- indirizzo: String
+- orarioApertura: Time
+- orarioChiusura: Time
+- giorniApertura: Giorni
+}
+
+
+class SalaPesi <<entity>> {
+    - maxCapienza: Integer
+}
+
+class Corso {
+    - codice: String
+    - nome: String
+    - maxCapienza: Integer
+    - istruttore: Amministratore
+    - orario: DateTime
+    - iscritti: List<Cliente>
+}
+
+}
+
+' ------------------ ABBONAMENTI ------------------
+package "Dati" {
+
+class Accesso <<entity>> {
+    - orario: DateTime
+}
+
+class Statistica <<entity>> {
+- dataGenerazione: DateTime
+- tipoStatistica: String
+- dati: Array
+- grafico: Plot
+}
+
+}
+
+
+Palestra "1  " --o "0..*" Corso
+Palestra "1" --o "0..*   " SalaPesi
+
+Statistica <---- Cliente: "     visualizza"
+Statistica <---- Amministratore: "visualizza"
+
+Accesso "0..*" <-- "1\n\n  " Cliente: "effettua             "
+Amministratore "1..*" ----> "1" Palestra: \ngestisce
+
+Accesso "0..*  " - "1" Palestra
+
+Sistema "1" -down- "                              0..*" Accesso: "gestisce  "
+Sistema "            1" -- "0..*" Statistica: "  genera   "
+
+@enduml

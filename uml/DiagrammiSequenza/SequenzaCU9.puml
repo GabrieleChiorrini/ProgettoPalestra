@@ -1,0 +1,46 @@
+@startuml Sequenza CU9 Rinnova Abbonamento 
+
+actor Amministratore as A 
+participant FormAbbonamento as IU <<boundary>>
+participant GestoreAbbonamenti as SGA <<control>>
+participant AbbonamentoRepository as ABR
+participant ClienteRepository as CR
+participant Abbonamento as AB <<entity>>
+
+
+autoactivate on 
+
+'A -> IU : seleziona cliente 
+'IU -> SGA : seleziona cliente 
+'SGA --> IU : cliente trovato 
+'IU  --> A : cliente trovato 
+A -> IU : inserisce cliente e dati rinnovo
+IU -> SGA : cliente e dati prolungamento
+SGA -> CR : getCliente(Cliente)
+CR --> SGA : cliente
+SGA -> ABR: trovaAbbonamento(cliente)
+return abbonamento
+SGA -> SGA: verifica stato abbonamento
+SGA -->SGA: stato abbonamento
+
+alt abbonamento non scaduto
+    SGA -> ABR : get data scadenza
+    deactivate
+else abbonamento scaduto
+    SGA -> AB : set data inizio rinnovo = oggi
+    deactivate
+
+end
+
+SGA -> SGA : set nuova fine = data partenza + nuova durata
+deactivate
+SGA -> AB: set nuova fine
+deactivate
+SGA -> ABR: save()
+
+    deactivate
+    SGA --> IU: abbonamento rinnovato
+    IU -> A: abbonamento rinnovato
+
+@enduml
+

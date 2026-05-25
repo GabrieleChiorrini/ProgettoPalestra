@@ -1,0 +1,18 @@
+@startuml Modifica capienza Sala Pesi
+
+:Inserisce nuova capienza;
+
+if (Capienza) then (Negativa)
+
+     :Mostra "La capienza deve essere positiva";
+
+else (Positiva)
+
+    :Set nuova capienza;
+    :Aggiorna nuova capienza;
+
+endif
+
+stop
+
+@enduml

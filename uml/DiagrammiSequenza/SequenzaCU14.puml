@@ -1,0 +1,67 @@
+@startuml Gestisci Orari
+
+actor Amministratore as A
+participant FormOrari as FO <<boundary>>
+participant GestoreOrario as S <<control>>
+participant PalestraRepository as DP
+participant Palestra as P <<entity>>
+'database DB 
+
+activate A
+A -> FO: Inserisce ID palestra e nuovi orari
+deactivate A
+
+
+activate FO
+FO -> S: orariAggiornati(nuoviDati), idPalestra(Id)
+deactivate FO
+
+activate S
+S -> DP: trovaPalestra(idPalestra)
+activate DP
+DP --> S: palestra trovata / palestra non trovata
+deactivate DP
+
+opt Palestra non trovata
+
+    S --> FO : "Palestra non trovata"
+    FO --> A : "Palestra non trovata"
+
+end
+
+
+S -> P: setOrari e giorni(nuoviDati)
+'deactivate S
+'activate P
+
+S -> DP: aggiornaOrari(nuoviOrari)
+
+/'P -> DP: salvaOrari(nuoviOrari)
+deactivate P
+activate DP
+
+DP -> DB: salvaOrari(nuoviOrari)
+deactivate DP
+activate DB
+
+DB --> DP: orari salvati
+deactivate DB
+activate DP
+
+DP --> P: orari salvati
+deactivate DP
+activate P'/
+
+'P --> S: orari aggiornati
+'deactivate P
+'activate S
+
+S -> FO: alert("Orari Aggiornati")
+deactivate S
+activate FO
+
+FO --> A: orari aggiornati
+deactivate FO
+activate A
+
+@enduml

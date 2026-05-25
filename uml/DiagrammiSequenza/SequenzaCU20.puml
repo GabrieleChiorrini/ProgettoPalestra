@@ -1,0 +1,36 @@
+
+@startuml VisualizzaIscritti
+
+actor Cliente
+
+participant "View Corso" as IU <<boundary>>
+participant "Gestore Corso" as GC <<control>>
+participant "CorsoRepository" as CR 
+
+autoactivate on
+note right of Cliente
+cliente è nel sistema
+end note 
+
+Cliente -> IU : Clicca visualizza iscritti(corso)
+activate IU
+
+IU -> GC : recupera iscritti(corso)
+activate GC
+GC -> CR: trovaPerId(idCorso)
+activate CR
+CR --> GC : corso
+deactivate CR
+GC -> CR :  getIscritti(corso)
+CR --> GC : lista cliente
+
+opt lista vuota
+
+    GC --> IU : lista vuota
+    IU --> Cliente : visualizza "nessun iscritto"
+
+end
+    GC --> IU : schermata iscritti (clienti)
+    IU --> Cliente : visualizza lista clienti
+
+@enduml

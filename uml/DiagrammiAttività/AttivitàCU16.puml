@@ -1,0 +1,22 @@
+@startuml Creare Corso
+start
+
+:L'amministratore inserisce i dati del corso;
+
+:I dati vengono inviati al sistema;
+
+:Il sistema controlla se l'istruttore è occupato;
+
+if (istruttore occupato) then (si)
+    :Il sistema mostra un messaggio di errore;
+
+else (no)
+    :Il sistema crea il corso;
+
+    :Il sistema salva il corso;
+
+    :Viene mostrato un messaggio di conferma;
+
+endif
+
+stop

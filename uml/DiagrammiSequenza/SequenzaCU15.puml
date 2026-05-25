@@ -1,0 +1,92 @@
+@startuml Prenotare Sala Pesi
+
+actor Cliente as C
+participant FormPrenotazione as SPSP <<boundary>>
+participant GestorePrenotazione as S <<control>>
+participant FasciaOrariarepository as FOR 
+participant Clienterepository as CR
+participant PrenotazioneSalaPesiRepository as DP
+participant PrenotazioneSalaPesi as PSP <<entity>>
+'database DB
+
+activate C
+C -> SPSP: sceglie fascia oraria
+deactivate C
+activate SPSP
+
+SPSP -> S: fascia oraria 
+deactivate SPSP
+activate S
+S -> FOR: trovaPerId(fasciaOraria)
+activate FOR
+FOR --> S: fasciaOraria
+deactivate FOR
+S -> CR: trovaPerId(clienteId)
+activate CR
+CR --> S: cliente
+deactivate CR
+ref over S: controllaCapienza
+
+opt capienza non disponibile
+    S --> SPSP: capienza mancante
+    deactivate S
+    activate SPSP
+
+    SPSP --> C: alert("Fascia oraria Piena")
+    deactivate SPSP
+    activate C
+    
+    activate S
+end
+deactivate C
+
+' S --> SPSP: capienza disponibile
+' deactivate S
+' activate SPSP
+
+' SPSP --> C: posto disponibile
+' deactivate SPSP
+' activate C
+
+' C -> SPSP: conferma prenotazione
+' deactivate C
+' activate SPSP
+
+' SPSP -> S: prenotazione(fasciaOraria)
+' deactivate SPSP
+' activate S
+
+S -> PSP**: create(fasciaOraria)
+'deactivate S
+
+S -> DP: salvaPrenotazione(fasciaOraria)
+
+/'PSP -> DP: salvaPrenotazione()
+deactivate PSP
+activate DP
+
+DP -> DB: salvaPrenotazione()
+deactivate DP
+activate DB
+
+DB --> DP: prenotazione salvata
+deactivate DB
+activate DP
+
+DP --> PSP: prenotazione salvata
+deactivate DP
+activate PSP'/
+
+'PSP --> S: prenotazione effettuata
+'deactivate PSP
+'activate S
+
+S --> SPSP: alert("Prenotazione effettuata")
+deactivate S
+activate SPSP
+
+SPSP --> C: prenotazione effettuata
+deactivate SPSP
+activate C
+
+@enduml
