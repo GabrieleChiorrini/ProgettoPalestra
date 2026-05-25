@@ -82,3 +82,7 @@ def sala_pesi_finta():
     sala = SalaPesi(sala_id, 15, [fascia1, fascia2])
 
     return sala
+
+def palestra_finta():
+    return Palestra("PL000", "Fit Center", "Via Roma 10", time(8), time(20), [GiorniSettimana.LUNEDI,
+                GiorniSettimana.MARTEDI,GiorniSettimana.MERCOLEDI], [], [])

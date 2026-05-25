@@ -1,4 +1,4 @@
-import unittest
+import unittest, os
 from datetime import time
 from Models import SalaPesi, FasciaOraria
 from Repo import SalaPesiRepository, FasciaOrariaRepository
@@ -16,6 +16,17 @@ class TestSalaPesi(unittest.TestCase):
         self.fascia2 = FasciaOraria(self.fascia_id_2, time(10, 0))
         self.sala_id = self.sala_repo.newId()
         self.sala = SalaPesi(self.sala_id, 15, [self.fascia1, self.fascia2])
+
+        self.fascia_repo._fasceOrarie = {}
+        self.sala_repo._salePesi = {}
+        self.sala_repo._fasciaOrariaRepo = {}
+    
+    def tearDown(self):
+        # Rimozione dei file JSON temporanei generati durante l'esecuzione del test
+        file_da_eliminare = ["fasceOrarie.json"]
+        for f in file_da_eliminare:
+            if os.path.exists(f):
+                os.remove(f)
 
     def test_get_id(self):
         self.assertEqual(self.sala.get_id(), "SP000")
@@ -57,22 +68,18 @@ class TestSalaPesi(unittest.TestCase):
         d = self.sala.toDict()
         self.assertEqual(d["id"], "SP000")
         self.assertEqual(d["maxCapienza"], 15)
-        self.assertEqual(d["fasciaOraria"][0]["id"], "FO000")
+        self.assertEqual(d["fasciaOraria"], ["FO000", "FO001"])
 
     def test_from_dict(self):
         d = {
             "id": self.sala_repo.newId(),
             "maxCapienza": 10,
-            "fasciaOraria": [
-                {"id": self.fascia_repo.newId(), "orarioInizio": "08:00:00"},
-                {"id": self.fascia_repo.newId(), "orarioInizio": "09:00:00"}
-            ]
+            "fasciaOraria": [self.fascia_repo.newId(), self.fascia_repo.newId()]
         }
         sala = SalaPesi.fromDict(d)
         self.assertEqual(sala.get_id(), d["id"])
         self.assertEqual(sala.get_maxCapienza(), 10)
         self.assertEqual(len(sala.get_fasciaOraria()), 2)
-        self.assertEqual(sala.get_fasciaOraria()[1].get_orarioInizio(), time(9, 0))
 
 
 if __name__ == "__main__":

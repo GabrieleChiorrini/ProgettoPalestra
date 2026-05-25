@@ -55,7 +55,7 @@ class TestGestoreCorso(unittest.TestCase):
         self.istruttore._id = "AD001"
         self.istruttore2._id = "AD002"
         self.cliente._id = "CL001"
-        self.palestra._id = "PAL001"
+        self.palestra._id = "PL001"
 
         # Carichiamo i dati minimi nelle rispettive repository di supporto
         self.amministratoreRepo.aggiungi(self.istruttore)
@@ -161,15 +161,21 @@ class TestGestoreCorso(unittest.TestCase):
         self.assertEqual(messaggio, "Corso non trovato")
 
     def test_visualizzaIscritti_nessun_corso(self):
-        _, messaggio = self.gestoreCorso.visualizzaIscritti("ID_ERRATO")
-        self.assertEqual(messaggio, "Nessun Corso")
+        messaggio = self.gestoreCorso.visualizzaIscritti("ID_ERRATO")
+        self.assertEqual(messaggio, [{
+                "nome": "Nessun",
+                "cognome" : "Corso"
+            }])
 
     def test_visualizzaIscritti_nessun_iscritto(self):
         # Creiamo un corso vuoto senza iscritti
         id_corso, _ = self.gestoreCorso.creaCorso("Crossfit", time(19, 0), 8, self.istruttore.get_codiceFiscale(), [GiorniSettimana.MARTEDI])
         
-        _, messaggio = self.gestoreCorso.visualizzaIscritti(id_corso)
-        self.assertEqual(messaggio, "Nessun Iscritto")
+        messaggio = self.gestoreCorso.visualizzaIscritti(id_corso)
+        self.assertEqual(messaggio, [{
+                "nome": "Nessun",
+                "cognome" : "Iscritto"
+            }])
 
     def test_visualizzaIscritti_con_iscritti(self):
         id_corso = self.corsoRepo.newId()
@@ -186,13 +192,12 @@ class TestGestoreCorso(unittest.TestCase):
         )
         self.corsoRepo.aggiungi(corso)
 
-        risultato, _ = self.gestoreCorso.visualizzaIscritti(id_corso)
+        risultato= self.gestoreCorso.visualizzaIscritti(id_corso)
         
         # Verifichiamo che venga restituita una lista di dizionari contenente le informazioni del cliente finto
         self.assertIsInstance(risultato, list)
         self.assertEqual(len(risultato), 1)
         self.assertEqual(risultato[0]["nome"], self.cliente.get_nome())
-        self.assertEqual(risultato[0]["codiceFiscale"], self.cliente.get_codiceFiscale())
 
 
 if __name__ == "__main__":

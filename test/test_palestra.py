@@ -42,8 +42,6 @@ class TestPalestra(unittest.TestCase):
             corsi=[self.corso],
 
             salePesi=[self.sala_pesi],
-
-            fasciaRepo=self.fascia_repo
         )
 
     def test_id(self):
@@ -70,11 +68,6 @@ class TestPalestra(unittest.TestCase):
 
     def test_salePesi(self):
         self.assertEqual(self.palestra.get_salePesi(),[self.sala_pesi])
-
-    def test_fasce_orarie(self):
-        fasce = self.palestra.get_fasceOrarie()
-        self.assertEqual(fasce[0].get_orarioInizio(),time(8, 0))
-        self.assertEqual(fasce[1].get_orarioInizio(),time(9, 0))
 
     def test_set_orarioapertura(self):
         self.palestra.set_orarioapertura(time(7, 0))
@@ -159,8 +152,7 @@ class TestPalestra(unittest.TestCase):
             "giorniApertura": [GiorniSettimana.LUNEDI.value,
                 GiorniSettimana.MARTEDI.value,GiorniSettimana.MERCOLEDI.value],
             "corsi": [self.corso],
-            "salePesi": [self.sala_pesi],
-            "fasciaRepo": self.fascia_repo
+            "salePesi": [self.sala_pesi]
         }
 
         palestra = Palestra.fromDict(d)
@@ -177,29 +169,6 @@ class TestPalestra(unittest.TestCase):
         ])
         self.assertEqual(palestra.get_corsi(), [self.corso])
         self.assertEqual(palestra.get_salePesi(), [self.sala_pesi])
-
-    def test_genera_fasce_orarie(self):
-
-        fasce = self.palestra.get_fasceOrarie()
-
-        # 1. controllo numero fasce (8→20 = 12 fasce)
-        self.assertEqual(len(fasce), 12)
-
-        # 2. controllo prima fascia
-        self.assertEqual(fasce[0].get_orarioInizio(), time(8, 0))
-
-        # 3. controllo seconda fascia
-        self.assertEqual(fasce[1].get_orarioInizio(), time(9, 0))
-
-        # 4. controllo ultima fascia
-        self.assertEqual(fasce[-1].get_orarioInizio(), time(19, 0))
-
-        # 5. controllo che siano consecutive di 1 ora
-        for i in range(len(fasce) - 1):
-            self.assertEqual(
-                fasce[i + 1].get_orarioInizio().hour,fasce[i].get_orarioInizio().hour + 1)
-        # 6. sala deve aver ricevuto la stessa lista
-        self.assertEqual(len(self.sala_pesi.get_fasciaOraria()), 12)
 
 if __name__ == "__main__":
     unittest.main()

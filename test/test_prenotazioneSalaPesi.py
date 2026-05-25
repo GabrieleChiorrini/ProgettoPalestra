@@ -65,10 +65,7 @@ class TestPrenotazioneSalaPesi(unittest.TestCase):
     def test_toDict(self):
         dizionario_atteso = {
             "cliente": "CL002",
-            "fascia_oraria": {
-                "id": "FO005",
-                "orarioInizio": "15:00:00"
-            },
+            "fascia_oraria": "FO005",
             "id": "PS002"
         }
         
@@ -79,10 +76,7 @@ class TestPrenotazioneSalaPesi(unittest.TestCase):
         """Verifica la deserializzazione corretta passando l'oggetto cliente e la struttura dati per la fascia"""
         dati_input = {
             "cliente": self.cliente_reale,
-            "fascia_oraria": {
-                "id": "FO010",
-                "orarioInizio": "18:00:00"
-            },
+            "fascia_oraria": FasciaOraria("FO010",time(18)),
             "id": "PS088"
         }
 
