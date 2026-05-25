@@ -72,6 +72,10 @@ class GestoreOrario:
 
                     if inizio_fascia_dt >= apertura_dt and fine_fascia_dt <= chiusura_dt:
                         fasce_orarie.append(fascia)
+                sala.set_fasciaOraria(fasce_orarie)
+            self._salaPesiRepo.salva()   
+            self._palestraRepo.salva()   
+            return "Orario aggiornato correttamente"
 
         except (TypeError, ValueError) as e:
             # Cattura le anomalie e restituisce il messaggio di errore

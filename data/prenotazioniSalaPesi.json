@@ -3,5 +3,10 @@
         "cliente": "CL001",
         "fascia_oraria": "FO010",
         "id": "PS000"
+    },
+    {
+        "cliente": "CL001",
+        "fascia_oraria": "FO019",
+        "id": "PS001"
     }
 ]
