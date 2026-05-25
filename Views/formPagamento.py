@@ -69,7 +69,7 @@ class FormPagamento(QWidget):
             self._warning("La data non può essere nel futuro!")
 
         risultato = self._gestorePagamento.registraPagamento(codiceFiscale, float(importo), dataPagamento)
-        QMessageBox.information(self, "Ottimo", risultato) if "Pagamento registrato" in risultato else self._warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Pagamento registrato" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)

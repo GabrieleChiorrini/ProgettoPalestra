@@ -115,7 +115,7 @@ class FormPersonale(QWidget):
                 "Il valore inserito in " + self._listaCampi[0].placeholderText().lower() + " non è valido")
             return
         risultato = self._gestorePersonale.eliminaPersonale(testo) #unpacking lista
-        QMessageBox.information(self, "Ottimo", risultato) if "Personale eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Personale eliminato" in risultato else QMessageBox.warning(self, "Attenzione", risultato)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv) # creo app

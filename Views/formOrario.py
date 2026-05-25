@@ -78,7 +78,7 @@ class FormOrario(QWidget):
         listaGiorni = [GiorniSettimana(i + 1) for (i, a) in enumerate(valori) if a]
 
         risultato = self._gestoreOrario.modificaOrario(palestraId, orarioApertura, orarioChiusura, listaGiorni)
-        QMessageBox.information(self, "Ottimo", risultato) if "Orario aggiornato correttamente" in risultato else self._warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Orario aggiornato correttamente" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)

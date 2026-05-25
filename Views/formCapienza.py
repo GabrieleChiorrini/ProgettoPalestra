@@ -57,7 +57,7 @@ class FormCapienza(QWidget):
             return
 
         risultato = self._gestoreSalaPesi.modificaCapienza(salaPesiId, capienza)
-        QMessageBox.information(self, "Ottimo", risultato) if "Capienza aggiornata" in risultato else self._warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Capienza aggiornata" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)

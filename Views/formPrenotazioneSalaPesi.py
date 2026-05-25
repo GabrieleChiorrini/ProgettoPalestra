@@ -103,7 +103,7 @@ class FormPrenotazioneSalaPesi(QWidget):
             return
 
         risultato = self._gestorePrenotazione.prenotareSalaPesi(idFasciaOraria, self._clienteId)
-        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)

@@ -54,7 +54,7 @@ class FormEliminaPrenotazione(QWidget):
             risultato = self._gestorePrenotazione.eliminaPrenotazioneCorso(prenotazioneId, self._clienteId)
         elif "PS" in prenotazioneId:
             risultato = self._gestorePrenotazione.eliminaPrenotazioneSalaPesi(prenotazioneId, self._clienteId)
-        QMessageBox.information(self, "Ottimo", risultato) if "Prenotazione effettuata" in risultato else self._warning(risultato)
+        (QMessageBox.information(self, "Ottimo", risultato), self.close()) if "Prenotazione effettuata" in risultato else self._warning(risultato)
 
     def _warning(self, testo:str) -> None:
         QMessageBox.warning(self, "Attenzione", testo)
