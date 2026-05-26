@@ -26,7 +26,7 @@ class PrenotazioneSalaPesiRepository(PrenotazioneRepository):
                 "fascia_oraria": self._fasciaOrariaRepo.trovaPerId(d["fascia_oraria"])
             })  for d in dati} # from dict è metodo di classe di PrenotazioneSalaPesi
 
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._prenotazioni = {} # al primo avvio
     
     def listPrenotazioniPerFasciaOraria(self, id:str) -> list:

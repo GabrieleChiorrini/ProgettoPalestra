@@ -23,7 +23,7 @@ class PalestraRepository: # Repository
                 "salePesi": [self._salaPesiRepo.trovaPerId(c) for c in d["salePesi"]], # trovo le sale pesi perché ho salvato solo l'id
                 "corsi" : [self._corsoRepo.trovaPerId(c) for c in d["corsi"]] # trovo i corsi perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di Palestra
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._palestre = {} # al primo avvio
 
     def salva(self) -> None:

@@ -21,7 +21,7 @@ class SalaPesiRepository: # Repository
                 **d, #Unpacking del dizionario
                 "fasciaOraria": [self._fasciaOrariaRepo.trovaPerId(c) for c in d["fasciaOraria"].copy()] # trovo le fasce orarie perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di SalaPesi
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._salePesi = {} # al primo avvio
 
     def salva(self) -> None:

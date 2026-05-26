@@ -15,7 +15,7 @@ class StatisticaRepository: # Repository
                 d["id"]: Statistica.fromDict(d) for d in dati # from dict è metodo di classe di Statistica
                 # invoca il costruttore sulla base dei dati contenti in un dizionario
             }
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._statistiche = {} # al primo avvio
 
     def salva(self) -> None:

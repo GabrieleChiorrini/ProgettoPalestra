@@ -21,7 +21,7 @@ class AbbonamentoRepository: # Repository
                 "cliente": self._clienteRepo.trovaPerId(d["cliente"])
             })  for d in dati}
 
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._abbonamenti = {} # al primo avvio
 
     def salva(self) -> None:

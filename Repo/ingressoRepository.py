@@ -21,7 +21,7 @@ class IngressoRepository: # Repository
                 **d, #Unpacking del dizionario
                 "cliente": self._clienteRepo.trovaPerId(d["cliente"]) # trovo il cliente perché ho salvato solo l'id
             })  for d in dati} # from dict è metodo di classe di Ingresso
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._accessi = {} # al primo avvio
 
     def salva(self) -> None:

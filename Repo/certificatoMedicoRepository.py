@@ -20,7 +20,7 @@ class CertificatoMedicoRepository:
                 d["id"]: CertificatoMedico.fromDict(d) for d in dati # from dict è metodo di classe di CertificatoMedico
             }
 
-        except FileNotFoundError, json.JSONDecodeError:
+        except (FileNotFoundError, json.JSONDecodeError):
             self._certificati = {} #al primo avvio
 
     def salva(self) -> None:
