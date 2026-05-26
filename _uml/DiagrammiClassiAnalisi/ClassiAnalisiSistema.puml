@@ -2,6 +2,7 @@
 
 'top to bottom direction
 skinparam linetype ortho
+'left to right direction
 
 hide empty member
 
@@ -67,7 +68,7 @@ Palestra "1  " --o "0..*" Corso
 Palestra "1" --o "0..*   " SalaPesi
 
 Statistica <---- Cliente: "     visualizza"
-Statistica <---- Amministratore: "visualizza"
+'Statistica <---- Amministratore: "visualizza"
 
 Accesso "0..*" <-- "1\n\n  " Cliente: "effettua             "
 Amministratore "1..*" ----> "1" Palestra: \ngestisce
@@ -75,6 +76,6 @@ Amministratore "1..*" ----> "1" Palestra: \ngestisce
 Accesso "0..*  " - "1" Palestra
 
 Sistema "1" -down- "                              0..*" Accesso: "gestisce  "
-Sistema "            1" -- "0..*" Statistica: "  genera   "
+Sistema "1  " -- "     0..*" Statistica: "  genera   "
 
 @enduml
